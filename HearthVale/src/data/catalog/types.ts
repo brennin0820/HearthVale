@@ -136,3 +136,44 @@ export interface JobClassDefinition {
   growth: JobStatGrowth;
   startingSkills: string[];
 }
+
+/** Broad category a skill falls into — mirrors the job roles it serves. */
+export type SkillType = 'physical' | 'magical' | 'support' | 'utility';
+
+export type SkillTargetType = 'self' | 'enemy' | 'ally' | 'area';
+
+/**
+ * What a skill actually does when used. `damage`/`heal`/`buff`/`debuff`/`mark`
+ * are consumed by the combat layer; `economy`/`gather` are consumed by the
+ * vendor and resource-node systems respectively — a skill is never decorative.
+ */
+export interface SkillEffect {
+  kind: 'damage' | 'heal' | 'buff' | 'debuff' | 'mark' | 'economy' | 'gather' | 'utility';
+  /** ATK/MATK multiplier fed into the shared damage formula (damage skills only). */
+  powerMultiplier?: number;
+  /** Flat magnitude: HP/resource restored, buff/debuff strength, or a percent (economy/gather). */
+  amount?: number;
+  /** Stat or resource the effect targets (e.g. 'def', 'flee', 'mp', 'buyPrice', 'dropRate'). */
+  stat?: string;
+  /** Effect duration in seconds (buff/debuff/mark only). */
+  duration?: number;
+}
+
+/**
+ * A HearthVale skill — referenced by id from `JobClassDefinition.startingSkills`.
+ * Every skill must resolve to a definition here (enforced by `verify-skills`)
+ * so no job ever grants a name with no mechanical effect.
+ */
+export interface SkillDefinition {
+  id: string;
+  displayName: string;
+  type: SkillType;
+  targetType: SkillTargetType;
+  description: string;
+  mpCost: number;
+  /** Cooldown in seconds before the skill can be used again. */
+  cooldown: number;
+  effect: SkillEffect;
+  /** Damage/heal element, when relevant — must match a known `ELEMENT_MODIFIERS` key. */
+  element?: string;
+}

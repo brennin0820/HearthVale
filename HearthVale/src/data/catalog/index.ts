@@ -13,6 +13,10 @@ export type {
   MonsterDefinition,
   NpcDefinition,
   QuestDefinition,
+  SkillDefinition,
+  SkillEffect,
+  SkillTargetType,
+  SkillType,
 } from './types.js';
 
 export { MONSTERS, MONSTER_BY_ID } from './monsters.js';
@@ -25,3 +29,4 @@ export {
   JOB_CLASS_BY_ID,
   JOB_CLASSES_BY_BASE_ID,
 } from './jobs.js';
+export { SKILLS, SKILL_BY_ID } from './skills.js';

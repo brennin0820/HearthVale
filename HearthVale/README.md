@@ -31,7 +31,7 @@ Open the URL Vite prints (default `http://localhost:5173`). Use **WASD** or **ar
 | Script | Description |
 |--------|-------------|
 | `npm run export:data` | Export TS world + catalog → `data/` |
-| `npm run verify:all` | Export + full validation suite (portals, spawns, NPCs, bounds, drops, items, quests, audio) |
+| `npm run verify:all` | Export + full validation suite (portals, spawns, NPCs, bounds, drops, items, quests, jobs, skills, audio) |
 | `npm run verify` | Alias for `verify:all` |
 | `npm run hearthvale -- help` | Tooling CLI (scaffold, balance, CSV, Tiled, research) |
 | `npm run hearthvale -- research "<topic>" <lane>` | Online resource search URLs (pixel/world/audio/engine) |

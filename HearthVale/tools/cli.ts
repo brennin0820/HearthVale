@@ -36,6 +36,7 @@ Data pipeline:
   verify-items        Item catalog check
   verify-quests       Quest / warp unlock check
   verify-jobs         Job class catalog check
+  verify-skills       Skill catalog check (incl. job startingSkills refs)
   verify-audio        Audio manifest check
   verify-assets       Asset manifest vs map assetKeys
 
@@ -68,6 +69,7 @@ const scriptMap: Record<string, string> = {
   'verify-items': 'scripts/verify-items.ts',
   'verify-quests': 'scripts/verify-quests.ts',
   'verify-jobs': 'scripts/verify-jobs.ts',
+  'verify-skills': 'scripts/verify-skills.ts',
   'verify-audio': 'scripts/verify-audio.ts',
   'verify-assets': 'scripts/verify-assets.ts',
   'balance-report': 'tools/balance-report.ts',
@@ -93,6 +95,7 @@ switch (command) {
       'scripts/verify-items.ts',
       'scripts/verify-quests.ts',
       'scripts/verify-jobs.ts',
+      'scripts/verify-skills.ts',
       'scripts/verify-audio.ts',
       'scripts/verify-assets.ts',
     ];
