@@ -10,6 +10,7 @@
     "verify:npcs": "tsx scripts/verify-npcs.ts",
     "verify:bounds": "tsx scripts/verify-bounds.ts",
     "verify:drops": "tsx scripts/verify-drops.ts",
+    "verify:items": "tsx scripts/verify-items.ts",
     "verify:quests": "tsx scripts/verify-quests.ts",
     "verify:jobs": "tsx scripts/verify-jobs.ts",
     "verify:audio": "tsx scripts/verify-audio.ts",
