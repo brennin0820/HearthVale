@@ -23,6 +23,8 @@
 
 ## Recent sessions
 
++# **2026-06-30** — Implemented the "Hearthlight Vale HUD" Claude Design handoff (`.codex_tmp/hud_ref/Hearthlight Vale HUD.dc.html`) pixel-faithfully in `client/src/hud/`: full theme-token system with all 3 skins (Ironbound/Radiant Vale/Hearthlight, default Hearthlight, F4 to cycle — dev-only, no settings UI yet), player bars, buffs/debuffs, party frames, combat/chat log, zone banner, minimap, currency, quests, 24-slot bag + 10-slot hotbar with themed item-slot rendering, XP bar, hidden-by-default target frame (F5 dev preview). Live data (map/position/portal/safe zone) still drives banner/quest/log/minimap as before; everything else (party, buffs, target, bag, hotbar, currency) is the mock data the .dc.html ships with — no such systems exist yet. `npm run build` passed. Added `.claude/launch.json` for preview tooling.
++# **2026-06-30** — Hearthvale Town now ships as a full greybox playable hub: authored prop/collision export, obstacle-aware movement in `client/`, repositioned town NPCs/portal/spawn, and `npm run export:data`, `npm run build:client`, `npm run verify:bounds`, `npm run verify:npcs`, `npm run verify:portals` all passed
 +# **2026-06-30** — HUD overlay now auto-scales with window resize in `client/`; scale is driven from viewport size instead of breakpoint-only layout changes, and `npm run build` passed
 # **2026-06-30** — Replaced the Phaser text HUD with a responsive DOM overlay HUD in `client/`; live map banner, minimap, quest/log panels, hotbar/menu shell, and `npm run build` passed
 +# **2026-06-11** — HearthVale Compass: full NightRaven Compass UI in `compass/` + macOS Electron (`mac:dev`, `build:mac`); `scripts/gods-eye-projects.conf` + overlay wired

@@ -1,6 +1,8 @@
 import Phaser from 'phaser';
 import { hudOverlay } from '../hud/HudOverlay.js';
-import type { MapDefinition, MapPortal, Vec2 } from '../types/world.js';
+import { audioService } from '../services/AudioService.js';
+import { DevOverlay } from '../services/DevOverlay.js';
+import { loadCollisionMask, loadPropLayer } from '../services/mapArtData.js';
 import { getMapById } from '../services/worldData.js';
 import {
   BIOME_COLORS,
@@ -11,14 +13,21 @@ import {
   TILE_SIZE,
   WORLD_DEPTH,
 } from '../constants.js';
-import { audioService } from '../services/AudioService.js';
-import { DevOverlay } from '../services/DevOverlay.js';
+import type { CollisionMaskDefinition, MapPropDefinition } from '../types/mapArt.js';
+import type { MapDefinition, MapPortal, Vec2 } from '../types/world.js';
 import { clampToBounds, getMapBounds, type MapBounds } from '../utils/mapBounds.js';
 
 export interface WorldSceneData {
   mapId: string;
   spawn: Vec2;
 }
+
+const PLAYER_COLLISION_SAMPLES: Vec2[] = [
+  { x: 0, y: 0 },
+  { x: -8, y: 8 },
+  { x: 8, y: 8 },
+  { x: 0, y: 12 },
+];
 
 export class WorldScene extends Phaser.Scene {
   private mapId = '';
@@ -37,6 +46,8 @@ export class WorldScene extends Phaser.Scene {
   private nearestPortal: MapPortal | null = null;
   private inSafeZone = false;
   private devOverlay!: DevOverlay;
+  private collisionMask: CollisionMaskDefinition | null = null;
+  private ready = false;
 
   constructor() {
     super({ key: 'WorldScene' });
@@ -45,9 +56,11 @@ export class WorldScene extends Phaser.Scene {
   init(data: WorldSceneData): void {
     this.mapId = data.mapId;
     this.portalCooldown = 500;
+    this.ready = false;
+    this.collisionMask = null;
   }
 
-  create(data: WorldSceneData): void {
+  async create(data: WorldSceneData): Promise<void> {
     const mapDef = getMapById(this.mapId);
     if (!mapDef) {
       this.showFatalError(`Map not found: ${this.mapId}`);
@@ -57,37 +70,54 @@ export class WorldScene extends Phaser.Scene {
     this.mapDef = mapDef;
     this.bounds = getMapBounds(mapDef);
     this.worldLayer = this.add.container(0, 0);
-
-    this.drawMapBackground(mapDef);
-    this.drawSafeZone(mapDef);
-    this.drawSpawnAreas(mapDef);
-    this.drawPortals(mapDef);
-    this.drawNpcs(mapDef);
-    this.drawMonsters(mapDef);
-
-    this.player = this.createPlayer(data.spawn);
-    this.worldLayer.add(this.player);
-
     this.cameras.main.setBackgroundColor('#121018');
-    this.cameras.main.startFollow(this.player, true, 0.12, 0.12);
-    this.cameras.main.setZoom(1);
 
-    this.cursors = this.input.keyboard!.createCursorKeys();
-    this.wasd = {
-      W: this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.W),
-      A: this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.A),
-      S: this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.S),
-      D: this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.D),
-    };
+    try {
+      const [collisionMask, propLayer] = await Promise.all([
+        loadCollisionMask(this.mapId),
+        loadPropLayer(this.mapId),
+      ]);
 
-    this.devOverlay = new DevOverlay(this);
-    this.devOverlay.mount(mapDef);
-    audioService.playMapMusic(mapDef.musicKey);
-    this.syncHud(data.spawn);
+      this.collisionMask = collisionMask;
+      this.drawMapBackground(mapDef);
+      this.drawPropLayer(propLayer.props);
+      this.drawSafeZone(mapDef);
+      this.drawSpawnAreas(mapDef);
+      this.drawPortals(mapDef);
+      this.drawNpcs(mapDef);
+      this.drawMonsters(mapDef);
+
+      this.player = this.createPlayer(data.spawn);
+      this.worldLayer.add(this.player);
+
+      this.cameras.main.startFollow(this.player, true, 0.12, 0.12);
+      this.cameras.main.setZoom(1);
+
+      this.cursors = this.input.keyboard!.createCursorKeys();
+      this.wasd = {
+        W: this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.W),
+        A: this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.A),
+        S: this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.S),
+        D: this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.D),
+      };
+
+      this.devOverlay = new DevOverlay(this);
+      this.devOverlay.mount(mapDef);
+      audioService.playMapMusic(mapDef.musicKey);
+      this.syncHud({ x: this.player.x, y: this.player.y });
+      this.ready = true;
+    } catch (error) {
+      console.error('Failed to load map art', error);
+      this.showFatalError(`Failed to load map art for ${this.mapId}`);
+    }
   }
 
   update(_time: number, delta: number): void {
-    if (!this.player || this.portalCooldown > 0) {
+    if (!this.ready || !this.player) {
+      return;
+    }
+
+    if (this.portalCooldown > 0) {
       this.portalCooldown = Math.max(0, this.portalCooldown - delta);
     }
 
@@ -109,12 +139,44 @@ export class WorldScene extends Phaser.Scene {
     if (vx === 0 && vy === 0) return;
 
     const len = Math.hypot(vx, vy);
-    vx /= len;
-    vy /= len;
-
     const step = (PLAYER_SPEED * delta) / 1000;
-    const next = clampToBounds(this.player.x + vx * step, this.player.y + vy * step, this.bounds);
-    this.player.setPosition(next.x, next.y);
+    const nextX = this.player.x + (vx / len) * step;
+    const nextY = this.player.y + (vy / len) * step;
+
+    const attemptX = clampToBounds(nextX, this.player.y, this.bounds);
+    if (this.isWalkable(attemptX.x, attemptX.y)) {
+      this.player.x = attemptX.x;
+    }
+
+    const attemptY = clampToBounds(this.player.x, nextY, this.bounds);
+    if (this.isWalkable(attemptY.x, attemptY.y)) {
+      this.player.y = attemptY.y;
+    }
+  }
+
+  private isWalkable(x: number, y: number): boolean {
+    if (!this.collisionMask) {
+      return true;
+    }
+
+    const { tileSize, walkable } = this.collisionMask;
+    const halfW = (this.mapDef.gridSize.width * tileSize) / 2;
+    const halfH = (this.mapDef.gridSize.height * tileSize) / 2;
+
+    for (const sample of PLAYER_COLLISION_SAMPLES) {
+      const col = Math.floor((x + sample.x + halfW) / tileSize);
+      const row = Math.floor((y + sample.y + halfH) / tileSize);
+
+      if (row < 0 || row >= walkable.length || col < 0 || col >= walkable[row].length) {
+        return false;
+      }
+
+      if (!walkable[row][col]) {
+        return false;
+      }
+    }
+
+    return true;
   }
 
   private checkPortals(): void {
@@ -147,6 +209,7 @@ export class WorldScene extends Phaser.Scene {
     }
 
     this.portalCooldown = 800;
+    this.ready = false;
     audioService.playSfx('sfx_portal');
     this.scene.restart({
       mapId: portal.targetMapId,
@@ -160,7 +223,7 @@ export class WorldScene extends Phaser.Scene {
     const w = map.gridSize.width * TILE_SIZE;
     const h = map.gridSize.height * TILE_SIZE;
 
-    const ground = this.add.rectangle(0, 0, w, h, color, 0.95);
+    const ground = this.add.rectangle(0, 0, w, h, color, 0.96);
     ground.setStrokeStyle(3, accent, 0.8);
     this.worldLayer.add(ground);
 
@@ -189,6 +252,193 @@ export class WorldScene extends Phaser.Scene {
     this.worldLayer.add(title);
   }
 
+  private drawPropLayer(props: MapPropDefinition[]): void {
+    const ordered = [...props].sort((a, b) => this.getPropOrder(a.kind) - this.getPropOrder(b.kind) || a.y - b.y);
+    for (const prop of ordered) {
+      this.drawProp(prop);
+    }
+  }
+
+  private getPropOrder(kind: MapPropDefinition['kind']): number {
+    switch (kind) {
+      case 'path':
+      case 'plaza':
+        return 0;
+      case 'fence':
+      case 'gate':
+      case 'planter':
+      case 'crate':
+      case 'sign':
+      case 'lantern':
+      case 'training_dummy':
+        return 1;
+      case 'fountain':
+      case 'stall':
+      case 'building':
+      case 'tree':
+        return 2;
+      default:
+        return 3;
+    }
+  }
+
+  private drawProp(prop: MapPropDefinition): void {
+    const fillColor = prop.fillColor ?? 0x7a7a7a;
+    const accentColor = prop.accentColor ?? 0xe6d1a5;
+    const alpha = prop.alpha ?? 1;
+
+    switch (prop.kind) {
+      case 'path':
+      case 'plaza': {
+        const tile = this.createShape(prop, fillColor, alpha);
+        tile.setStrokeStyle(2, accentColor, 0.3);
+        tile.setDepth(WORLD_DEPTH.groundDetail);
+        this.worldLayer.add(tile);
+        return;
+      }
+      case 'building': {
+        const body = this.add.rectangle(prop.x, prop.y, prop.width, prop.height, fillColor, alpha);
+        body.setStrokeStyle(2, accentColor, 0.8);
+        this.worldLayer.add(body);
+
+        const roof = this.add.rectangle(
+          prop.x,
+          prop.y - prop.height / 2 + 12,
+          prop.width + 8,
+          18,
+          accentColor,
+          0.95,
+        );
+        roof.setStrokeStyle(1, 0x3b2a20, 0.8);
+        this.worldLayer.add(roof);
+
+        const door = this.add.rectangle(prop.x, prop.y + prop.height / 2 - 12, 18, 24, 0x3f2b22, 1);
+        this.worldLayer.add(door);
+
+        if (prop.label) {
+          this.addWorldLabel(prop.x, prop.y - prop.height / 2 - 8, prop.label, '#f8edcf');
+        }
+        return;
+      }
+      case 'tree': {
+        const trunk = this.add.rectangle(prop.x, prop.y + prop.height * 0.18, prop.width * 0.22, prop.height * 0.45, accentColor, 1);
+        this.worldLayer.add(trunk);
+
+        const canopy = this.add.ellipse(prop.x, prop.y - 6, prop.width, prop.height, fillColor, alpha);
+        canopy.setStrokeStyle(2, 0x274528, 0.75);
+        this.worldLayer.add(canopy);
+        return;
+      }
+      case 'fence': {
+        const fence = this.add.rectangle(prop.x, prop.y, prop.width, prop.height, fillColor, alpha);
+        fence.setStrokeStyle(1, accentColor, 0.85);
+        this.worldLayer.add(fence);
+        return;
+      }
+      case 'fountain': {
+        const basin = this.add.ellipse(prop.x, prop.y, prop.width, prop.height, fillColor, alpha);
+        basin.setStrokeStyle(3, accentColor, 0.85);
+        this.worldLayer.add(basin);
+
+        const water = this.add.ellipse(prop.x, prop.y + 2, prop.width * 0.62, prop.height * 0.5, 0x86bce8, 0.9);
+        this.worldLayer.add(water);
+        return;
+      }
+      case 'stall': {
+        const base = this.add.rectangle(prop.x, prop.y + 4, prop.width, prop.height, 0x6a4a35, 1);
+        base.setStrokeStyle(2, 0x2d1e17, 0.8);
+        this.worldLayer.add(base);
+
+        const canopy = this.add.rectangle(prop.x, prop.y - prop.height / 2 + 10, prop.width + 8, 14, fillColor, alpha);
+        canopy.setStrokeStyle(2, accentColor, 0.8);
+        this.worldLayer.add(canopy);
+
+        if (prop.label) {
+          this.addWorldLabel(prop.x, prop.y - prop.height / 2 - 8, prop.label, '#f8edcf');
+        }
+        return;
+      }
+      case 'crate': {
+        const crate = this.add.rectangle(prop.x, prop.y, prop.width, prop.height, fillColor, alpha);
+        crate.setStrokeStyle(2, accentColor, 0.7);
+        this.worldLayer.add(crate);
+        return;
+      }
+      case 'sign': {
+        const post = this.add.rectangle(prop.x, prop.y + prop.height * 0.15, 8, prop.height, accentColor, 1);
+        this.worldLayer.add(post);
+
+        const board = this.add.rectangle(prop.x, prop.y - prop.height * 0.2, prop.width * 1.3, prop.height * 0.7, fillColor, alpha);
+        board.setStrokeStyle(2, 0x523726, 0.8);
+        this.worldLayer.add(board);
+
+        if (prop.label) {
+          this.addWorldLabel(prop.x, prop.y - prop.height / 2 - 8, prop.label, '#f8edcf');
+        }
+        return;
+      }
+      case 'planter': {
+        const box = this.add.rectangle(prop.x, prop.y, prop.width, prop.height, accentColor, 0.9);
+        box.setStrokeStyle(2, 0x473124, 0.8);
+        this.worldLayer.add(box);
+
+        const bloom = this.add.rectangle(prop.x, prop.y, prop.width - 10, prop.height - 6, fillColor, alpha);
+        this.worldLayer.add(bloom);
+        return;
+      }
+      case 'gate': {
+        const post = this.add.rectangle(prop.x, prop.y, prop.width, prop.height, fillColor, alpha);
+        post.setStrokeStyle(2, accentColor, 0.75);
+        this.worldLayer.add(post);
+        return;
+      }
+      case 'lantern': {
+        const pole = this.add.rectangle(prop.x, prop.y + 8, 6, 22, accentColor, 1);
+        this.worldLayer.add(pole);
+
+        const light = this.add.circle(prop.x, prop.y - 2, 8, fillColor, 0.95);
+        light.setStrokeStyle(2, 0x634f2a, 0.8);
+        this.worldLayer.add(light);
+        return;
+      }
+      case 'training_dummy': {
+        const post = this.add.rectangle(prop.x, prop.y + 6, 8, prop.height + 10, accentColor, 1);
+        this.worldLayer.add(post);
+
+        const body = this.add.rectangle(prop.x, prop.y - 2, prop.width + 10, prop.height + 8, fillColor, alpha);
+        body.setStrokeStyle(2, 0x70472f, 0.8);
+        this.worldLayer.add(body);
+        return;
+      }
+      default: {
+        const fallback = this.createShape(prop, fillColor, alpha);
+        fallback.setStrokeStyle(1, accentColor, 0.6);
+        this.worldLayer.add(fallback);
+      }
+    }
+  }
+
+  private createShape(prop: MapPropDefinition, fillColor: number, alpha: number): Phaser.GameObjects.Shape {
+    if (prop.shape === 'ellipse') {
+      return this.add.ellipse(prop.x, prop.y, prop.width, prop.height, fillColor, alpha);
+    }
+    return this.add.rectangle(prop.x, prop.y, prop.width, prop.height, fillColor, alpha);
+  }
+
+  private addWorldLabel(x: number, y: number, text: string, color: string): void {
+    const label = this.add
+      .text(x, y, text, {
+        fontFamily: 'Georgia, serif',
+        fontSize: '11px',
+        color,
+        stroke: '#1a1520',
+        strokeThickness: 3,
+      })
+      .setOrigin(0.5, 1);
+    label.setDepth(WORLD_DEPTH.labels);
+    this.worldLayer.add(label);
+  }
+
   private drawSafeZone(map: MapDefinition): void {
     if (!map.safeZone) return;
 
@@ -199,9 +449,9 @@ export class WorldScene extends Phaser.Scene {
       zone.width,
       zone.height,
       0x88cc88,
-      0.12,
+      0.08,
     );
-    rect.setStrokeStyle(2, 0xaaddaa, 0.35);
+    rect.setStrokeStyle(2, 0xaaddaa, 0.26);
     rect.setDepth(WORLD_DEPTH.safeZone);
     this.worldLayer.add(rect);
 
@@ -286,7 +536,7 @@ export class WorldScene extends Phaser.Scene {
     for (const table of map.spawnTables) {
       for (const entry of table.entries) {
         const count = Math.min(3, Math.ceil(entry.weight / 25));
-        for (let i = 0; i < count; i++) {
+        for (let i = 0; i < count; i += 1) {
           const offsetX = ((index * 47) % table.bounds.width) - table.bounds.width / 2;
           const offsetY = ((index * 31) % table.bounds.height) - table.bounds.height / 2;
           const x = table.bounds.x + table.bounds.width / 2 + offsetX * 0.6;
@@ -351,6 +601,7 @@ export class WorldScene extends Phaser.Scene {
   }
 
   private showFatalError(message: string): void {
+    this.ready = false;
     this.add
       .text(this.scale.width / 2, this.scale.height / 2, message, {
         fontFamily: 'monospace',

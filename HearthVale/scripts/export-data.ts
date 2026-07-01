@@ -13,6 +13,7 @@ import {
   QUESTS,
 } from '../src/data/catalog/index.js';
 import { BIOMES } from '../src/data/world/biomes.js';
+import { MAP_ART_BY_ID } from '../src/data/world/mapArt.js';
 import {
   MAPS,
   MAP_ALIASES,
@@ -45,6 +46,13 @@ function buildCollisionGrid(map: MapDefinition): boolean[][] {
   return rows;
 }
 
+function buildPropLayer(mapId: string): { mapId: string; props: unknown[] } {
+  return {
+    mapId,
+    props: [],
+  };
+}
+
 await mkdir(dataDir, { recursive: true });
 
 for (const { alias } of MAP_ALIASES) {
@@ -67,12 +75,16 @@ const assetKeys = [...new Set(MAPS.map((m) => m.assetKey))];
 await writeJson('assets/manifest.json', buildAssetManifest(assetKeys));
 
 for (const map of MAPS) {
-  await writeJson(`collision/${map.id}.json`, {
-    mapId: map.id,
-    tileSize: 32,
-    walkable: buildCollisionGrid(map),
-  });
-  await writeJson(`props/${map.id}.json`, { mapId: map.id, props: [] });
+  const art = MAP_ART_BY_ID[map.id];
+  await writeJson(
+    `collision/${map.id}.json`,
+    art?.collision ?? {
+      mapId: map.id,
+      tileSize: 32,
+      walkable: buildCollisionGrid(map),
+    },
+  );
+  await writeJson(`props/${map.id}.json`, art?.props ?? buildPropLayer(map.id));
 }
 
 console.log(`Wrote ${mapsPath} (${MAPS.length} maps)`);
