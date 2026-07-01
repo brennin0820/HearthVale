@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics><style>@keyframes pulseGlow{0%,100%{box-shadow:0 0 6px currentColor}50%{box-shadow:0 0 16px currentColor}}</style></helmet>
+<div style="position:relative;width:{{ size }}px;height:{{ size }}px;flex:none;background:{{ slotBg }};box-shadow:{{ slotRing }};border-radius:{{ slotRadius }};backdrop-filter:{{ slotBlur }};display:flex;align-items:center;justify-content:center;color:{{ glowColor }};transition:transform .15s ease;box-sizing:border-box" style-hover="transform:scale(1.06)">
+  <sc-if value="{{ isBlade }}" hint-placeholder-val="{{ false }}">
+    <div style="position:relative;width:34px;height:34px">
+      <div style="position:absolute;left:50%;top:1px;width:5px;height:22px;background:linear-gradient(180deg,#f1f2f4,#9aa0a6);transform:translateX(-50%);border-radius:2px"></div>
+      <div style="position:absolute;left:50%;top:20px;width:18px;height:4px;background:{{ tint }};transform:translateX(-50%);border-radius:2px"></div>
+      <div style="position:absolute;left:50%;top:23px;width:4px;height:9px;background:#5c4326;transform:translateX(-50%);border-radius:1px"></div>
+    </div>
+  </sc-if>
+  <sc-if value="{{ isGuard }}" hint-placeholder-val="{{ false }}">
+    <div style="width:26px;height:30px;clip-path:polygon(50% 0%,100% 22%,100% 62%,50% 100%,0% 62%,0% 22%);background:linear-gradient(180deg,#c3c9d1,#6b7280);display:flex;align-items:center;justify-content:center">
+      <div style="width:8px;height:8px;border-radius:50%;background:{{ tint }}"></div>
+    </div>
+  </sc-if>
+  <sc-if value="{{ isGem }}" hint-placeholder-val="{{ false }}">
+    <div style="position:relative;width:22px;height:22px">
+      <div style="position:absolute;inset:0;background:linear-gradient(135deg,{{ tint }},rgba(0,0,0,.5));transform:rotate(45deg);border-radius:3px"></div>
+      <div style="position:absolute;left:5px;top:5px;width:7px;height:7px;background:rgba(255,255,255,.55);transform:rotate(45deg);border-radius:2px"></div>
+    </div>
+  </sc-if>
+  <sc-if value="{{ isScroll }}" hint-placeholder-val="{{ false }}">
+    <div style="position:relative;width:28px;height:22px;background:#d8c9a3;border-radius:3px">
+      <div style="position:absolute;left:4px;top:6px;width:20px;height:2px;background:#8a7752"></div>
+      <div style="position:absolute;left:4px;top:11px;width:20px;height:2px;background:#8a7752"></div>
+      <div style="position:absolute;left:4px;top:16px;width:13px;height:2px;background:#8a7752"></div>
+    </div>
+  </sc-if>
+  <sc-if value="{{ isPotion }}" hint-placeholder-val="{{ false }}">
+    <div style="position:relative;width:20px;height:28px">
+      <div style="position:absolute;left:50%;top:0;width:10px;height:5px;background:#c9a876;transform:translateX(-50%);border-radius:2px 2px 0 0"></div>
+      <div style="position:absolute;left:50%;top:5px;width:20px;height:23px;background:{{ tint }};transform:translateX(-50%);border-radius:6px 6px 10px 10px;overflow:hidden">
+        <div style="position:absolute;left:3px;top:2px;width:3px;height:17px;background:rgba(255,255,255,.35);border-radius:2px"></div>
+      </div>
+    </div>
+  </sc-if>
+  <sc-if value="{{ isStance }}" hint-placeholder-val="{{ false }}">
+    <div style="width:28px;height:28px;border-radius:50%;border:3px solid {{ tint }};display:flex;align-items:center;justify-content:center;{{ stanceAnim }}">
+      <div style="width:7px;height:7px;border-radius:50%;background:{{ tint }}"></div>
+    </div>
+  </sc-if>
+  <sc-if value="{{ hasQty }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;right:3px;bottom:2px;font:600 12px/1 ui-monospace,Menlo,monospace;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.9)">{{ qty }}</div>
+  </sc-if>
+  <sc-if value="{{ hasCd }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:0;right:0;bottom:0;height:{{ cdHeightPct }};background:rgba(0,0,0,.62);border-radius:0 0 5px 5px;display:flex;align-items:center;justify-content:center;overflow:hidden">
+      <span style="font:700 13px/1 ui-monospace,Menlo,monospace;color:#fff">{{ cdLabel }}</span>
+    </div>
+  </sc-if>
+  <sc-if value="{{ hasKeybind }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:3px;top:2px;font:600 11px/1 ui-monospace,Menlo,monospace;color:rgba(255,255,255,.75)">{{ keybind }}</div>
+  </sc-if>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:64,&quot;height&quot;:64},&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;glass&quot;,&quot;options&quot;:[&quot;iron&quot;,&quot;gold&quot;,&quot;glass&quot;],&quot;tsType&quot;:&quot;string&quot;},&quot;shape&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;empty&quot;,&quot;options&quot;:[&quot;empty&quot;,&quot;blade&quot;,&quot;guard&quot;,&quot;gem&quot;,&quot;scroll&quot;,&quot;potion&quot;,&quot;stance&quot;],&quot;tsType&quot;:&quot;string&quot;},&quot;tint&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#9aa0a6&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;size&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:60,&quot;min&quot;:40,&quot;max&quot;:90,&quot;tsType&quot;:&quot;number&quot;},&quot;qty&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:0,&quot;min&quot;:0,&quot;max&quot;:99,&quot;tsType&quot;:&quot;number&quot;},&quot;rare&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;},&quot;cdPct&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:0,&quot;min&quot;:0,&quot;max&quot;:1,&quot;step&quot;:0.05,&quot;tsType&quot;:&quot;number&quot;},&quot;cdLabel&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;keybind&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;active&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const theme = this.props.theme ?? 'glass';
+    const shape = this.props.shape ?? 'empty';
+    const tint = this.props.tint ?? '#9aa0a6';
+    const size = Number(this.props.size ?? 60) || 60;
+    const qty = Number(this.props.qty ?? 0) || 0;
+    const rare = !!this.props.rare;
+    const cdPct = Number(this.props.cdPct ?? 0) || 0;
+    const cdLabel = this.props.cdLabel ?? '';
+    const keybind = this.props.keybind ?? '';
+    const active = !!this.props.active;
+
+    let bg, ring, radius, blur, glow;
+    if (theme === 'iron') {
+      bg = 'oklch(0.22 0.02 55 / 0.88)';
+      ring = rare
+        ? '0 0 0 2px oklch(0.15 0.015 55), 0 0 0 4px oklch(0.55 0.13 300), inset 0 1px 1px rgba(255,255,255,.08)'
+        : '0 0 0 2px oklch(0.15 0.015 55), 0 0 0 4px oklch(0.42 0.03 65), inset 0 1px 1px rgba(255,255,255,.08)';
+      radius = '5px'; blur = 'none'; glow = 'oklch(0.64 0.09 80)';
+    } else if (theme === 'gold') {
+      bg = 'oklch(0.19 0.03 25 / 0.88)';
+      ring = rare
+        ? '0 0 0 2px oklch(0.6 0.17 300), 0 0 0 3.5px oklch(0.4 0.08 30)'
+        : '0 0 0 1.5px oklch(0.78 0.14 85), 0 0 0 3.5px oklch(0.4 0.06 30)';
+      radius = '7px'; blur = 'none'; glow = 'oklch(0.82 0.15 85)';
+    } else {
+      bg = 'oklch(0.27 0.025 260 / 0.55)';
+      ring = rare
+        ? '0 0 0 1.5px oklch(0.62 0.11 300 / .8), inset 0 1px 0 rgba(255,255,255,.06)'
+        : '0 0 0 1px oklch(0.7 0.05 85 / .4), inset 0 1px 0 rgba(255,255,255,.06)';
+      radius = '12px'; blur = 'blur(6px)'; glow = 'oklch(0.76 0.07 85)';
+    }
+
+    return {
+      size, tint, keybind, cdLabel,
+      isBlade: shape === 'blade', isGuard: shape === 'guard', isGem: shape === 'gem',
+      isScroll: shape === 'scroll', isPotion: shape === 'potion', isStance: shape === 'stance',
+      hasQty: qty > 0, qty,
+      hasCd: cdPct > 0, cdHeightPct: Math.round(cdPct * 100) + '%',
+      hasKeybind: !!keybind,
+      slotBg: bg, slotRing: ring, slotRadius: radius, slotBlur: blur, glowColor: glow,
+      stanceAnim: active ? 'animation:pulseGlow 2.4s ease-in-out infinite;' : ''
+    };
+  }
+}
+</script>
+</body>
+</html>

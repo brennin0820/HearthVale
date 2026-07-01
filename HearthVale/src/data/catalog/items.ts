@@ -1,0 +1,13 @@
+import type { ItemDefinition } from './types.js';
+
+export const ITEMS: ItemDefinition[] = [
+  { id: 'clover_herb', displayName: 'Clover Herb', kind: 'material', stackMax: 99, sellPrice: 8 },
+  { id: 'spore_cap', displayName: 'Spore Cap', kind: 'material', stackMax: 99, sellPrice: 12 },
+  { id: 'crystal_shard', displayName: 'Crystal Shard', kind: 'material', stackMax: 99, sellPrice: 25 },
+  { id: 'moonwell_sigil', displayName: 'Moonwell Sigil', kind: 'quest', stackMax: 1, sellPrice: 0 },
+  { id: 'millwick_letter', displayName: 'Millwick Letter', kind: 'quest', stackMax: 1, sellPrice: 0 },
+  { id: 'healing_brew', displayName: 'Healing Brew', kind: 'consumable', stackMax: 20, sellPrice: 15 },
+  { id: 'wooden_blade', displayName: 'Wooden Blade', kind: 'equipment', stackMax: 1, sellPrice: 40 },
+];
+
+export const ITEM_BY_ID = new Map(ITEMS.map((i) => [i.id, i]));

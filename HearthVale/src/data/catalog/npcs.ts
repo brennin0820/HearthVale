@@ -1,0 +1,21 @@
+import type { NpcDefinition } from './types.js';
+
+export const NPCS: NpcDefinition[] = [
+  { id: 'elder', displayName: 'Elder Gemhorn', role: 'quest' },
+  { id: 'merchant_silas', displayName: 'Merchant Silas', role: 'merchant' },
+  { id: 'hearth_courier', displayName: 'Hearth Courier', role: 'warp' },
+  { id: 'innkeeper_mara', displayName: 'Innkeeper Mara', role: 'flavor' },
+  { id: 'trainer_bram', displayName: 'Trainer Bram', role: 'trainer' },
+  { id: 'herbalist_lyra', displayName: 'Herbalist Lyra', role: 'merchant' },
+  { id: 'scout_pip', displayName: 'Scout Pip', role: 'quest' },
+  { id: 'mycologist_fern', displayName: 'Mycologist Fern', role: 'quest' },
+  { id: 'ranger_elowen', displayName: 'Ranger Elowen', role: 'quest' },
+  { id: 'miller_tobin', displayName: 'Miller Tobin', role: 'flavor' },
+  { id: 'caravan_guard', displayName: 'Caravan Guard', role: 'flavor' },
+  { id: 'mayor_holt', displayName: 'Mayor Holt', role: 'quest' },
+  { id: 'merchant_elsie', displayName: 'Merchant Elsie', role: 'merchant' },
+  { id: 'prospector_garrick', displayName: 'Prospector Garrick', role: 'quest' },
+  { id: 'watcher_seren', displayName: 'Watcher Seren', role: 'quest' },
+];
+
+export const NPC_BY_ID = new Map(NPCS.map((n) => [n.id, n]));

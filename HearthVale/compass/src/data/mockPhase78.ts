@@ -1,0 +1,408 @@
+import type { RegistryEntry } from '../types/snapshot'
+import type {
+  AuditItem,
+  Blocker,
+  Decision,
+  Task,
+} from '../types/project'
+import type {
+  CompassReport,
+  CompassSettingsProfile,
+  DoneCriterionStatus,
+  LoopSignal,
+  MemoryFeedItem,
+} from '../types/snapshot'
+
+export const mockRegistry: RegistryEntry[] = [
+  {
+    path: 'e:\\NightRaven\\gods-eye-1',
+    label: "God's Eye (framework)",
+    role: 'memory + rules',
+    available: true,
+  },
+  {
+    path: 'e:\\NightRaven\\gods-eye-1\\apps\\compass',
+    label: 'NightRaven Compass',
+    role: 'active build',
+    available: true,
+  },
+  {
+    path: 'e:\\NightRaven\\nightraven-core',
+    label: 'NightRaven Core',
+    role: 'orchestration',
+    available: false,
+  },
+]
+
+export const mockSettingsProfile: CompassSettingsProfile = {
+  dataMode: 'local',
+  autoRefresh: false,
+  showPhaseBadges: true,
+  projectRootHint: 'e:\\NightRaven\\gods-eye-1',
+}
+
+export const mockExtraTasks: Task[] = [
+  {
+    id: 'task-ge-handoff-wire',
+    projectId: 'project-nr-compass',
+    phaseId: 'phase-1',
+    title: 'Wire handoff Recent sessions into memory feed',
+    description: 'Parse docs/14 for append-only session bullets when local mode ships.',
+    why: 'Memory feed should compound session outcomes without cloud sync.',
+    type: 'documentation',
+    priority: 'P1',
+    lane: 'next',
+    state: 'think',
+    owner: 'gods_eye',
+    dependencies: ['task-dashboard'],
+    acceptanceCriteria: ['Handoff parser stub exists', 'Mock feed shows session kind'],
+    allowedAreas: ['src/data', 'src/components/memory'],
+    notAllowedChanges: ['Do not add cloud sync', 'Do not auto-edit handoff'],
+    auditRequired: false,
+  },
+  {
+    id: 'task-nr-nav-routes',
+    projectId: 'project-nr-compass',
+    phaseId: 'phase-2',
+    title: 'Register all sidebar routes',
+    description: 'Central routeRegistry maps NavItemId to page components.',
+    why: 'Avoid placeholder sprawl as phases land in parallel.',
+    type: 'frontend',
+    priority: 'P0',
+    lane: 'now',
+    state: 'build',
+    owner: 'nightraven_builder',
+    dependencies: ['task-app-shell'],
+    acceptanceCriteria: ['Every nav id resolves', 'App uses routeRegistry'],
+    allowedAreas: ['src/app', 'src/components'],
+    notAllowedChanges: ['Do not add react-router yet'],
+    auditRequired: true,
+  },
+  {
+    id: 'task-research-storage',
+    projectId: 'project-nr-compass',
+    phaseId: 'phase-2',
+    title: 'Compare local JSON vs SQLite for Phase 3',
+    description: 'Research persistence options before wiring real project paths.',
+    why: 'Storage choice blocks progress page artifact counts.',
+    type: 'research',
+    priority: 'P2',
+    lane: 'next',
+    state: 'research',
+    owner: 'research',
+    dependencies: [],
+    acceptanceCriteria: ['Decision memo drafted', 'Tradeoffs table exists'],
+    allowedAreas: ['docs'],
+    notAllowedChanges: ['Do not implement storage yet'],
+    auditRequired: false,
+  },
+  {
+    id: 'task-audit-phase-1',
+    projectId: 'project-nr-compass',
+    phaseId: 'phase-1',
+    title: 'Audit Phase 1 dashboard acceptance',
+    description: 'Verify scope lock, mock-only constraints, and card completeness.',
+    why: 'Phase 2 must not start until Phase 1 passes auditor gate.',
+    type: 'audit',
+    priority: 'P0',
+    lane: 'now',
+    state: 'audit',
+    owner: 'nightraven_auditor',
+    dependencies: ['task-dashboard'],
+    acceptanceCriteria: ['Build report reviewed', 'Scope warnings cleared'],
+    allowedAreas: ['docs', 'src/components/dashboard'],
+    notAllowedChanges: ['Do not expand MVP scope during audit'],
+    auditRequired: true,
+  },
+]
+
+export const mockExtraDecisions: Decision[] = [
+  {
+    id: 'decision-router',
+    projectId: 'project-nr-compass',
+    question: 'Add react-router now or keep view-state routing for MVP?',
+    options: ['View-state only', 'react-router v7', 'Defer until Phase 4'],
+    recommendation: 'View-state only until all pages exist.',
+    status: 'open',
+    impact: 'medium',
+    unlocksTaskIds: ['task-nr-nav-routes'],
+  },
+  {
+    id: 'decision-storage-reopen',
+    projectId: 'project-nr-compass',
+    question: 'Re-open storage decision for early SQLite?',
+    options: ['Keep mock data', 'SQLite now', 'Local JSON first'],
+    recommendation: 'Keep mock data — reopened after audit stall.',
+    status: 'needs_research',
+    impact: 'high',
+    unlocksTaskIds: ['task-research-storage'],
+  },
+]
+
+export const mockExtraBlockers: Blocker[] = [
+  {
+    id: 'blocker-audit-loop',
+    projectId: 'project-nr-compass',
+    title: 'Phase 1 audit cycling on scope wording',
+    reason: 'Auditor and builder disagree on whether roadmap nav counts as future-phase work.',
+    severity: 'high',
+    blockedTaskIds: ['task-roadmap', 'task-nr-nav-routes'],
+    owner: 'nightraven_auditor',
+    resolutionNeeded: 'User confirms Phase 2 nav placeholders are allowed in Phase 1 shell.',
+    status: 'open',
+  },
+]
+
+export const mockExtraAudits: AuditItem[] = [
+  {
+    id: 'audit-nav-scope',
+    projectId: 'project-nr-compass',
+    taskId: 'task-nr-nav-routes',
+    status: 'scope_creep',
+    findings: ['Sidebar lists Phase 2 pages before Phase 1 audit pass'],
+    requiredFixes: ['Document placeholder policy in BUILD_REPORT'],
+    canMoveForward: false,
+  },
+  {
+    id: 'audit-research-storage',
+    projectId: 'project-nr-compass',
+    taskId: 'task-research-storage',
+    status: 'pending',
+    findings: [],
+    requiredFixes: [],
+    canMoveForward: true,
+  },
+]
+
+export const mockMemoryFeed: MemoryFeedItem[] = [
+  {
+    id: 'mem-session-1',
+    date: '2026-06-11',
+    kind: 'session',
+    title: 'Phase 1 dashboard + parallel workers',
+    source: 'docs/14_SESSION_HANDOFF.md',
+    text: 'Shipped app shell, dashboard cards, mock snapshot. Parallel workers building Phase 2–8 nav pages with mock data only.',
+  },
+  {
+    id: 'mem-task-nav',
+    date: '2026-06-11',
+    kind: 'task',
+    title: 'Register all sidebar routes',
+    source: 'task-nr-nav-routes',
+    text: 'NR builder queued routeRegistry wiring — every NavItemId must resolve before Phase 2 audit.',
+  },
+  {
+    id: 'mem-decision-storage',
+    date: '2026-06-10',
+    kind: 'decision',
+    title: 'Storage: mock data first',
+    source: 'decision-storage',
+    text: 'Decided mock data first. Reopened briefly when research task asked about SQLite — superseded again pending Phase 3.',
+  },
+  {
+    id: 'mem-audit-phase1',
+    date: '2026-06-11',
+    kind: 'audit',
+    title: 'Phase 1 dashboard audit pending',
+    source: 'audit-phase-1-dashboard',
+    text: 'Auditor hold: acceptance criteria met visually but scope creep check flags future-phase sidebar labels.',
+  },
+  {
+    id: 'mem-blocker-audit',
+    date: '2026-06-11',
+    kind: 'blocker',
+    title: 'Audit loop on nav placeholders',
+    source: 'blocker-audit-loop',
+    text: 'High severity — roadmap and route work blocked until placeholder policy is documented.',
+  },
+  {
+    id: 'mem-task-ge',
+    date: '2026-06-10',
+    kind: 'task',
+    title: 'Handoff memory feed wire',
+    source: 'task-ge-handoff-wire',
+    text: "GE task: append-only handoff parser stub — memory feed should show tasks, decisions, audits, blockers.",
+  },
+  {
+    id: 'mem-decision-router',
+    date: '2026-06-11',
+    kind: 'decision',
+    title: 'Router vs view-state',
+    source: 'decision-router',
+    text: 'Open decision — react-router deferred; view-state routing sufficient for mock MVP.',
+  },
+  {
+    id: 'mem-session-2',
+    date: '2026-06-09',
+    kind: 'session',
+    title: 'Scope foundation locked',
+    source: 'docs/14_SESSION_HANDOFF.md',
+    text: 'Phase 0 complete — MVP boundaries, Not Now list, GE/NR roles documented. Scope locked before code.',
+  },
+]
+
+export const mockLoopSignals: LoopSignal[] = [
+  {
+    id: 'loop-reopen-storage',
+    category: 'reopened_decision',
+    title: 'Storage decision reopened twice',
+    detail: 'Mock vs JSON vs SQLite has been revisited after audit and research tasks.',
+    severity: 'medium',
+    count: 3,
+    lastSeen: '2026-06-11',
+    evidence: [
+      'decision-storage decided 2026-06-09',
+      'decision-storage-reopen needs_research 2026-06-11',
+      'task-research-storage still open',
+    ],
+  },
+  {
+    id: 'loop-future-roadmap',
+    category: 'future_phase_work',
+    title: 'Phase 2 pages built during Phase 1',
+    detail: 'Roadmap, priority board, and queue pages exist while Phase 1 audit is still pending.',
+    severity: 'high',
+    count: 4,
+    lastSeen: '2026-06-11',
+    evidence: [
+      'task-roadmap in phase-2 while current phase is phase-1',
+      'Sidebar shows Phase 2 labels',
+      'audit-nav-scope status scope_creep',
+    ],
+  },
+  {
+    id: 'loop-plan-audit',
+    category: 'planning_audit_loop',
+    title: 'Planning ↔ audit without ship',
+    detail: 'Build reports and audit findings alternate without shipping progress moving.',
+    severity: 'high',
+    count: 5,
+    lastSeen: '2026-06-11',
+    evidence: [
+      'audit-phase-1-dashboard pending',
+      'blocker-audit-loop open',
+      'shippingProgress at 0%',
+    ],
+  },
+  {
+    id: 'loop-shipping-stall',
+    category: 'shipping_stall',
+    title: 'Zero shipping progress for 3 sessions',
+    detail: 'Build and audit activity continue but no deployable artifact marked shipped.',
+    severity: 'medium',
+    count: 3,
+    lastSeen: '2026-06-11',
+    evidence: [
+      'project status building since Phase 1 start',
+      'no phase marked shipped',
+      'done criteria partial on Static Dashboard',
+    ],
+  },
+]
+
+export const mockDoneCriteria: DoneCriterionStatus[] = [
+  {
+    id: 'dc-p0-1',
+    phaseId: 'phase-0',
+    phaseName: 'Scope Foundation',
+    criterion: 'Project purpose is clear',
+    status: 'met',
+  },
+  {
+    id: 'dc-p0-2',
+    phaseId: 'phase-0',
+    phaseName: 'Scope Foundation',
+    criterion: 'Out-of-scope list exists',
+    status: 'met',
+  },
+  {
+    id: 'dc-p1-1',
+    phaseId: 'phase-1',
+    phaseName: 'Static Dashboard',
+    criterion: 'Dashboard opens',
+    status: 'met',
+  },
+  {
+    id: 'dc-p1-2',
+    phaseId: 'phase-1',
+    phaseName: 'Static Dashboard',
+    criterion: 'Next best action is visible',
+    status: 'met',
+  },
+  {
+    id: 'dc-p1-3',
+    phaseId: 'phase-1',
+    phaseName: 'Static Dashboard',
+    criterion: 'Blockers are visible',
+    status: 'partial',
+    note: 'Cards exist; audit loop blocker added in mock Phase 7 data.',
+  },
+  {
+    id: 'dc-p1-4',
+    phaseId: 'phase-1',
+    phaseName: 'Static Dashboard',
+    criterion: 'Phase 1 passes audit',
+    status: 'open',
+    note: 'Waiting on scope placeholder policy.',
+  },
+  {
+    id: 'dc-p2-1',
+    phaseId: 'phase-2',
+    phaseName: 'Roadmap and Priority Board',
+    criterion: 'Roadmap exists',
+    status: 'partial',
+    note: 'Page wired; phase gate not cleared.',
+  },
+  {
+    id: 'dc-p2-2',
+    phaseId: 'phase-2',
+    phaseName: 'Roadmap and Priority Board',
+    criterion: 'Priority lanes exist',
+    status: 'open',
+  },
+]
+
+export const mockReports: CompassReport[] = [
+  {
+    id: 'report-build-p1',
+    title: 'Phase 1 Build Report',
+    kind: 'build',
+    generatedAt: '2026-06-11T14:30:00.000Z',
+    excerpt:
+      'App shell, dashboard cards, mock snapshot, and sidebar navigation landed. Mock-only — no cloud or AI.',
+    artifactPath: 'apps/compass/docs/BUILD_REPORT_PHASE1.md',
+  },
+  {
+    id: 'report-audit-p1',
+    title: 'Phase 1 Audit — scope review',
+    kind: 'audit',
+    generatedAt: '2026-06-11T16:00:00.000Z',
+    excerpt:
+      'Hold recommended: future-phase sidebar entries present before Phase 1 sign-off. Scope warnings on nav routes task.',
+  },
+  {
+    id: 'report-handoff',
+    title: 'Session handoff digest',
+    kind: 'handoff',
+    generatedAt: '2026-06-11T18:00:00.000Z',
+    excerpt:
+      'Parallel workers 1–4 building Phase 2–8 pages. routeRegistry centralizes view routing. Touch 3 deferred to session-stop.',
+    artifactPath: 'docs/14_SESSION_HANDOFF.md',
+  },
+  {
+    id: 'report-learning-nav',
+    title: 'Learning — routeRegistry pattern',
+    kind: 'learning',
+    generatedAt: '2026-06-11T12:00:00.000Z',
+    excerpt:
+      'Single registry object keyed by NavItemId keeps navigation.ts and App.tsx in sync; exhaustive switch not needed.',
+  },
+  {
+    id: 'report-scope-map',
+    title: 'Scope monitor snapshot',
+    kind: 'scope',
+    generatedAt: '2026-06-11T15:00:00.000Z',
+    excerpt:
+      'Health score 85%. Two tasks warn on future-phase coupling. Not Now guardrails clean.',
+  },
+]

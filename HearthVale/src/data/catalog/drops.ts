@@ -1,0 +1,27 @@
+import type { DropTableDefinition } from './types.js';
+
+/** Per-monster drop tables — validated against item catalog. */
+export const DROP_TABLES: DropTableDefinition[] = [
+  {
+    id: 'drops_jellybud',
+    monsterId: 'jellybud',
+    entries: [{ itemId: 'clover_herb', weight: 80, minCount: 1, maxCount: 2 }],
+  },
+  {
+    id: 'drops_puffshroom',
+    monsterId: 'puffshroom',
+    entries: [{ itemId: 'spore_cap', weight: 70, minCount: 1, maxCount: 3 }],
+  },
+  {
+    id: 'drops_shardling',
+    monsterId: 'shardling',
+    entries: [{ itemId: 'crystal_shard', weight: 60, minCount: 1, maxCount: 2 }],
+  },
+  {
+    id: 'drops_moonwell_guardian',
+    monsterId: 'moonwell_guardian',
+    entries: [{ itemId: 'moonwell_sigil', weight: 100, minCount: 1, maxCount: 1 }],
+  },
+];
+
+export const DROP_BY_MONSTER_ID = new Map(DROP_TABLES.map((d) => [d.monsterId, d]));

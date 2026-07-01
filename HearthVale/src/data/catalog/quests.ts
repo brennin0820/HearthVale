@@ -1,0 +1,26 @@
+import type { QuestDefinition } from './types.js';
+
+export const QUESTS: QuestDefinition[] = [
+  {
+    id: 'quest_millwick_letter',
+    displayName: 'Letter for Millwick',
+    giverNpcId: 'elder',
+    requiredLevel: 8,
+    unlocksWarpId: 'warp_millwick',
+  },
+  {
+    id: 'quest_moonwell_sigil',
+    displayName: 'Moonwell Sigil',
+    giverNpcId: 'watcher_seren',
+    requiredLevel: 10,
+    unlocksWarpId: 'warp_moonwell',
+  },
+  {
+    id: 'quest_first_hunt',
+    displayName: 'First Hunt',
+    giverNpcId: 'trainer_bram',
+    requiredLevel: 1,
+  },
+];
+
+export const QUEST_BY_ID = new Map(QUESTS.map((q) => [q.id, q]));

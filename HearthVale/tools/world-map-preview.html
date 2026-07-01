@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>HearthVale World Map Preview</title>
+  <style>
+    body { font-family: Georgia, serif; background: #1a1520; color: #e8dcc8; margin: 24px; }
+    h1 { color: #f0e6d2; }
+    #canvas { background: #121018; border: 1px solid #c9a86c; display: block; margin-top: 16px; cursor: crosshair; }
+    #info { margin-top: 12px; font-size: 14px; min-height: 80px; }
+    .legend { display: flex; gap: 16px; margin-top: 8px; font-size: 12px; }
+    .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; margin-right: 6px; }
+  </style>
+</head>
+<body>
+  <h1>Hearthlight Vale — World Map Preview</h1>
+  <p>Uranus / World lane. Loads <code>../data/maps.json</code>. Click a pin for map details.</p>
+  <div class="legend">
+    <span><span class="dot" style="background:#c9a86c"></span>town</span>
+    <span><span class="dot" style="background:#8fbc8f"></span>field</span>
+    <span><span class="dot" style="background:#7a6b8f"></span>dungeon</span>
+  </div>
+  <canvas id="canvas" width="920" height="340"></canvas>
+  <div id="info">Loading…</div>
+  <script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const info = document.getElementById('info');
+    let pins = [];
+
+    const kindColor = { town: '#c9a86c', field: '#8fbc8f', dungeon: '#7a6b8f', instance: '#8f7a6b' };
+
+    function draw(maps) {
+      pins = maps.filter((m) => m.showOnWorldMap);
+      ctx.fillStyle = '#2a2438';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.strokeStyle = '#c9a86c55';
+      ctx.strokeRect(40, 20, 860, 300);
+
+      for (const map of pins) {
+        const x = map.worldMapPosition.x;
+        const y = map.worldMapPosition.y;
+        ctx.beginPath();
+        ctx.arc(x, y, 8, 0, Math.PI * 2);
+        ctx.fillStyle = kindColor[map.kind] || '#888';
+        ctx.fill();
+        ctx.fillStyle = '#e8dcc8';
+        ctx.font = '11px sans-serif';
+        ctx.fillText(map.displayName, x + 12, y + 4);
+      }
+      info.textContent = `${pins.length} pins · click a pin for details`;
+    }
+
+    canvas.addEventListener('click', (ev) => {
+      const rect = canvas.getBoundingClientRect();
+      const x = (ev.clientX - rect.left) * (canvas.width / rect.width);
+      const y = (ev.clientY - rect.top) * (canvas.height / rect.height);
+      let hit = null;
+      for (const map of pins) {
+        const dx = x - map.worldMapPosition.x;
+        const dy = y - map.worldMapPosition.y;
+        if (Math.hypot(dx, dy) <= 12) hit = map;
+      }
+      if (!hit) return;
+      info.innerHTML = `<strong>${hit.displayName}</strong> (<code>${hit.id}</code>)<br/>
+        Kind: ${hit.kind} · Lv ${hit.levelRange.min}–${hit.levelRange.max}<br/>
+        Biome: ${hit.biome} · Music: ${hit.musicKey}<br/>
+        Portals: ${hit.portals.length} · NPCs: ${hit.npcs.length}`;
+    });
+
+    fetch('../data/maps.json')
+      .then((r) => r.json())
+      .then(draw)
+      .catch((err) => { info.textContent = `Failed: ${err.message}`; });
+  </script>
+</body>
+</html>

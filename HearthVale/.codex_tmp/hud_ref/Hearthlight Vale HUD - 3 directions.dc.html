@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&family=EB+Garamond:ital,wght@0,500;1,500&family=Jost:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,500;1,500&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#0c0c0e;font-family:system-ui,sans-serif}
+.dv-turn{padding:40px 44px 60px;scroll-margin-top:16px}
+.dv-thd{display:flex;align-items:baseline;gap:10px;margin:0 0 22px}
+.dv-tid{font:600 10px ui-monospace,Menlo,monospace;padding:3px 7px;background:#fff;color:#0c0c0e;border-radius:4px;text-decoration:none}
+.dv-tname{font:600 14px/1.2 system-ui,sans-serif;color:#f2f0ec}
+.dv-opts{display:flex;flex-wrap:wrap;gap:40px;align-items:flex-start}
+.dv-opt{flex:none;display:flex;flex-direction:column;gap:10px;scroll-margin-top:16px}
+.dv-oid{font:600 11px ui-monospace,Menlo,monospace;padding:3px 8px;background:rgba(255,255,255,.12);color:#f2f0ec;border-radius:5px;text-decoration:none}
+.dv-olabel{display:flex;align-items:baseline;gap:8px;font:400 12px/1.3 system-ui,sans-serif;color:rgba(242,240,236,.6)}
+.dv-card{background:#000;border-radius:14px;box-shadow:0 20px 60px rgba(0,0,0,.6);overflow:hidden}
+.dv-opt:target .dv-oid{background:#c9a227;color:#1a1a1a}
+.dv-next{margin:28px 0 0;font:12px/1.6 system-ui,sans-serif;color:rgba(242,240,236,.5)}
+.dv-next a{color:#e3c77d}
+@keyframes pulseSoft{0%,100%{opacity:.55;transform:translate(-50%,-50%) scale(1)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.15)}}
+@keyframes pulseGlow{0%,100%{box-shadow:0 0 8px currentColor}50%{box-shadow:0 0 20px currentColor}}
+</style>
+</helmet>
+<section class="dv-turn" id="t1">
+<div class="dv-thd"><a class="dv-tid" href="#t1">1</a><span class="dv-tname">HearthVale HUD — 3 mood directions, same layout (21:9, 3440×1440)</span></div>
+<div class="dv-opts">
+
+<div class="dv-opt" id="1a">
+<div class="dv-olabel"><a class="dv-oid" href="#1a">1a</a> Ironbound — gritty &amp; realistic</div>
+<div class="dv-card" style="width:3440px;height:1440px">
+<div style="position:relative;width:3440px;height:1440px;overflow:hidden;background:#161310;font-family:Spectral,serif">
+
+<div style="position:absolute;inset:0;background:repeating-linear-gradient(45deg,rgba(58,48,38,.9) 0 18px,rgba(40,33,26,.9) 18px 36px)"></div>
+<div style="position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 36%,rgba(0,0,0,.62) 100%)"></div>
+<div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font:600 22px/1.5 ui-monospace,Menlo,monospace;color:rgba(255,255,255,.26);letter-spacing:2px;text-align:center;white-space:nowrap">GAMEPLAY VIEWPORT — DROP SCREENSHOT / CAPTURE HERE</div>
+
+<div style="position:absolute;left:56px;top:56px;width:520px;padding:16px;box-sizing:border-box;background:oklch(0.22 0.02 55 / 0.90);box-shadow:0 0 0 2px oklch(0.15 0.015 55),0 0 0 4px oklch(0.42 0.03 65),0 10px 26px rgba(0,0,0,.5);border-radius:8px;display:flex;gap:14px">
+<div style="position:absolute;left:6px;top:6px;width:6px;height:6px;border-radius:50%;background:oklch(0.5 0.03 70);box-shadow:inset 0 1px 1px rgba(0,0,0,.6)"></div>
+<div style="position:absolute;right:6px;top:6px;width:6px;height:6px;border-radius:50%;background:oklch(0.5 0.03 70);box-shadow:inset 0 1px 1px rgba(0,0,0,.6)"></div>
+<div style="position:absolute;left:6px;bottom:6px;width:6px;height:6px;border-radius:50%;background:oklch(0.5 0.03 70);box-shadow:inset 0 1px 1px rgba(0,0,0,.6)"></div>
+<div style="position:absolute;right:6px;bottom:6px;width:6px;height:6px;border-radius:50%;background:oklch(0.5 0.03 70);box-shadow:inset 0 1px 1px rgba(0,0,0,.6)"></div>
+<div style="position:relative;width:108px;height:108px;flex:none">
+<div style="width:108px;height:108px;border-radius:10px;background:linear-gradient(160deg,#4a4038,#241d18);box-shadow:0 0 0 2px oklch(0.15 0.015 55),0 0 0 4px oklch(0.42 0.03 65);position:relative;overflow:hidden">
+<div style="position:absolute;left:32px;top:20px;width:44px;height:44px;border-radius:50%;background:oklch(0.55 0.02 60)"></div>
+<div style="position:absolute;left:24px;bottom:0;width:60px;height:38px;background:oklch(0.42 0.02 60);border-radius:30px 30px 0 0"></div>
+</div>
+<div style="position:absolute;right:-8px;bottom:-8px;width:34px;height:34px;border-radius:50%;background:oklch(0.22 0.02 55);box-shadow:0 0 0 2px oklch(0.64 0.09 80);display:flex;align-items:center;justify-content:center;font:700 15px Cinzel,serif;color:oklch(0.93 0.015 70)">7</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:6px;min-width:0">
+<div style="font:600 24px Cinzel,serif;color:oklch(0.93 0.015 70);letter-spacing:.4px">{{ player.name }}</div>
+<div style="font:italic 400 13px Spectral,serif;color:oklch(0.68 0.02 65);margin-bottom:2px">{{ player.title }}</div>
+<div style="position:relative;width:100%;height:22px;background:oklch(0.18 0.02 25/.7);border-radius:4px;box-shadow:0 0 0 1px oklch(0.15 0.015 55)">
+<div style="width:{{ player.hpPct }};height:100%;background:linear-gradient(180deg,oklch(0.58 0.16 25),oklch(0.4 0.14 25));border-radius:3px"></div>
+<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font:600 11px ui-monospace,Menlo,monospace;color:rgba(255,255,255,.9);text-shadow:0 1px 2px rgba(0,0,0,.8)">{{ player.hpCur }} / {{ player.hpMax }}</div>
+</div>
+<div style="position:relative;width:100%;height:16px;background:oklch(0.16 0.02 235/.7);border-radius:3px;box-shadow:0 0 0 1px oklch(0.15 0.015 55)">
+<div style="width:{{ player.mpPct }};height:100%;background:linear-gradient(180deg,oklch(0.55 0.09 235),oklch(0.36 0.08 235));border-radius:3px"></div>
+<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font:600 10px ui-monospace,Menlo,monospace;color:rgba(255,255,255,.85);text-shadow:0 1px 2px rgba(0,0,0,.8)">{{ player.mpCur }} / {{ player.mpMax }}</div>
+</div>
+<div style="position:relative;width:100%;height:11px;background:oklch(0.16 0.02 120/.7);border-radius:3px;box-shadow:0 0 0 1px oklch(0.15 0.015 55)">
+<div style="width:{{ player.spPct }};height:100%;background:linear-gradient(180deg,oklch(0.6 0.11 120),oklch(0.42 0.09 120));border-radius:3px"></div>
+</div>
+</div>
+</div>
+
+<div style="position:absolute;left:56px;top:220px;width:520px;display:flex;gap:8px;flex-wrap:wrap">
+<sc-for list="{{ buffs }}" as="b" hint-placeholder-count="4">
+<div style="display:flex;flex-direction:column;align-items:center;gap:3px">
+<div style="width:44px;height:44px;border-radius:50%;background:oklch(0.22 0.02 55/.9);box-shadow:0 0 0 2px oklch(0.15 0.015 55),0 0 0 3px oklch(0.6 0.11 120);display:flex;align-items:center;justify-content:center;font:600 15px Cinzel,serif;color:oklch(0.93 0.015 70)">{{ b.letter }}</div>
+<div style="font:11px ui-monospace,Menlo,monospace;color:oklch(0.68 0.02 65)">{{ b.time }}</div>
+</div>
+</sc-for>
+<div style="width:1px;align-self:stretch;background:oklch(0.42 0.03 65);margin:2px 6px"></div>
+<sc-for list="{{ debuffs }}" as="d" hint-placeholder-count="2">
+<div style="display:flex;flex-direction:column;align-items:center;gap:3px">
+<div style="width:44px;height:44px;border-radius:50%;background:oklch(0.22 0.02 55/.9);box-shadow:0 0 0 2px oklch(0.15 0.015 55),0 0 0 3px oklch(0.55 0.15 25);display:flex;align-items:center;justify-content:center;font:600 15px Cinzel,serif;color:oklch(0.93 0.015 70)">{{ d.letter }}</div>
+<div style="font:11px ui-monospace,Menlo,monospace;color:oklch(0.68 0.02 65)">{{ d.time }}</div>
+</div>
+</sc-for>
+</div>
+
+<div style="position:absolute;left:56px;top:296px;width:520px;display:flex;flex-direction:column;gap:8px">
+<sc-for list="{{ party }}" as="p" hint-placeholder-count="3">
+<div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:oklch(0.22 0.02 55/.85);box-shadow:0 0 0 2px oklch(0.15 0.015 55),0 0 0 3px oklch(0.42 0.03 65);border-radius:6px">
+<div style="width:34px;height:34px;border-radius:50%;background:oklch(0.4 0.02 60);display:flex;align-items:center;justify-content:center;font:600 14px Cinzel,serif;color:oklch(0.93 0.015 70);flex:none">{{ p.initial }}</div>
+<div style="flex:1;min-width:0">
+<div style="display:flex;justify-content:space-between;font:600 13px Spectral,serif;color:oklch(0.93 0.015 70);margin-bottom:3px"><span>{{ p.name }}</span><span style="font:italic 400 11px Spectral,serif;color:oklch(0.68 0.02 65)">{{ p.role }}</span></div>
+<div style="width:100%;height:6px;background:oklch(0.18 0.02 25/.7);border-radius:2px;margin-bottom:3px"><div style="width:{{ p.hpPct }};height:100%;background:oklch(0.5 0.16 25);border-radius:2px"></div></div>
+<div style="width:100%;height:4px;background:oklch(0.16 0.02 235/.7);border-radius:2px"><div style="width:{{ p.mpPct }};height:100%;background:oklch(0.48 0.09 235);border-radius:2px"></div></div>
+</div>
+</div>
+</sc-for>
+</div>
+
+<div style="position:absolute;left:56px;bottom:56px;width:520px;height:230px;background:oklch(0.22 0.02 55/.88);box-shadow:0 0 0 2px oklch(0.15 0.015 55),0 0 0 4px oklch(0.42 0.03 65);border-radius:8px;display:flex;flex-direction:column;overflow:hidden">
+<div style="display:flex;gap:18px;padding:10px 14px 8px;border-bottom:1px solid oklch(0.42 0.03 65/.5)">
+<span style="font:600 13px Cinzel,serif;color:oklch(0.93 0.015 70)">Combat</span>
+<span style="font:600 13px Cinzel,serif;color:oklch(0.64 0.09 80)">Chat</span>
+</div>
+<div style="padding:10px 14px;display:flex;flex-direction:column;gap:8px;overflow:hidden">
+<sc-for list="{{ log }}" as="l" hint-placeholder-count="4">
+<div style="font:14px Spectral,serif;color:oklch(0.85 0.015 65);line-height:1.3">
+<sc-if value="{{ l.hasWho }}" hint-placeholder-val="{{ false }}"><span style="color:oklch(0.64 0.09 80);font-weight:600">{{ l.who }}: </span><span style="font-style:italic">&quot;{{ l.text }}&quot;</span></sc-if>
+<sc-if value="{{ l.hasWho }}" hint-placeholder-val="{{ true }}"></sc-if>
+{{ l.plain }}
+</div>
+</sc-for>
+</div>
+</div>
+
+<div style="position:absolute;left:50%;top:56px;transform:translateX(-50%);width:420px;padding:12px 22px;box-sizing:border-box;background:oklch(0.22 0.02 55/.88);box-shadow:0 0 0 2px oklch(0.15 0.015 55),0 0 0 4px oklch(0.42 0.03 65);border-radius:8px;text-align:center">
+<div style="font:600 24px Cinzel,serif;color:oklch(0.93 0.015 70);letter-spacing:.5px">{{ zone.title }}</div>
+<div style="font:italic 400 13px Spectral,serif;color:oklch(0.68 0.02 65);margin-top:2px">{{ zone.subtitle }}</div>
+</div>
+
+<div style="position:absolute;left:50%;top:134px;transform:translateX(-50%);width:600px;padding:12px 20px;box-sizing:border-box;background:oklch(0.22 0.02 55/.88);box-shadow:0 0 0 2px oklch(0.15 0.015 55),0 0 0 4px oklch(0.42 0.03 65);border-radius:8px">
+<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px"><span style="font:600 18px Cinzel,serif;color:oklch(0.93 0.015 70)">{{ target.name }}</span><span style="font:13px ui-monospace,Menlo,monospace;color:oklch(0.68 0.02 65)">Lv {{ target.level }}</span></div>
+<div style="position:relative;width:100%;height:20px;background:oklch(0.18 0.02 25/.7);border-radius:4px;box-shadow:0 0 0 1px oklch(0.15 0.015 55);margin-bottom:6px"><div style="width:{{ target.hpPct }};height:100%;background:linear-gradient(180deg,oklch(0.58 0.16 25),oklch(0.4 0.14 25));border-radius:3px"></div></div>
+<div style="display:flex;align-items:center;gap:8px"><div style="flex:1;height:12px;background:oklch(0.18 0.02 80/.5);border-radius:3px;overflow:hidden"><div style="width:{{ target.castPct }};height:100%;background:oklch(0.64 0.09 80)"></div></div><span style="font:italic 400 12px Spectral,serif;color:oklch(0.68 0.02 65);white-space:nowrap">{{ target.cast }}</span></div>
+</div>
+
+<div style="position:absolute;right:56px;top:56px;width:320px;height:320px;background:oklch(0.2 0.02 55/.9);box-shadow:0 0 0 2px oklch(0.15 0.015 55),0 0 0 4px oklch(0.42 0.03 65);border-radius:10px;overflow:hidden">
+<div style="position:absolute;left:6px;top:6px;width:6px;height:6px;border-radius:50%;background:oklch(0.5 0.03 70)"></div>
+<div style="position:absolute;right:6px;top:6px;width:6px;height:6px;border-radius:50%;background:oklch(0.5 0.03 70)"></div>
+<div style="position:absolute;left:6px;bottom:6px;width:6px;height:6px;border-radius:50%;background:oklch(0.5 0.03 70)"></div>
+<div style="position:absolute;right:6px;bottom:6px;width:6px;height:6px;border-radius:50%;background:oklch(0.5 0.03 70)"></div>
+<div style="position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,.14) 1px,transparent 1.5px);background-size:14px 14px"></div>
+<sc-for list="{{ poi }}" as="pt" hint-placeholder-count="5">
+<div style="position:absolute;left:{{ pt.left }}%;top:{{ pt.top }}%;width:7px;height:7px;border-radius:50%;background:oklch(0.64 0.09 80);transform:translate(-50%,-50%)"></div>
+</sc-for>
+<div style="position:absolute;left:50%;top:50%;width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-bottom:10px solid oklch(0.93 0.015 70);transform:translate(-50%,-50%) rotate(0deg);animation:pulseSoft 2.6s ease-in-out infinite"></div>
+<div style="position:absolute;left:10px;top:8px;font:600 13px Cinzel,serif;color:oklch(0.93 0.015 70);text-shadow:0 1px 3px rgba(0,0,0,.8)">Region</div>
+<div style="position:absolute;right:10px;top:8px;font:12px ui-monospace,Menlo,monospace;color:oklch(0.68 0.02 65);text-shadow:0 1px 3px rgba(0,0,0,.8)">-2, -2</div>
+</div>
+
+<div style="position:absolute;right:56px;top:390px;width:320px;height:50px;background:oklch(0.22 0.02 55/.88);box-shadow:0 0 0 2px oklch(0.15 0.015 55),0 0 0 4px oklch(0.42 0.03 65);border-radius:8px;display:flex;align-items:center;justify-content:space-around;padding:0 10px;box-sizing:border-box">
+<sc-for list="{{ currency }}" as="c" hint-placeholder-count="2">
+<div style="display:flex;align-items:center;gap:8px">
+<div style="width:18px;height:18px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#f0d27a,#a8791f);flex:none"></div>
+<span style="font:600 14px ui-monospace,Menlo,monospace;color:oklch(0.93 0.015 70)">{{ c.value }}</span>
+</div>
+</sc-for>
+</div>
+
+<div style="position:absolute;right:56px;top:454px;width:320px;height:200px;background:oklch(0.22 0.02 55/.88);box-shadow:0 0 0 2px oklch(0.15 0.015 55),0 0 0 4px oklch(0.42 0.03 65);border-radius:8px;padding:12px 16px;box-sizing:border-box">
+<div style="font:600 15px Cinzel,serif;color:oklch(0.64 0.09 80);margin-bottom:8px">Active Quests</div>
+<div style="display:flex;flex-direction:column;gap:9px">
+<sc-for list="{{ quests }}" as="q" hint-placeholder-count="3">
+<div style="display:flex;gap:8px;align-items:flex-start">
+<div style="width:8px;height:8px;background:oklch(0.64 0.09 80);transform:rotate(45deg);margin-top:4px;flex:none"></div>
+<span style="font:13px Spectral,serif;color:oklch(0.85 0.015 65);line-height:1.3">{{ q.text }}</span>
+</div>
+</sc-for>
+</div>
+</div>
+
+<div style="position:absolute;right:56px;bottom:56px;width:580px;height:300px;background:oklch(0.22 0.02 55/.9);box-shadow:0 0 0 2px oklch(0.15 0.015 55),0 0 0 4px oklch(0.42 0.03 65);border-radius:8px;padding:14px;box-sizing:border-box;display:flex;flex-direction:column;gap:12px">
+<div style="display:flex;gap:16px">
+<span style="font:600 13px Cinzel,serif;color:oklch(0.68 0.02 65)">Char</span>
+<span style="font:600 13px Cinzel,serif;color:oklch(0.93 0.015 70);border-bottom:2px solid oklch(0.64 0.09 80);padding-bottom:2px">Bag</span>
+<span style="font:600 13px Cinzel,serif;color:oklch(0.68 0.02 65)">Skill</span>
+<span style="font:600 13px Cinzel,serif;color:oklch(0.68 0.02 65)">Quest</span>
+<span style="font:600 13px Cinzel,serif;color:oklch(0.68 0.02 65)">Map</span>
+<span style="font:600 13px Cinzel,serif;color:oklch(0.68 0.02 65)">Menu</span>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:8px;width:520px">
+<sc-for list="{{ inventory }}" as="it" hint-placeholder-count="24">
+<dc-import name="ItemSlot" theme="iron" shape="{{ it.shape }}" tint="{{ it.tint }}" size="{{ invSize }}" qty="{{ it.qty }}" rare="{{ it.rare }}" hint-size="58px,58px"></dc-import>
+</sc-for>
+</div>
+</div>
+
+<div style="position:absolute;left:50%;bottom:152px;transform:translateX(-50%);width:900px;height:26px;display:flex;align-items:center;gap:10px">
+<div style="width:26px;height:26px;border-radius:50%;background:oklch(0.22 0.02 55);box-shadow:0 0 0 2px oklch(0.64 0.09 80);display:flex;align-items:center;justify-content:center;font:700 12px Cinzel,serif;color:oklch(0.93 0.015 70);flex:none">7</div>
+<div style="flex:1;height:12px;background:oklch(0.18 0.02 25/.7);border-radius:3px;box-shadow:0 0 0 1px oklch(0.15 0.015 55);overflow:hidden"><div style="width:{{ player.xpPct }};height:100%;background:oklch(0.64 0.09 80)"></div></div>
+<span style="font:12px ui-monospace,Menlo,monospace;color:oklch(0.68 0.02 65);white-space:nowrap">{{ player.xpLabel }}</span>
+</div>
+
+<div style="position:absolute;left:50%;bottom:56px;transform:translateX(-50%);display:flex;gap:10px">
+<sc-for list="{{ hotbar }}" as="h" hint-placeholder-count="10">
+<dc-import name="ItemSlot" theme="iron" shape="{{ h.shape }}" tint="{{ h.tint }}" size="{{ hotbarSize }}" qty="{{ h.qty }}" rare="{{ h.rare }}" cd-pct="{{ h.cdPct }}" cd-label="{{ h.cdLabel }}" keybind="{{ h.key }}" active="{{ h.active }}" hint-size="64px,64px"></dc-import>
+</sc-for>
+</div>
+<div style="position:absolute;left:56px;bottom:32px;font:600 13px Cinzel,serif;color:oklch(0.64 0.09 80)">Stance: Steady</div>
+
+</div>
+</div>
+</div>
+
+<div class="dv-opt" id="1b">
+<div class="dv-olabel"><a class="dv-oid" href="#1b">1b</a> Radiant Vale — epic &amp; heroic</div>
+<div class="dv-card" style="width:3440px;height:1440px">
+<div style="position:relative;width:3440px;height:1440px;overflow:hidden;background:#1a0f0d;font-family:'EB Garamond',serif">
+
+<div style="position:absolute;inset:0;background:repeating-linear-gradient(45deg,rgba(70,32,26,.9) 0 18px,rgba(46,20,18,.9) 18px 36px)"></div>
+<div style="position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 34%,rgba(0,0,0,.65) 100%)"></div>
+<div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font:600 22px/1.5 ui-monospace,Menlo,monospace;color:rgba(255,255,255,.24);letter-spacing:2px;text-align:center;white-space:nowrap">GAMEPLAY VIEWPORT — DROP SCREENSHOT / CAPTURE HERE</div>
+
+<div style="position:absolute;left:56px;top:56px;width:520px;padding:16px;box-sizing:border-box;background:oklch(0.19 0.03 25/0.88);box-shadow:0 0 0 1.5px oklch(0.78 0.14 85),0 0 0 3.5px oklch(0.4 0.06 30),0 10px 30px rgba(0,0,0,.55);border-radius:10px;display:flex;gap:14px">
+<div style="position:absolute;left:50%;top:-6px;width:12px;height:12px;background:oklch(0.78 0.14 85);transform:translateX(-50%) rotate(45deg);box-shadow:0 0 8px oklch(0.8 0.15 85/.6)"></div>
+<div style="position:relative;width:108px;height:108px;flex:none;color:oklch(0.82 0.15 85);animation:pulseGlow 3s ease-in-out infinite;border-radius:50%">
+<div style="width:108px;height:108px;border-radius:50%;background:linear-gradient(160deg,#5a3a2e,#2a1712);box-shadow:0 0 0 2px oklch(0.78 0.14 85),0 0 0 4px oklch(0.4 0.06 30);position:relative;overflow:hidden">
+<div style="position:absolute;left:32px;top:20px;width:44px;height:44px;border-radius:50%;background:oklch(0.6 0.03 60)"></div>
+<div style="position:absolute;left:24px;bottom:0;width:60px;height:38px;background:oklch(0.45 0.03 60);border-radius:30px 30px 0 0"></div>
+</div>
+<div style="position:absolute;right:-8px;bottom:-8px;width:34px;height:34px;border-radius:50%;background:oklch(0.19 0.03 25);box-shadow:0 0 0 2px oklch(0.82 0.15 85);display:flex;align-items:center;justify-content:center;font:700 15px Cinzel,serif;color:oklch(0.96 0.02 80)">7</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:6px;min-width:0">
+<div style="font:700 25px Cinzel,serif;color:oklch(0.96 0.02 80);letter-spacing:1px;text-transform:uppercase">{{ player.name }}</div>
+<div style="font:italic 500 13px 'EB Garamond',serif;color:oklch(0.78 0.04 80);margin-bottom:2px">{{ player.title }}</div>
+<div style="position:relative;width:100%;height:22px;background:oklch(0.14 0.02 25/.7);border-radius:4px;box-shadow:0 0 0 1px oklch(0.4 0.06 30)">
+<div style="width:{{ player.hpPct }};height:100%;background:linear-gradient(180deg,oklch(0.6 0.19 25),oklch(0.42 0.16 25));border-radius:3px"></div>
+<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font:600 11px ui-monospace,Menlo,monospace;color:rgba(255,255,255,.92);text-shadow:0 1px 2px rgba(0,0,0,.8)">{{ player.hpCur }} / {{ player.hpMax }}</div>
+</div>
+<div style="position:relative;width:100%;height:16px;background:oklch(0.13 0.02 250/.7);border-radius:3px;box-shadow:0 0 0 1px oklch(0.4 0.06 30)">
+<div style="width:{{ player.mpPct }};height:100%;background:linear-gradient(180deg,oklch(0.58 0.15 250),oklch(0.4 0.13 250));border-radius:3px"></div>
+<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font:600 10px ui-monospace,Menlo,monospace;color:rgba(255,255,255,.88);text-shadow:0 1px 2px rgba(0,0,0,.8)">{{ player.mpCur }} / {{ player.mpMax }}</div>
+</div>
+<div style="position:relative;width:100%;height:11px;background:oklch(0.13 0.02 145/.7);border-radius:3px;box-shadow:0 0 0 1px oklch(0.4 0.06 30)">
+<div style="width:{{ player.spPct }};height:100%;background:linear-gradient(180deg,oklch(0.63 0.15 145),oklch(0.44 0.13 145));border-radius:3px"></div>
+</div>
+</div>
+</div>
+
+<div style="position:absolute;left:56px;top:220px;width:520px;display:flex;gap:8px;flex-wrap:wrap">
+<sc-for list="{{ buffs }}" as="b" hint-placeholder-count="4">
+<div style="display:flex;flex-direction:column;align-items:center;gap:3px">
+<div style="width:44px;height:44px;border-radius:50%;background:oklch(0.19 0.03 25/.9);box-shadow:0 0 0 1.5px oklch(0.78 0.14 85),0 0 0 3px oklch(0.63 0.15 145);display:flex;align-items:center;justify-content:center;font:700 15px Cinzel,serif;color:oklch(0.96 0.02 80)">{{ b.letter }}</div>
+<div style="font:11px ui-monospace,Menlo,monospace;color:oklch(0.78 0.04 80)">{{ b.time }}</div>
+</div>
+</sc-for>
+<div style="width:1px;align-self:stretch;background:oklch(0.78 0.14 85);margin:2px 6px"></div>
+<sc-for list="{{ debuffs }}" as="d" hint-placeholder-count="2">
+<div style="display:flex;flex-direction:column;align-items:center;gap:3px">
+<div style="width:44px;height:44px;border-radius:50%;background:oklch(0.19 0.03 25/.9);box-shadow:0 0 0 1.5px oklch(0.78 0.14 85),0 0 0 3px oklch(0.6 0.19 25);display:flex;align-items:center;justify-content:center;font:700 15px Cinzel,serif;color:oklch(0.96 0.02 80)">{{ d.letter }}</div>
+<div style="font:11px ui-monospace,Menlo,monospace;color:oklch(0.78 0.04 80)">{{ d.time }}</div>
+</div>
+</sc-for>
+</div>
+
+<div style="position:absolute;left:56px;top:296px;width:520px;display:flex;flex-direction:column;gap:8px">
+<sc-for list="{{ party }}" as="p" hint-placeholder-count="3">
+<div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:oklch(0.19 0.03 25/.85);box-shadow:0 0 0 1.5px oklch(0.78 0.14 85),0 0 0 3px oklch(0.4 0.06 30);border-radius:8px">
+<div style="width:34px;height:34px;border-radius:50%;background:oklch(0.45 0.03 60);display:flex;align-items:center;justify-content:center;font:700 14px Cinzel,serif;color:oklch(0.96 0.02 80);flex:none">{{ p.initial }}</div>
+<div style="flex:1;min-width:0">
+<div style="display:flex;justify-content:space-between;font:600 13px 'EB Garamond',serif;color:oklch(0.96 0.02 80);margin-bottom:3px"><span>{{ p.name }}</span><span style="font:italic 500 11px 'EB Garamond',serif;color:oklch(0.78 0.04 80)">{{ p.role }}</span></div>
+<div style="width:100%;height:6px;background:oklch(0.14 0.02 25/.7);border-radius:2px;margin-bottom:3px"><div style="width:{{ p.hpPct }};height:100%;background:oklch(0.55 0.19 25);border-radius:2px"></div></div>
+<div style="width:100%;height:4px;background:oklch(0.13 0.02 250/.7);border-radius:2px"><div style="width:{{ p.mpPct }};height:100%;background:oklch(0.55 0.15 250);border-radius:2px"></div></div>
+</div>
+</div>
+</sc-for>
+</div>
+
+<div style="position:absolute;left:56px;bottom:56px;width:520px;height:230px;background:oklch(0.19 0.03 25/.88);box-shadow:0 0 0 1.5px oklch(0.78 0.14 85),0 0 0 3.5px oklch(0.4 0.06 30);border-radius:10px;display:flex;flex-direction:column;overflow:hidden">
+<div style="position:absolute;left:50%;top:-6px;width:12px;height:12px;background:oklch(0.78 0.14 85);transform:translateX(-50%) rotate(45deg);box-shadow:0 0 8px oklch(0.8 0.15 85/.6)"></div>
+<div style="display:flex;gap:18px;padding:10px 14px 8px;border-bottom:1px solid oklch(0.78 0.14 85/.4)">
+<span style="font:700 13px Cinzel,serif;color:oklch(0.96 0.02 80)">Combat</span>
+<span style="font:700 13px Cinzel,serif;color:oklch(0.82 0.15 85)">Chat</span>
+</div>
+<div style="padding:10px 14px;display:flex;flex-direction:column;gap:8px;overflow:hidden">
+<sc-for list="{{ log }}" as="l" hint-placeholder-count="4">
+<div style="font:15px 'EB Garamond',serif;color:oklch(0.9 0.03 80);line-height:1.3">
+<sc-if value="{{ l.hasWho }}" hint-placeholder-val="{{ false }}"><span style="color:oklch(0.82 0.15 85);font-weight:600">{{ l.who }}: </span><span style="font-style:italic">&quot;{{ l.text }}&quot;</span></sc-if>
+{{ l.plain }}
+</div>
+</sc-for>
+</div>
+</div>
+
+<div style="position:absolute;left:50%;top:56px;transform:translateX(-50%);width:420px;padding:12px 22px;box-sizing:border-box;background:oklch(0.19 0.03 25/.88);box-shadow:0 0 0 1.5px oklch(0.78 0.14 85),0 0 0 3.5px oklch(0.4 0.06 30);border-radius:10px;text-align:center">
+<div style="font:700 25px Cinzel,serif;color:oklch(0.96 0.02 80);letter-spacing:1px;text-transform:uppercase">{{ zone.title }}</div>
+<div style="font:italic 500 13px 'EB Garamond',serif;color:oklch(0.78 0.04 80);margin-top:2px">{{ zone.subtitle }}</div>
+</div>
+
+<div style="position:absolute;left:50%;top:134px;transform:translateX(-50%);width:600px;padding:12px 20px;box-sizing:border-box;background:oklch(0.19 0.03 25/.88);box-shadow:0 0 0 1.5px oklch(0.78 0.14 85),0 0 0 3.5px oklch(0.4 0.06 30);border-radius:10px">
+<div style="position:absolute;left:50%;top:-6px;width:12px;height:12px;background:oklch(0.78 0.14 85);transform:translateX(-50%) rotate(45deg);box-shadow:0 0 8px oklch(0.8 0.15 85/.6)"></div>
+<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px"><span style="font:700 19px Cinzel,serif;color:oklch(0.96 0.02 80);text-transform:uppercase;letter-spacing:.5px">{{ target.name }}</span><span style="font:13px ui-monospace,Menlo,monospace;color:oklch(0.78 0.04 80)">Lv {{ target.level }}</span></div>
+<div style="position:relative;width:100%;height:20px;background:oklch(0.14 0.02 25/.7);border-radius:4px;box-shadow:0 0 0 1px oklch(0.4 0.06 30);margin-bottom:6px"><div style="width:{{ target.hpPct }};height:100%;background:linear-gradient(180deg,oklch(0.6 0.19 25),oklch(0.42 0.16 25));border-radius:3px"></div></div>
+<div style="display:flex;align-items:center;gap:8px"><div style="flex:1;height:12px;background:oklch(0.18 0.03 80/.5);border-radius:3px;overflow:hidden"><div style="width:{{ target.castPct }};height:100%;background:oklch(0.82 0.15 85)"></div></div><span style="font:italic 500 12px 'EB Garamond',serif;color:oklch(0.78 0.04 80);white-space:nowrap">{{ target.cast }}</span></div>
+</div>
+
+<div style="position:absolute;right:56px;top:56px;width:320px;height:320px;border-radius:50%;background:oklch(0.16 0.03 25/.9);box-shadow:0 0 0 2px oklch(0.78 0.14 85),0 0 0 5px oklch(0.4 0.06 30);overflow:hidden">
+<div style="position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,.14) 1px,transparent 1.5px);background-size:14px 14px"></div>
+<sc-for list="{{ poi }}" as="pt" hint-placeholder-count="5">
+<div style="position:absolute;left:{{ pt.left }}%;top:{{ pt.top }}%;width:7px;height:7px;border-radius:50%;background:oklch(0.82 0.15 85);transform:translate(-50%,-50%)"></div>
+</sc-for>
+<div style="position:absolute;left:50%;top:50%;width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-bottom:10px solid oklch(0.96 0.02 80);transform:translate(-50%,-50%) rotate(0deg);animation:pulseSoft 2.6s ease-in-out infinite"></div>
+<div style="position:absolute;left:50%;top:14px;transform:translateX(-50%);font:700 12px Cinzel,serif;color:oklch(0.96 0.02 80);text-shadow:0 1px 3px rgba(0,0,0,.8)">N</div>
+</div>
+
+<div style="position:absolute;right:56px;top:390px;width:320px;height:50px;background:oklch(0.19 0.03 25/.88);box-shadow:0 0 0 1.5px oklch(0.78 0.14 85),0 0 0 3.5px oklch(0.4 0.06 30);border-radius:10px;display:flex;align-items:center;justify-content:space-around;padding:0 10px;box-sizing:border-box">
+<sc-for list="{{ currency }}" as="c" hint-placeholder-count="2">
+<div style="display:flex;align-items:center;gap:8px">
+<div style="width:18px;height:18px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ffe9a8,#c9932a);flex:none"></div>
+<span style="font:700 14px ui-monospace,Menlo,monospace;color:oklch(0.96 0.02 80)">{{ c.value }}</span>
+</div>
+</sc-for>
+</div>
+
+<div style="position:absolute;right:56px;top:454px;width:320px;height:200px;background:oklch(0.19 0.03 25/.88);box-shadow:0 0 0 1.5px oklch(0.78 0.14 85),0 0 0 3.5px oklch(0.4 0.06 30);border-radius:10px;padding:12px 16px;box-sizing:border-box">
+<div style="position:absolute;left:50%;top:-6px;width:12px;height:12px;background:oklch(0.78 0.14 85);transform:translateX(-50%) rotate(45deg);box-shadow:0 0 8px oklch(0.8 0.15 85/.6)"></div>
+<div style="font:700 16px Cinzel,serif;color:oklch(0.82 0.15 85);margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px">Active Quests</div>
+<div style="display:flex;flex-direction:column;gap:9px">
+<sc-for list="{{ quests }}" as="q" hint-placeholder-count="3">
+<div style="display:flex;gap:8px;align-items:flex-start">
+<div style="width:8px;height:8px;background:oklch(0.82 0.15 85);transform:rotate(45deg);margin-top:4px;flex:none"></div>
+<span style="font:14px 'EB Garamond',serif;color:oklch(0.9 0.03 80);line-height:1.3">{{ q.text }}</span>
+</div>
+</sc-for>
+</div>
+</div>
+
+<div style="position:absolute;right:56px;bottom:56px;width:580px;height:300px;background:oklch(0.19 0.03 25/.9);box-shadow:0 0 0 1.5px oklch(0.78 0.14 85),0 0 0 3.5px oklch(0.4 0.06 30);border-radius:10px;padding:14px;box-sizing:border-box;display:flex;flex-direction:column;gap:12px">
+<div style="position:absolute;left:50%;top:-6px;width:12px;height:12px;background:oklch(0.78 0.14 85);transform:translateX(-50%) rotate(45deg);box-shadow:0 0 8px oklch(0.8 0.15 85/.6)"></div>
+<div style="display:flex;gap:16px">
+<span style="font:700 13px Cinzel,serif;color:oklch(0.78 0.04 80)">Char</span>
+<span style="font:700 13px Cinzel,serif;color:oklch(0.96 0.02 80);border-bottom:2px solid oklch(0.82 0.15 85);padding-bottom:2px">Bag</span>
+<span style="font:700 13px Cinzel,serif;color:oklch(0.78 0.04 80)">Skill</span>
+<span style="font:700 13px Cinzel,serif;color:oklch(0.78 0.04 80)">Quest</span>
+<span style="font:700 13px Cinzel,serif;color:oklch(0.78 0.04 80)">Map</span>
+<span style="font:700 13px Cinzel,serif;color:oklch(0.78 0.04 80)">Menu</span>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:8px;width:520px">
+<sc-for list="{{ inventory }}" as="it" hint-placeholder-count="24">
+<dc-import name="ItemSlot" theme="gold" shape="{{ it.shape }}" tint="{{ it.tint }}" size="{{ invSize }}" qty="{{ it.qty }}" rare="{{ it.rare }}" hint-size="58px,58px"></dc-import>
+</sc-for>
+</div>
+</div>
+
+<div style="position:absolute;left:50%;bottom:152px;transform:translateX(-50%);width:900px;height:26px;display:flex;align-items:center;gap:10px">
+<div style="width:26px;height:26px;border-radius:50%;background:oklch(0.19 0.03 25);box-shadow:0 0 0 2px oklch(0.82 0.15 85);display:flex;align-items:center;justify-content:center;font:700 12px Cinzel,serif;color:oklch(0.96 0.02 80);flex:none">7</div>
+<div style="flex:1;height:12px;background:oklch(0.14 0.02 25/.7);border-radius:3px;box-shadow:0 0 0 1px oklch(0.4 0.06 30);overflow:hidden"><div style="width:{{ player.xpPct }};height:100%;background:oklch(0.82 0.15 85)"></div></div>
+<span style="font:12px ui-monospace,Menlo,monospace;color:oklch(0.78 0.04 80);white-space:nowrap">{{ player.xpLabel }}</span>
+</div>
+
+<div style="position:absolute;left:50%;bottom:56px;transform:translateX(-50%);display:flex;gap:10px">
+<sc-for list="{{ hotbar }}" as="h" hint-placeholder-count="10">
+<dc-import name="ItemSlot" theme="gold" shape="{{ h.shape }}" tint="{{ h.tint }}" size="{{ hotbarSize }}" qty="{{ h.qty }}" rare="{{ h.rare }}" cd-pct="{{ h.cdPct }}" cd-label="{{ h.cdLabel }}" keybind="{{ h.key }}" active="{{ h.active }}" hint-size="64px,64px"></dc-import>
+</sc-for>
+</div>
+<div style="position:absolute;left:56px;bottom:32px;font:700 13px Cinzel,serif;color:oklch(0.82 0.15 85);text-transform:uppercase;letter-spacing:.5px">Stance: Steady</div>
+
+</div>
+</div>
+</div>
+
+<div class="dv-opt" id="1c">
+<div class="dv-olabel"><a class="dv-oid" href="#1c">1c</a> Hearthlight — clean &amp; minimal</div>
+<div class="dv-card" style="width:3440px;height:1440px">
+<div style="position:relative;width:3440px;height:1440px;overflow:hidden;background:#0e1016;font-family:Jost,sans-serif">
+
+<div style="position:absolute;inset:0;background:repeating-linear-gradient(45deg,rgba(24,29,40,.85) 0 18px,rgba(16,20,29,.85) 18px 36px)"></div>
+<div style="position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 40%,rgba(0,0,0,.5) 100%)"></div>
+<div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font:500 20px/1.5 ui-monospace,Menlo,monospace;color:rgba(255,255,255,.2);letter-spacing:2px;text-align:center;white-space:nowrap">GAMEPLAY VIEWPORT — DROP SCREENSHOT / CAPTURE HERE</div>
+
+<div style="position:absolute;left:56px;top:56px;width:520px;padding:16px;box-sizing:border-box;background:oklch(0.25 0.025 260/0.62);box-shadow:0 0 0 1px oklch(0.72 0.05 85/.45),inset 0 1px 0 rgba(255,255,255,.06),0 12px 34px rgba(0,0,0,.45);backdrop-filter:blur(16px);border-radius:14px;display:flex;gap:14px">
+<div style="position:relative;width:96px;height:96px;flex:none">
+<div style="width:96px;height:96px;border-radius:50%;background:linear-gradient(160deg,#3a4152,#20242f);box-shadow:0 0 0 1px oklch(0.72 0.05 85/.5);position:relative;overflow:hidden">
+<div style="position:absolute;left:28px;top:18px;width:40px;height:40px;border-radius:50%;background:oklch(0.55 0.01 250)"></div>
+<div style="position:absolute;left:20px;bottom:0;width:56px;height:34px;background:oklch(0.42 0.01 250);border-radius:28px 28px 0 0"></div>
+</div>
+<div style="position:absolute;right:-6px;bottom:-6px;width:30px;height:30px;border-radius:50%;background:oklch(0.25 0.025 260);box-shadow:0 0 0 1px oklch(0.76 0.07 85);display:flex;align-items:center;justify-content:center;font:600 13px Jost,sans-serif;color:oklch(0.95 0.008 250)">7</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:7px;min-width:0">
+<div style="font:500 24px 'Cormorant Garamond',serif;color:oklch(0.95 0.008 250)">{{ player.name }}</div>
+<div style="font:400 12px Jost,sans-serif;color:oklch(0.72 0.01 250);margin-bottom:2px;letter-spacing:.2px">{{ player.title }}</div>
+<div style="position:relative;width:100%;height:18px;background:oklch(0.16 0.01 20/.6);border-radius:9px;overflow:hidden">
+<div style="width:{{ player.hpPct }};height:100%;background:oklch(0.58 0.13 20)"></div>
+<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font:500 10px Jost,sans-serif;color:rgba(255,255,255,.9)">{{ player.hpCur }} / {{ player.hpMax }}</div>
+</div>
+<div style="position:relative;width:100%;height:13px;background:oklch(0.15 0.01 230/.6);border-radius:7px;overflow:hidden">
+<div style="width:{{ player.mpPct }};height:100%;background:oklch(0.58 0.09 230)"></div>
+</div>
+<div style="position:relative;width:100%;height:9px;background:oklch(0.15 0.01 140/.6);border-radius:5px;overflow:hidden">
+<div style="width:{{ player.spPct }};height:100%;background:oklch(0.62 0.08 140)"></div>
+</div>
+</div>
+</div>
+
+<div style="position:absolute;left:56px;top:206px;width:520px;display:flex;gap:8px;flex-wrap:wrap">
+<sc-for list="{{ buffs }}" as="b" hint-placeholder-count="4">
+<div style="display:flex;flex-direction:column;align-items:center;gap:3px">
+<div style="width:40px;height:40px;border-radius:50%;background:oklch(0.25 0.025 260/.7);box-shadow:0 0 0 1px oklch(0.62 0.08 140/.7);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;font:500 13px Jost,sans-serif;color:oklch(0.95 0.008 250)">{{ b.letter }}</div>
+<div style="font:10px Jost,sans-serif;color:oklch(0.72 0.01 250)">{{ b.time }}</div>
+</div>
+</sc-for>
+<div style="width:1px;align-self:stretch;background:oklch(0.72 0.05 85/.4);margin:2px 6px"></div>
+<sc-for list="{{ debuffs }}" as="d" hint-placeholder-count="2">
+<div style="display:flex;flex-direction:column;align-items:center;gap:3px">
+<div style="width:40px;height:40px;border-radius:50%;background:oklch(0.25 0.025 260/.7);box-shadow:0 0 0 1px oklch(0.58 0.13 20/.7);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;font:500 13px Jost,sans-serif;color:oklch(0.95 0.008 250)">{{ d.letter }}</div>
+<div style="font:10px Jost,sans-serif;color:oklch(0.72 0.01 250)">{{ d.time }}</div>
+</div>
+</sc-for>
+</div>
+
+<div style="position:absolute;left:56px;top:276px;width:520px;display:flex;flex-direction:column;gap:8px">
+<sc-for list="{{ party }}" as="p" hint-placeholder-count="3">
+<div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:oklch(0.25 0.025 260/.55);box-shadow:0 0 0 1px oklch(0.72 0.05 85/.35);backdrop-filter:blur(12px);border-radius:12px">
+<div style="width:32px;height:32px;border-radius:50%;background:oklch(0.4 0.01 250);display:flex;align-items:center;justify-content:center;font:500 13px Jost,sans-serif;color:oklch(0.95 0.008 250);flex:none">{{ p.initial }}</div>
+<div style="flex:1;min-width:0">
+<div style="display:flex;justify-content:space-between;font:500 13px 'Cormorant Garamond',serif;color:oklch(0.95 0.008 250);margin-bottom:3px"><span>{{ p.name }}</span><span style="font:400 11px Jost,sans-serif;color:oklch(0.72 0.01 250)">{{ p.role }}</span></div>
+<div style="width:100%;height:5px;background:oklch(0.16 0.01 20/.6);border-radius:3px;margin-bottom:3px"><div style="width:{{ p.hpPct }};height:100%;background:oklch(0.58 0.13 20);border-radius:3px"></div></div>
+<div style="width:100%;height:4px;background:oklch(0.15 0.01 230/.6);border-radius:2px"><div style="width:{{ p.mpPct }};height:100%;background:oklch(0.58 0.09 230);border-radius:2px"></div></div>
+</div>
+</div>
+</sc-for>
+</div>
+
+<div style="position:absolute;left:56px;bottom:56px;width:520px;height:220px;background:oklch(0.25 0.025 260/.6);box-shadow:0 0 0 1px oklch(0.72 0.05 85/.4),inset 0 1px 0 rgba(255,255,255,.06);backdrop-filter:blur(16px);border-radius:14px;display:flex;flex-direction:column;overflow:hidden">
+<div style="display:flex;gap:18px;padding:10px 14px 8px;border-bottom:1px solid oklch(0.72 0.05 85/.25)">
+<span style="font:500 12px Jost,sans-serif;color:oklch(0.95 0.008 250)">Combat</span>
+<span style="font:500 12px Jost,sans-serif;color:oklch(0.76 0.07 85)">Chat</span>
+</div>
+<div style="padding:10px 14px;display:flex;flex-direction:column;gap:8px;overflow:hidden">
+<sc-for list="{{ log }}" as="l" hint-placeholder-count="4">
+<div style="font:400 13px Jost,sans-serif;color:oklch(0.85 0.008 250);line-height:1.4">
+<sc-if value="{{ l.hasWho }}" hint-placeholder-val="{{ false }}"><span style="color:oklch(0.76 0.07 85);font-weight:500">{{ l.who }}: </span><span>&quot;{{ l.text }}&quot;</span></sc-if>
+{{ l.plain }}
+</div>
+</sc-for>
+</div>
+</div>
+
+<div style="position:absolute;left:50%;top:56px;transform:translateX(-50%);width:400px;padding:11px 22px;box-sizing:border-box;background:oklch(0.25 0.025 260/.6);box-shadow:0 0 0 1px oklch(0.72 0.05 85/.4);backdrop-filter:blur(16px);border-radius:999px;text-align:center">
+<div style="font:500 22px 'Cormorant Garamond',serif;color:oklch(0.95 0.008 250)">{{ zone.title }}</div>
+<div style="font:400 12px Jost,sans-serif;color:oklch(0.72 0.01 250);margin-top:1px">{{ zone.subtitle }}</div>
+</div>
+
+<div style="position:absolute;left:50%;top:128px;transform:translateX(-50%);width:580px;padding:12px 20px;box-sizing:border-box;background:oklch(0.25 0.025 260/.6);box-shadow:0 0 0 1px oklch(0.72 0.05 85/.4);backdrop-filter:blur(16px);border-radius:14px">
+<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px"><span style="font:500 17px 'Cormorant Garamond',serif;color:oklch(0.95 0.008 250)">{{ target.name }}</span><span style="font:400 12px Jost,sans-serif;color:oklch(0.72 0.01 250)">Lv {{ target.level }}</span></div>
+<div style="position:relative;width:100%;height:16px;background:oklch(0.16 0.01 20/.6);border-radius:8px;overflow:hidden;margin-bottom:6px"><div style="width:{{ target.hpPct }};height:100%;background:oklch(0.58 0.13 20)"></div></div>
+<div style="display:flex;align-items:center;gap:8px"><div style="flex:1;height:8px;background:oklch(0.2 0.02 85/.4);border-radius:4px;overflow:hidden"><div style="width:{{ target.castPct }};height:100%;background:oklch(0.76 0.07 85)"></div></div><span style="font:400 12px Jost,sans-serif;color:oklch(0.72 0.01 250);white-space:nowrap">{{ target.cast }}</span></div>
+</div>
+
+<div style="position:absolute;right:56px;top:56px;width:300px;height:300px;background:oklch(0.22 0.02 260/.75);box-shadow:0 0 0 1px oklch(0.72 0.05 85/.4);backdrop-filter:blur(10px);border-radius:16px;overflow:hidden">
+<div style="position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,.12) 1px,transparent 1.5px);background-size:14px 14px"></div>
+<sc-for list="{{ poi }}" as="pt" hint-placeholder-count="5">
+<div style="position:absolute;left:{{ pt.left }}%;top:{{ pt.top }}%;width:6px;height:6px;border-radius:50%;background:oklch(0.76 0.07 85);transform:translate(-50%,-50%)"></div>
+</sc-for>
+<div style="position:absolute;left:50%;top:50%;width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-bottom:9px solid oklch(0.95 0.008 250);transform:translate(-50%,-50%);animation:pulseSoft 2.6s ease-in-out infinite"></div>
+<div style="position:absolute;left:10px;top:10px;font:500 12px Jost,sans-serif;color:oklch(0.95 0.008 250);text-shadow:0 1px 3px rgba(0,0,0,.8)">Region</div>
+<div style="position:absolute;right:10px;top:10px;font:400 11px Jost,sans-serif;color:oklch(0.72 0.01 250);text-shadow:0 1px 3px rgba(0,0,0,.8)">-2, -2</div>
+</div>
+
+<div style="position:absolute;right:56px;top:370px;width:300px;height:46px;background:oklch(0.25 0.025 260/.6);box-shadow:0 0 0 1px oklch(0.72 0.05 85/.4);backdrop-filter:blur(16px);border-radius:12px;display:flex;align-items:center;justify-content:space-around;padding:0 10px;box-sizing:border-box">
+<sc-for list="{{ currency }}" as="c" hint-placeholder-count="2">
+<div style="display:flex;align-items:center;gap:8px">
+<div style="width:16px;height:16px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#f3dfa0,#b9903a);flex:none"></div>
+<span style="font:500 13px Jost,sans-serif;color:oklch(0.95 0.008 250)">{{ c.value }}</span>
+</div>
+</sc-for>
+</div>
+
+<div style="position:absolute;right:56px;top:430px;width:300px;height:190px;background:oklch(0.25 0.025 260/.6);box-shadow:0 0 0 1px oklch(0.72 0.05 85/.4);backdrop-filter:blur(16px);border-radius:14px;padding:12px 16px;box-sizing:border-box">
+<div style="font:500 14px Jost,sans-serif;color:oklch(0.76 0.07 85);margin-bottom:8px">Active Quests</div>
+<div style="display:flex;flex-direction:column;gap:9px">
+<sc-for list="{{ quests }}" as="q" hint-placeholder-count="3">
+<div style="display:flex;gap:8px;align-items:flex-start">
+<div style="width:6px;height:6px;border-radius:1px;background:oklch(0.76 0.07 85);transform:rotate(45deg);margin-top:5px;flex:none"></div>
+<span style="font:400 12.5px Jost,sans-serif;color:oklch(0.85 0.008 250);line-height:1.4">{{ q.text }}</span>
+</div>
+</sc-for>
+</div>
+</div>
+
+<div style="position:absolute;right:56px;bottom:56px;width:560px;height:290px;background:oklch(0.25 0.025 260/.62);box-shadow:0 0 0 1px oklch(0.72 0.05 85/.4);backdrop-filter:blur(16px);border-radius:16px;padding:14px;box-sizing:border-box;display:flex;flex-direction:column;gap:12px">
+<div style="display:flex;gap:16px">
+<span style="font:500 12px Jost,sans-serif;color:oklch(0.72 0.01 250)">Char</span>
+<span style="font:500 12px Jost,sans-serif;color:oklch(0.95 0.008 250);border-bottom:2px solid oklch(0.76 0.07 85);padding-bottom:2px">Bag</span>
+<span style="font:500 12px Jost,sans-serif;color:oklch(0.72 0.01 250)">Skill</span>
+<span style="font:500 12px Jost,sans-serif;color:oklch(0.72 0.01 250)">Quest</span>
+<span style="font:500 12px Jost,sans-serif;color:oklch(0.72 0.01 250)">Map</span>
+<span style="font:500 12px Jost,sans-serif;color:oklch(0.72 0.01 250)">Menu</span>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:8px;width:500px">
+<sc-for list="{{ inventory }}" as="it" hint-placeholder-count="24">
+<dc-import name="ItemSlot" theme="glass" shape="{{ it.shape }}" tint="{{ it.tint }}" size="{{ invSize }}" qty="{{ it.qty }}" rare="{{ it.rare }}" hint-size="58px,58px"></dc-import>
+</sc-for>
+</div>
+</div>
+
+<div style="position:absolute;left:50%;bottom:148px;transform:translateX(-50%);width:880px;height:22px;display:flex;align-items:center;gap:10px">
+<div style="width:22px;height:22px;border-radius:50%;background:oklch(0.25 0.025 260);box-shadow:0 0 0 1px oklch(0.76 0.07 85);display:flex;align-items:center;justify-content:center;font:600 11px Jost,sans-serif;color:oklch(0.95 0.008 250);flex:none">7</div>
+<div style="flex:1;height:8px;background:oklch(0.16 0.01 20/.6);border-radius:4px;overflow:hidden"><div style="width:{{ player.xpPct }};height:100%;background:oklch(0.76 0.07 85)"></div></div>
+<span style="font:400 11px Jost,sans-serif;color:oklch(0.72 0.01 250);white-space:nowrap">{{ player.xpLabel }}</span>
+</div>
+
+<div style="position:absolute;left:50%;bottom:56px;transform:translateX(-50%);display:flex;gap:10px">
+<sc-for list="{{ hotbar }}" as="h" hint-placeholder-count="10">
+<dc-import name="ItemSlot" theme="glass" shape="{{ h.shape }}" tint="{{ h.tint }}" size="{{ hotbarSize }}" qty="{{ h.qty }}" rare="{{ h.rare }}" cd-pct="{{ h.cdPct }}" cd-label="{{ h.cdLabel }}" keybind="{{ h.key }}" active="{{ h.active }}" hint-size="64px,64px"></dc-import>
+</sc-for>
+</div>
+<div style="position:absolute;left:56px;bottom:30px;font:500 12px Jost,sans-serif;color:oklch(0.76 0.07 85)">Stance: Steady</div>
+
+</div>
+</div>
+</div>
+
+</div>
+<p class="dv-next">Try next: "push <a class="dv-oid" href="#1a">1a</a> even grittier" · "combine the minimap from <a class="dv-oid" href="#1c">1c</a> with <a class="dv-oid" href="#1b">1b</a>'s frame" · "show a low-health / big-boss-fight state"</p>
+</section>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    const player = {
+      name: 'Hero',
+      title: 'Wanderer · Hearthlight Vale',
+      level: 7,
+      hpCur: 129, hpMax: 165, hpPct: '78%',
+      mpCur: 48, mpMax: 88, mpPct: '55%',
+      spCur: 72, spMax: 80, spPct: '90%',
+      xpPct: '42%', xpLabel: '1,240 / 2,950 XP'
+    };
+    const zone = { title: 'Hearthvale Town', subtitle: 'Safe Zone · Lv 1–99' };
+    const target = { name: 'Bandit Captain', level: 9, hpPct: '34%', cast: 'Reckless Swing', castPct: '60%' };
+    const party = [
+      { initial: 'B', name: 'Brynn', role: 'Guardian', hpPct: '82%', mpPct: '40%' },
+      { initial: 'O', name: 'Oswin', role: 'Ranger', hpPct: '65%', mpPct: '90%' },
+      { initial: 'S', name: 'Sable', role: 'Mender', hpPct: '100%', mpPct: '55%' }
+    ];
+    const buffs = [
+      { letter: 'W', time: '8:12' },
+      { letter: 'G', time: '2:40' },
+      { letter: 'B', time: '14:55' },
+      { letter: 'C', time: '0:45' }
+    ];
+    const debuffs = [
+      { letter: 'W', time: '0:12' },
+      { letter: 'C', time: '1:05' }
+    ];
+    const quests = [
+      { text: 'Deliver supplies to the Guild Hall' },
+      { text: 'Clear the north road of bandits (2/3)' },
+      { text: 'Speak with Innkeeper Mara' }
+    ];
+    const log = [
+      { hasWho: false, plain: 'Welcome to Hearthlight Vale.' },
+      { hasWho: false, plain: 'You found 12 Gold.' },
+      { hasWho: true, who: 'Innkeeper Mara', text: 'Rest here anytime, traveler.', plain: '' },
+      { hasWho: false, plain: "You equipped Traveler's Blade." }
+    ];
+    const hotbarSize = 64;
+    const invSize = 58;
+    const hotbar = [
+      { key: '1', shape: 'stance', tint: '#e3c77d', qty: 0, rare: false, cdPct: 0, cdLabel: '', active: true },
+      { key: '2', shape: 'blade', tint: '#c9a227', qty: 0, rare: false, cdPct: 0, cdLabel: '', active: false },
+      { key: '3', shape: 'guard', tint: '#8fa3c9', qty: 0, rare: false, cdPct: 0.4, cdLabel: '4s', active: false },
+      { key: '4', shape: 'scroll', tint: '#d8c9a3', qty: 0, rare: false, cdPct: 0, cdLabel: '', active: false },
+      { key: '5', shape: 'potion', tint: '#c85450', qty: 3, rare: false, cdPct: 0, cdLabel: '', active: false },
+      { key: '6', shape: 'potion', tint: '#4f7fc9', qty: 2, rare: false, cdPct: 0, cdLabel: '', active: false },
+      { key: '7', shape: 'blade', tint: '#a9762a', qty: 0, rare: false, cdPct: 0.7, cdLabel: '9s', active: false },
+      { key: '8', shape: 'guard', tint: '#7fae6a', qty: 0, rare: false, cdPct: 0, cdLabel: '', active: false },
+      { key: '9', shape: 'empty', tint: '#888', qty: 0, rare: false, cdPct: 0, cdLabel: '', active: false },
+      { key: '0', shape: 'empty', tint: '#888', qty: 0, rare: false, cdPct: 0, cdLabel: '', active: false }
+    ];
+    const inventory = [
+      { shape: 'blade', tint: '#c9a227', qty: 0, rare: true },
+      { shape: 'guard', tint: '#8fa3c9', qty: 0, rare: false },
+      { shape: 'potion', tint: '#c85450', qty: 6, rare: false },
+      { shape: 'potion', tint: '#4f7fc9', qty: 2, rare: false },
+      { shape: 'scroll', tint: '#d8c9a3', qty: 3, rare: false },
+      { shape: 'gem', tint: '#7fd9d0', qty: 0, rare: true },
+      { shape: 'gem', tint: '#b98be0', qty: 4, rare: false },
+      { shape: 'blade', tint: '#a9762a', qty: 0, rare: false },
+      { shape: 'scroll', tint: '#d8c9a3', qty: 0, rare: true },
+      { shape: 'potion', tint: '#c85450', qty: 8, rare: false },
+      { shape: 'guard', tint: '#7fae6a', qty: 0, rare: true },
+      { shape: 'gem', tint: '#7fd9d0', qty: 2, rare: false },
+      { shape: 'empty', tint: '#888', qty: 0, rare: false },
+      { shape: 'empty', tint: '#888', qty: 0, rare: false },
+      { shape: 'empty', tint: '#888', qty: 0, rare: false },
+      { shape: 'empty', tint: '#888', qty: 0, rare: false },
+      { shape: 'empty', tint: '#888', qty: 0, rare: false },
+      { shape: 'empty', tint: '#888', qty: 0, rare: false },
+      { shape: 'empty', tint: '#888', qty: 0, rare: false },
+      { shape: 'empty', tint: '#888', qty: 0, rare: false },
+      { shape: 'empty', tint: '#888', qty: 0, rare: false },
+      { shape: 'empty', tint: '#888', qty: 0, rare: false },
+      { shape: 'empty', tint: '#888', qty: 0, rare: false },
+      { shape: 'empty', tint: '#888', qty: 0, rare: false }
+    ];
+    const currency = [
+      { label: 'Gold', value: '1,248' },
+      { label: 'Guild Marks', value: '36' }
+    ];
+    const poi = [
+      { left: 28, top: 22 },
+      { left: 62, top: 38 },
+      { left: 74, top: 20 },
+      { left: 40, top: 68 },
+      { left: 58, top: 74 }
+    ];
+
+    return { player, zone, target, party, buffs, debuffs, quests, hotbar, inventory, currency, poi, log, hotbarSize, invSize };
+  }
+}
+</script>
+</body>
+</html>

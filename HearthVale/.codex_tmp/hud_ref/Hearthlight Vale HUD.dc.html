@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&family=EB+Garamond:ital,wght@0,500;1,500&family=Jost:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,500;1,500&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#0c0c0e}
+@keyframes pulseSoft{0%,100%{opacity:.55;transform:translate(-50%,-50%) scale(1)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.15)}}
+@keyframes pulseGlow{0%,100%{box-shadow:0 0 8px currentColor}50%{box-shadow:0 0 20px currentColor}}
+</style>
+</helmet>
+<div style="position:relative;width:3440px;height:1440px;overflow:hidden;background:{{ t.worldSolid }};font-family:{{ t.fontBody }}">
+
+<sc-if value="{{ showViewportLabel }}" hint-placeholder-val="{{ true }}">
+<div style="position:absolute;inset:0;background:repeating-linear-gradient(45deg,{{ t.worldA }} 0 18px,{{ t.worldB }} 18px 36px)"></div>
+</sc-if>
+<div style="position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 37%,{{ t.worldVignette }} 100%)"></div>
+<sc-if value="{{ showViewportLabel }}" hint-placeholder-val="{{ true }}">
+<div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font:600 22px/1.5 ui-monospace,Menlo,monospace;color:{{ t.worldLabel }};letter-spacing:2px;text-align:center;white-space:nowrap">GAMEPLAY VIEWPORT — DROP SCREENSHOT / CAPTURE HERE</div>
+</sc-if>
+
+<div style="position:absolute;left:56px;top:56px;width:520px;padding:16px;box-sizing:border-box;background:{{ t.panelBg }};box-shadow:{{ t.panelRing }};backdrop-filter:{{ t.panelBackdrop }};border-radius:{{ t.panelRadius }};display:flex;gap:14px">
+<sc-if value="{{ t.hasRivets }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;left:6px;top:6px;width:6px;height:6px;border-radius:50%;background:oklch(0.5 0.03 70);box-shadow:inset 0 1px 1px rgba(0,0,0,.6)"></div>
+<div style="position:absolute;right:6px;top:6px;width:6px;height:6px;border-radius:50%;background:oklch(0.5 0.03 70);box-shadow:inset 0 1px 1px rgba(0,0,0,.6)"></div>
+<div style="position:absolute;left:6px;bottom:6px;width:6px;height:6px;border-radius:50%;background:oklch(0.5 0.03 70);box-shadow:inset 0 1px 1px rgba(0,0,0,.6)"></div>
+<div style="position:absolute;right:6px;bottom:6px;width:6px;height:6px;border-radius:50%;background:oklch(0.5 0.03 70);box-shadow:inset 0 1px 1px rgba(0,0,0,.6)"></div>
+</sc-if>
+<sc-if value="{{ t.hasDiamond }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;left:50%;top:-6px;width:12px;height:12px;background:{{ t.accent }};transform:translateX(-50%) rotate(45deg);box-shadow:0 0 8px {{ t.accent }}"></div>
+</sc-if>
+<div style="position:relative;width:104px;height:104px;flex:none;border-radius:{{ t.portraitRadius }};color:{{ t.accent }};{{ t.portraitAnim }}">
+<div style="width:104px;height:104px;border-radius:{{ t.portraitRadius }};background:{{ t.portraitFace }};box-shadow:0 0 0 2px {{ t.accentSoft }};position:relative;overflow:hidden">
+<div style="position:absolute;left:30px;top:18px;width:44px;height:44px;border-radius:50%;background:{{ t.portraitHead }}"></div>
+<div style="position:absolute;left:22px;bottom:0;width:60px;height:36px;background:{{ t.portraitBody }};border-radius:30px 30px 0 0"></div>
+</div>
+<div style="position:absolute;right:-6px;bottom:-6px;width:32px;height:32px;border-radius:50%;background:{{ t.panelBg }};box-shadow:0 0 0 2px {{ t.accent }};display:flex;align-items:center;justify-content:center;font:{{ t.dispWeight }} 15px {{ t.fontDisplay }};color:{{ t.textPrimary }}">7</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:6px;min-width:0">
+<div style="font:{{ t.nameWeight }} 25px {{ t.nameFont }};color:{{ t.textPrimary }};letter-spacing:{{ t.dispSpacing }};text-transform:{{ t.dispTransform }}">{{ player.name }}</div>
+<div style="font:400 13px {{ t.fontBody }};color:{{ t.textMuted }};margin-bottom:2px">{{ player.title }}</div>
+<div style="position:relative;width:100%;height:20px;background:{{ t.hpTrack }};border-radius:{{ t.barRadius }};box-shadow:{{ t.barBorder }};overflow:hidden">
+<div style="width:{{ player.hpPct }};height:100%;background:{{ t.hpFill }}"></div>
+<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font:600 11px ui-monospace,Menlo,monospace;color:rgba(255,255,255,.9);text-shadow:0 1px 2px rgba(0,0,0,.8)">{{ player.hpCur }} / {{ player.hpMax }}</div>
+</div>
+<div style="position:relative;width:100%;height:14px;background:{{ t.mpTrack }};border-radius:{{ t.barRadius }};box-shadow:{{ t.barBorder }};overflow:hidden">
+<div style="width:{{ player.mpPct }};height:100%;background:{{ t.mpFill }}"></div>
+</div>
+<div style="position:relative;width:100%;height:10px;background:{{ t.spTrack }};border-radius:{{ t.barRadius }};box-shadow:{{ t.barBorder }};overflow:hidden">
+<div style="width:{{ player.spPct }};height:100%;background:{{ t.spFill }}"></div>
+</div>
+</div>
+</div>
+
+<div style="position:absolute;left:56px;top:224px;width:520px;display:flex;gap:8px;flex-wrap:wrap">
+<sc-for list="{{ buffs }}" as="b" hint-placeholder-count="4">
+<div style="display:flex;flex-direction:column;align-items:center;gap:3px">
+<div style="width:44px;height:44px;border-radius:50%;background:{{ t.panelBg }};box-shadow:0 0 0 2px {{ t.buffRing }};backdrop-filter:{{ t.panelBackdrop }};display:flex;align-items:center;justify-content:center;font:{{ t.dispWeight }} 15px {{ t.fontDisplay }};color:{{ t.textPrimary }}">{{ b.letter }}</div>
+<div style="font:11px ui-monospace,Menlo,monospace;color:{{ t.textMuted }}">{{ b.time }}</div>
+</div>
+</sc-for>
+<div style="width:1px;align-self:stretch;background:{{ t.accentSoft }};margin:2px 6px"></div>
+<sc-for list="{{ debuffs }}" as="d" hint-placeholder-count="2">
+<div style="display:flex;flex-direction:column;align-items:center;gap:3px">
+<div style="width:44px;height:44px;border-radius:50%;background:{{ t.panelBg }};box-shadow:0 0 0 2px {{ t.debuffRing }};backdrop-filter:{{ t.panelBackdrop }};display:flex;align-items:center;justify-content:center;font:{{ t.dispWeight }} 15px {{ t.fontDisplay }};color:{{ t.textPrimary }}">{{ d.letter }}</div>
+<div style="font:11px ui-monospace,Menlo,monospace;color:{{ t.textMuted }}">{{ d.time }}</div>
+</div>
+</sc-for>
+</div>
+
+<div style="position:absolute;left:56px;top:300px;width:520px;display:flex;flex-direction:column;gap:8px">
+<sc-for list="{{ party }}" as="p" hint-placeholder-count="3">
+<div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:{{ t.panelBg }};box-shadow:{{ t.panelRing }};backdrop-filter:{{ t.panelBackdrop }};border-radius:{{ t.panelRadius }}">
+<div style="width:34px;height:34px;border-radius:50%;background:{{ t.portraitBody }};display:flex;align-items:center;justify-content:center;font:{{ t.dispWeight }} 14px {{ t.fontDisplay }};color:{{ t.textPrimary }};flex:none">{{ p.initial }}</div>
+<div style="flex:1;min-width:0">
+<div style="display:flex;justify-content:space-between;font:{{ t.nameWeight }} 14px {{ t.nameFont }};color:{{ t.textPrimary }};margin-bottom:3px"><span>{{ p.name }}</span><span style="font:400 11px {{ t.fontBody }};color:{{ t.textMuted }}">{{ p.role }}</span></div>
+<div style="width:100%;height:6px;background:{{ t.hpTrack }};border-radius:3px;margin-bottom:3px;overflow:hidden"><div style="width:{{ p.hpPct }};height:100%;background:{{ t.hpSolid }}"></div></div>
+<div style="width:100%;height:4px;background:{{ t.mpTrack }};border-radius:2px;overflow:hidden"><div style="width:{{ p.mpPct }};height:100%;background:{{ t.mpSolid }}"></div></div>
+</div>
+</div>
+</sc-for>
+</div>
+
+<div style="position:absolute;left:56px;bottom:56px;width:520px;height:224px;background:{{ t.panelBg }};box-shadow:{{ t.panelRing }};backdrop-filter:{{ t.panelBackdrop }};border-radius:{{ t.panelRadius }};display:flex;flex-direction:column;overflow:hidden">
+<div style="display:flex;gap:18px;padding:10px 14px 8px;border-bottom:1px solid {{ t.accentSoft }}">
+<span style="font:{{ t.dispWeight }} 13px {{ t.fontDisplay }};color:{{ t.textPrimary }}">Combat</span>
+<span style="font:{{ t.dispWeight }} 13px {{ t.fontDisplay }};color:{{ t.accent }}">Chat</span>
+</div>
+<div style="padding:10px 14px;display:flex;flex-direction:column;gap:8px;overflow:hidden">
+<sc-for list="{{ log }}" as="l" hint-placeholder-count="4">
+<div style="font:14px {{ t.fontBody }};color:{{ t.textPrimary }};line-height:1.35">
+<sc-if value="{{ l.hasWho }}" hint-placeholder-val="{{ false }}"><span style="color:{{ t.accent }};font-weight:600">{{ l.who }}: </span><span style="font-style:italic">&quot;{{ l.text }}&quot;</span></sc-if>
+{{ l.plain }}
+</div>
+</sc-for>
+</div>
+</div>
+
+<div style="position:absolute;left:50%;top:56px;transform:translateX(-50%);min-width:400px;padding:11px 26px;box-sizing:border-box;background:{{ t.panelBg }};box-shadow:{{ t.panelRing }};backdrop-filter:{{ t.panelBackdrop }};border-radius:{{ t.bannerRadius }};text-align:center">
+<div style="font:{{ t.nameWeight }} 24px {{ t.nameFont }};color:{{ t.textPrimary }};letter-spacing:{{ t.dispSpacing }};text-transform:{{ t.dispTransform }}">{{ zone.title }}</div>
+<div style="font:400 13px {{ t.fontBody }};color:{{ t.textMuted }};margin-top:1px">{{ zone.subtitle }}</div>
+</div>
+
+<sc-if value="{{ inCombat }}" hint-placeholder-val="{{ true }}">
+<div style="position:absolute;left:50%;top:138px;transform:translateX(-50%);width:600px;padding:12px 20px;box-sizing:border-box;background:{{ t.panelBg }};box-shadow:{{ t.panelRing }};backdrop-filter:{{ t.panelBackdrop }};border-radius:{{ t.panelRadius }}">
+<sc-if value="{{ t.hasDiamond }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;left:50%;top:-6px;width:12px;height:12px;background:{{ t.accent }};transform:translateX(-50%) rotate(45deg);box-shadow:0 0 8px {{ t.accent }}"></div></sc-if>
+<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px"><span style="font:{{ t.nameWeight }} 18px {{ t.nameFont }};color:{{ t.textPrimary }};letter-spacing:{{ t.dispSpacing }};text-transform:{{ t.dispTransform }}">{{ target.name }}</span><span style="font:13px ui-monospace,Menlo,monospace;color:{{ t.textMuted }}">Lv {{ target.level }}</span></div>
+<div style="position:relative;width:100%;height:20px;background:{{ t.hpTrack }};border-radius:{{ t.barRadius }};box-shadow:{{ t.barBorder }};overflow:hidden;margin-bottom:6px"><div style="width:{{ target.hpPct }};height:100%;background:{{ t.hpFill }}"></div></div>
+<div style="display:flex;align-items:center;gap:8px"><div style="flex:1;height:11px;background:{{ t.spTrack }};border-radius:{{ t.barRadius }};overflow:hidden"><div style="width:{{ target.castPct }};height:100%;background:{{ t.accent }}"></div></div><span style="font:italic 400 12px {{ t.fontBody }};color:{{ t.textMuted }};white-space:nowrap">{{ target.cast }}</span></div>
+</div>
+</sc-if>
+
+<div style="position:absolute;right:56px;top:56px;width:320px;height:320px;background:{{ t.panelBg }};box-shadow:{{ t.panelRing }};backdrop-filter:{{ t.panelBackdrop }};border-radius:{{ t.minimapRadius }};overflow:hidden">
+<div style="position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,.13) 1px,transparent 1.5px);background-size:14px 14px"></div>
+<sc-for list="{{ poi }}" as="pt" hint-placeholder-count="5">
+<div style="position:absolute;left:{{ pt.left }}%;top:{{ pt.top }}%;width:7px;height:7px;border-radius:50%;background:{{ t.accent }};transform:translate(-50%,-50%)"></div>
+</sc-for>
+<div style="position:absolute;left:50%;top:50%;width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-bottom:10px solid {{ t.textPrimary }};transform:translate(-50%,-50%);animation:pulseSoft 2.6s ease-in-out infinite"></div>
+<div style="position:absolute;left:12px;top:10px;font:{{ t.dispWeight }} 13px {{ t.fontDisplay }};color:{{ t.textPrimary }};text-shadow:0 1px 3px rgba(0,0,0,.8)">Region</div>
+<div style="position:absolute;right:12px;top:10px;font:12px ui-monospace,Menlo,monospace;color:{{ t.textMuted }};text-shadow:0 1px 3px rgba(0,0,0,.8)">-2, -2</div>
+</div>
+
+<div style="position:absolute;right:56px;top:390px;width:320px;height:50px;background:{{ t.panelBg }};box-shadow:{{ t.panelRing }};backdrop-filter:{{ t.panelBackdrop }};border-radius:{{ t.panelRadius }};display:flex;align-items:center;justify-content:space-around;padding:0 10px;box-sizing:border-box">
+<sc-for list="{{ currency }}" as="c" hint-placeholder-count="2">
+<div style="display:flex;align-items:center;gap:8px">
+<div style="width:18px;height:18px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#f0d27a,#a8791f);flex:none"></div>
+<span style="font:600 14px ui-monospace,Menlo,monospace;color:{{ t.textPrimary }}">{{ c.value }}</span>
+</div>
+</sc-for>
+</div>
+
+<div style="position:absolute;right:56px;top:454px;width:320px;height:200px;background:{{ t.panelBg }};box-shadow:{{ t.panelRing }};backdrop-filter:{{ t.panelBackdrop }};border-radius:{{ t.panelRadius }};padding:12px 16px;box-sizing:border-box">
+<div style="font:{{ t.dispWeight }} 15px {{ t.fontDisplay }};color:{{ t.accent }};margin-bottom:8px;letter-spacing:{{ t.dispSpacing }};text-transform:{{ t.dispTransform }}">Active Quests</div>
+<div style="display:flex;flex-direction:column;gap:9px">
+<sc-for list="{{ quests }}" as="q" hint-placeholder-count="3">
+<div style="display:flex;gap:8px;align-items:flex-start">
+<div style="width:8px;height:8px;background:{{ t.accent }};transform:rotate(45deg);margin-top:4px;flex:none"></div>
+<span style="font:13px {{ t.fontBody }};color:{{ t.textPrimary }};line-height:1.35">{{ q.text }}</span>
+</div>
+</sc-for>
+</div>
+</div>
+
+<div style="position:absolute;right:56px;bottom:56px;width:580px;height:300px;background:{{ t.panelBg }};box-shadow:{{ t.panelRing }};backdrop-filter:{{ t.panelBackdrop }};border-radius:{{ t.panelRadius }};padding:14px;box-sizing:border-box;display:flex;flex-direction:column;gap:12px">
+<div style="display:flex;gap:16px">
+<span style="font:{{ t.dispWeight }} 13px {{ t.fontDisplay }};color:{{ t.textMuted }}">Char</span>
+<span style="font:{{ t.dispWeight }} 13px {{ t.fontDisplay }};color:{{ t.textPrimary }};border-bottom:2px solid {{ t.accent }};padding-bottom:2px">Bag</span>
+<span style="font:{{ t.dispWeight }} 13px {{ t.fontDisplay }};color:{{ t.textMuted }}">Skill</span>
+<span style="font:{{ t.dispWeight }} 13px {{ t.fontDisplay }};color:{{ t.textMuted }}">Quest</span>
+<span style="font:{{ t.dispWeight }} 13px {{ t.fontDisplay }};color:{{ t.textMuted }}">Map</span>
+<span style="font:{{ t.dispWeight }} 13px {{ t.fontDisplay }};color:{{ t.textMuted }}">Menu</span>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:8px;width:520px">
+<sc-for list="{{ inventory }}" as="it" hint-placeholder-count="24">
+<dc-import name="ItemSlot" theme="{{ slotTheme }}" shape="{{ it.shape }}" tint="{{ it.tint }}" size="{{ invSize }}" qty="{{ it.qty }}" rare="{{ it.rare }}" hint-size="58px,58px"></dc-import>
+</sc-for>
+</div>
+</div>
+
+<div style="position:absolute;left:50%;bottom:152px;transform:translateX(-50%);width:900px;height:26px;display:flex;align-items:center;gap:10px">
+<div style="width:26px;height:26px;border-radius:50%;background:{{ t.panelBg }};box-shadow:0 0 0 2px {{ t.accent }};display:flex;align-items:center;justify-content:center;font:{{ t.dispWeight }} 12px {{ t.fontDisplay }};color:{{ t.textPrimary }};flex:none">7</div>
+<div style="flex:1;height:12px;background:{{ t.hpTrack }};border-radius:{{ t.barRadius }};box-shadow:{{ t.barBorder }};overflow:hidden"><div style="width:{{ player.xpPct }};height:100%;background:{{ t.accent }}"></div></div>
+<span style="font:12px ui-monospace,Menlo,monospace;color:{{ t.textMuted }};white-space:nowrap">{{ player.xpLabel }}</span>
+</div>
+
+<div style="position:absolute;left:50%;bottom:56px;transform:translateX(-50%);display:flex;gap:10px">
+<sc-for list="{{ hotbar }}" as="h" hint-placeholder-count="10">
+<dc-import name="ItemSlot" theme="{{ slotTheme }}" shape="{{ h.shape }}" tint="{{ h.tint }}" size="{{ hotbarSize }}" qty="{{ h.qty }}" rare="{{ h.rare }}" cd-pct="{{ h.cdPct }}" cd-label="{{ h.cdLabel }}" keybind="{{ h.key }}" active="{{ h.active }}" hint-size="64px,64px"></dc-import>
+</sc-for>
+</div>
+<div style="position:absolute;left:56px;bottom:32px;font:{{ t.dispWeight }} 13px {{ t.fontDisplay }};color:{{ t.accent }};letter-spacing:{{ t.dispSpacing }};text-transform:{{ t.dispTransform }}">Stance: Steady</div>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;Radiant Vale&quot;,&quot;options&quot;:[&quot;Ironbound&quot;,&quot;Radiant Vale&quot;,&quot;Hearthlight&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;HUD Skin&quot;},&quot;inCombat&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;State&quot;},&quot;showViewportLabel&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;State&quot;}}">
+class Component extends DCLogic {
+  themeTokens(theme) {
+    if (theme === 'Radiant Vale') {
+      return { slotTheme: 'gold',
+        fontBody: "'EB Garamond', serif", fontDisplay: "Cinzel, serif",
+        nameFont: "Cinzel, serif", nameWeight: '700', dispWeight: '700', dispTransform: 'uppercase', dispSpacing: '1px',
+        panelBg: 'oklch(0.19 0.03 25/0.88)',
+        panelRing: '0 0 0 1.5px oklch(0.78 0.14 85), 0 0 0 3.5px oklch(0.4 0.06 30), 0 10px 30px rgba(0,0,0,.55)',
+        panelRadius: '10px', panelBackdrop: 'none', bannerRadius: '10px', minimapRadius: '50%',
+        textPrimary: 'oklch(0.96 0.02 80)', textMuted: 'oklch(0.78 0.04 80)',
+        accent: 'oklch(0.82 0.15 85)', accentSoft: 'oklch(0.78 0.14 85)',
+        hpFill: 'linear-gradient(180deg,oklch(0.6 0.19 25),oklch(0.42 0.16 25))', hpTrack: 'oklch(0.14 0.02 25/.7)', hpSolid: 'oklch(0.55 0.19 25)',
+        mpFill: 'linear-gradient(180deg,oklch(0.58 0.15 250),oklch(0.4 0.13 250))', mpTrack: 'oklch(0.13 0.02 250/.7)', mpSolid: 'oklch(0.55 0.15 250)',
+        spFill: 'linear-gradient(180deg,oklch(0.63 0.15 145),oklch(0.44 0.13 145))', spTrack: 'oklch(0.13 0.02 145/.7)',
+        barRadius: '4px', barBorder: '0 0 0 1px oklch(0.4 0.06 30)',
+        buffRing: 'oklch(0.63 0.15 145)', debuffRing: 'oklch(0.6 0.19 25)',
+        portraitRadius: '50%', portraitFace: 'linear-gradient(160deg,#5a3a2e,#2a1712)', portraitHead: 'oklch(0.6 0.03 60)', portraitBody: 'oklch(0.45 0.03 60)',
+        portraitAnim: 'animation:pulseGlow 3s ease-in-out infinite;',
+        worldA: 'rgba(70,32,26,.9)', worldB: 'rgba(46,20,18,.9)', worldVignette: 'rgba(0,0,0,.65)', worldLabel: 'rgba(255,255,255,.24)', worldSolid: '#1a0f0d',
+        hasRivets: false, hasDiamond: true };
+    }
+    if (theme === 'Hearthlight') {
+      return { slotTheme: 'glass',
+        fontBody: "Jost, sans-serif", fontDisplay: "Jost, sans-serif",
+        nameFont: "'Cormorant Garamond', serif", nameWeight: '500', dispWeight: '500', dispTransform: 'none', dispSpacing: '.2px',
+        panelBg: 'oklch(0.25 0.025 260/0.62)',
+        panelRing: '0 0 0 1px oklch(0.72 0.05 85/.45), inset 0 1px 0 rgba(255,255,255,.06), 0 12px 34px rgba(0,0,0,.45)',
+        panelRadius: '14px', panelBackdrop: 'blur(16px)', bannerRadius: '999px', minimapRadius: '16px',
+        textPrimary: 'oklch(0.95 0.008 250)', textMuted: 'oklch(0.72 0.01 250)',
+        accent: 'oklch(0.76 0.07 85)', accentSoft: 'oklch(0.72 0.05 85/.4)',
+        hpFill: 'oklch(0.58 0.13 20)', hpTrack: 'oklch(0.16 0.01 20/.6)', hpSolid: 'oklch(0.58 0.13 20)',
+        mpFill: 'oklch(0.58 0.09 230)', mpTrack: 'oklch(0.15 0.01 230/.6)', mpSolid: 'oklch(0.58 0.09 230)',
+        spFill: 'oklch(0.62 0.08 140)', spTrack: 'oklch(0.15 0.01 140/.6)',
+        barRadius: '999px', barBorder: 'none',
+        buffRing: 'oklch(0.62 0.08 140)', debuffRing: 'oklch(0.58 0.13 20)',
+        portraitRadius: '50%', portraitFace: 'linear-gradient(160deg,#3a4152,#20242f)', portraitHead: 'oklch(0.55 0.01 250)', portraitBody: 'oklch(0.42 0.01 250)',
+        portraitAnim: '',
+        worldA: 'rgba(24,29,40,.85)', worldB: 'rgba(16,20,29,.85)', worldVignette: 'rgba(0,0,0,.5)', worldLabel: 'rgba(255,255,255,.2)', worldSolid: '#0e1016',
+        hasRivets: false, hasDiamond: false };
+    }
+    return { slotTheme: 'iron',
+      fontBody: "Spectral, serif", fontDisplay: "Cinzel, serif",
+      nameFont: "Cinzel, serif", nameWeight: '600', dispWeight: '600', dispTransform: 'none', dispSpacing: '.4px',
+      panelBg: 'oklch(0.22 0.02 55/0.90)',
+      panelRing: '0 0 0 2px oklch(0.15 0.015 55), 0 0 0 4px oklch(0.42 0.03 65), 0 10px 26px rgba(0,0,0,.5)',
+      panelRadius: '8px', panelBackdrop: 'none', bannerRadius: '8px', minimapRadius: '10px',
+      textPrimary: 'oklch(0.93 0.015 70)', textMuted: 'oklch(0.68 0.02 65)',
+      accent: 'oklch(0.64 0.09 80)', accentSoft: 'oklch(0.64 0.09 80)',
+      hpFill: 'linear-gradient(180deg,oklch(0.58 0.16 25),oklch(0.4 0.14 25))', hpTrack: 'oklch(0.18 0.02 25/.7)', hpSolid: 'oklch(0.5 0.16 25)',
+      mpFill: 'linear-gradient(180deg,oklch(0.55 0.09 235),oklch(0.36 0.08 235))', mpTrack: 'oklch(0.16 0.02 235/.7)', mpSolid: 'oklch(0.48 0.09 235)',
+      spFill: 'linear-gradient(180deg,oklch(0.6 0.11 120),oklch(0.42 0.09 120))', spTrack: 'oklch(0.16 0.02 120/.7)',
+      barRadius: '4px', barBorder: '0 0 0 1px oklch(0.15 0.015 55)',
+      buffRing: 'oklch(0.6 0.11 120)', debuffRing: 'oklch(0.55 0.15 25)',
+      portraitRadius: '10px', portraitFace: 'linear-gradient(160deg,#4a4038,#241d18)', portraitHead: 'oklch(0.55 0.02 60)', portraitBody: 'oklch(0.42 0.02 60)',
+      portraitAnim: '',
+      worldA: 'rgba(58,48,38,.9)', worldB: 'rgba(40,33,26,.9)', worldVignette: 'rgba(0,0,0,.62)', worldLabel: 'rgba(255,255,255,.26)', worldSolid: '#161310',
+      hasRivets: true, hasDiamond: false };
+  }
+  renderVals() {
+    const theme = this.props.theme ?? 'Ironbound';
+    const inCombat = this.props.inCombat ?? true;
+    const showViewportLabel = this.props.showViewportLabel ?? true;
+    const tk = this.themeTokens(theme);
+
+    const player = { name: 'Hero', title: 'Wanderer · Hearthlight Vale', level: 7, hpCur: 129, hpMax: 165, hpPct: '78%', mpCur: 48, mpMax: 88, mpPct: '55%', spCur: 72, spMax: 80, spPct: '90%', xpPct: '42%', xpLabel: '1,240 / 2,950 XP' };
+    const zone = { title: 'Hearthvale Town', subtitle: 'Safe Zone · Lv 1–99' };
+    const target = { name: 'Bandit Captain', level: 9, hpPct: '34%', cast: 'Reckless Swing', castPct: '60%' };
+    const party = [
+      { initial: 'B', name: 'Brynn', role: 'Guardian', hpPct: '82%', mpPct: '40%' },
+      { initial: 'O', name: 'Oswin', role: 'Ranger', hpPct: '65%', mpPct: '90%' },
+      { initial: 'S', name: 'Sable', role: 'Mender', hpPct: '100%', mpPct: '55%' }
+    ];
+    const buffs = [ { letter: 'W', time: '8:12' }, { letter: 'G', time: '2:40' }, { letter: 'B', time: '14:55' }, { letter: 'C', time: '0:45' } ];
+    const debuffs = [ { letter: 'W', time: '0:12' }, { letter: 'C', time: '1:05' } ];
+    const quests = [ { text: 'Deliver supplies to the Guild Hall' }, { text: 'Clear the north road of bandits (2/3)' }, { text: 'Speak with Innkeeper Mara' } ];
+    const log = [
+      { hasWho: false, plain: 'Welcome to Hearthlight Vale.' },
+      { hasWho: false, plain: 'You found 12 Gold.' },
+      { hasWho: true, who: 'Innkeeper Mara', text: 'Rest here anytime, traveler.', plain: '' },
+      { hasWho: false, plain: "You equipped Traveler's Blade." }
+    ];
+    const hotbarSize = 64, invSize = 58;
+    const hotbar = [
+      { key: '1', shape: 'stance', tint: '#e3c77d', qty: 0, rare: false, cdPct: 0, cdLabel: '', active: true },
+      { key: '2', shape: 'blade', tint: '#c9a227', qty: 0, rare: false, cdPct: 0, cdLabel: '', active: false },
+      { key: '3', shape: 'guard', tint: '#8fa3c9', qty: 0, rare: false, cdPct: 0.4, cdLabel: '4s', active: false },
+      { key: '4', shape: 'scroll', tint: '#d8c9a3', qty: 0, rare: false, cdPct: 0, cdLabel: '', active: false },
+      { key: '5', shape: 'potion', tint: '#c85450', qty: 3, rare: false, cdPct: 0, cdLabel: '', active: false },
+      { key: '6', shape: 'potion', tint: '#4f7fc9', qty: 2, rare: false, cdPct: 0, cdLabel: '', active: false },
+      { key: '7', shape: 'blade', tint: '#a9762a', qty: 0, rare: false, cdPct: 0.7, cdLabel: '9s', active: false },
+      { key: '8', shape: 'guard', tint: '#7fae6a', qty: 0, rare: false, cdPct: 0, cdLabel: '', active: false },
+      { key: '9', shape: 'empty', tint: '#888', qty: 0, rare: false, cdPct: 0, cdLabel: '', active: false },
+      { key: '0', shape: 'empty', tint: '#888', qty: 0, rare: false, cdPct: 0, cdLabel: '', active: false }
+    ];
+    const inventory = [
+      { shape: 'blade', tint: '#c9a227', qty: 0, rare: true }, { shape: 'guard', tint: '#8fa3c9', qty: 0, rare: false },
+      { shape: 'potion', tint: '#c85450', qty: 6, rare: false }, { shape: 'potion', tint: '#4f7fc9', qty: 2, rare: false },
+      { shape: 'scroll', tint: '#d8c9a3', qty: 3, rare: false }, { shape: 'gem', tint: '#7fd9d0', qty: 0, rare: true },
+      { shape: 'gem', tint: '#b98be0', qty: 4, rare: false }, { shape: 'blade', tint: '#a9762a', qty: 0, rare: false },
+      { shape: 'scroll', tint: '#d8c9a3', qty: 0, rare: true }, { shape: 'potion', tint: '#c85450', qty: 8, rare: false },
+      { shape: 'guard', tint: '#7fae6a', qty: 0, rare: true }, { shape: 'gem', tint: '#7fd9d0', qty: 2, rare: false },
+      { shape: 'empty', tint: '#888', qty: 0, rare: false }, { shape: 'empty', tint: '#888', qty: 0, rare: false },
+      { shape: 'empty', tint: '#888', qty: 0, rare: false }, { shape: 'empty', tint: '#888', qty: 0, rare: false },
+      { shape: 'empty', tint: '#888', qty: 0, rare: false }, { shape: 'empty', tint: '#888', qty: 0, rare: false },
+      { shape: 'empty', tint: '#888', qty: 0, rare: false }, { shape: 'empty', tint: '#888', qty: 0, rare: false },
+      { shape: 'empty', tint: '#888', qty: 0, rare: false }, { shape: 'empty', tint: '#888', qty: 0, rare: false },
+      { shape: 'empty', tint: '#888', qty: 0, rare: false }, { shape: 'empty', tint: '#888', qty: 0, rare: false }
+    ];
+    const currency = [ { label: 'Gold', value: '1,248' }, { label: 'Guild Marks', value: '36' } ];
+    const poi = [ { left: 28, top: 22 }, { left: 62, top: 38 }, { left: 74, top: 20 }, { left: 40, top: 68 }, { left: 58, top: 74 } ];
+
+    return { t: tk, slotTheme: tk.slotTheme, inCombat, showViewportLabel, player, zone, target, party, buffs, debuffs, quests, hotbar, inventory, currency, poi, log, hotbarSize, invSize };
+  }
+}
+</script>
+</body>
+</html>

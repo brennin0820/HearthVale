@@ -1,0 +1,72 @@
+[
+  {
+    "key": "map_hearthvale_town",
+    "type": "map",
+    "placeholder": true
+  },
+  {
+    "key": "map_cloverfield_plains",
+    "type": "map",
+    "placeholder": true
+  },
+  {
+    "key": "map_mushroom_hollow",
+    "type": "map",
+    "placeholder": true
+  },
+  {
+    "key": "map_whisperwood_meadows",
+    "type": "map",
+    "placeholder": true
+  },
+  {
+    "key": "map_old_mill_road",
+    "type": "map",
+    "placeholder": true
+  },
+  {
+    "key": "map_millwick_crossing",
+    "type": "map",
+    "placeholder": true
+  },
+  {
+    "key": "map_crystal_mine_approach",
+    "type": "map",
+    "placeholder": true
+  },
+  {
+    "key": "map_old_crystal_mine",
+    "type": "map",
+    "placeholder": true
+  },
+  {
+    "key": "map_moonwell_entrance",
+    "type": "map",
+    "placeholder": true
+  },
+  {
+    "key": "map_moonwell_ruins",
+    "type": "map",
+    "placeholder": true
+  },
+  {
+    "key": "player_down_0",
+    "type": "sprite",
+    "placeholder": true
+  },
+  {
+    "key": "player_down_1",
+    "type": "sprite",
+    "placeholder": true
+  },
+  {
+    "key": "portal_0",
+    "type": "sprite",
+    "placeholder": true
+  },
+  {
+    "key": "portal_1",
+    "type": "sprite",
+    "placeholder": true
+  }
+]

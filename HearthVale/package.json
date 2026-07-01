@@ -1,0 +1,33 @@
+{
+  "name": "hearthvale",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "export:data": "tsx scripts/export-data.ts",
+    "verify:portals": "tsx scripts/verify-portals.ts",
+    "validate:data": "tsx scripts/validate-data.ts",
+    "verify:spawns": "tsx scripts/verify-spawns.ts",
+    "verify:npcs": "tsx scripts/verify-npcs.ts",
+    "verify:bounds": "tsx scripts/verify-bounds.ts",
+    "verify:drops": "tsx scripts/verify-drops.ts",
+    "verify:quests": "tsx scripts/verify-quests.ts",
+    "verify:audio": "tsx scripts/verify-audio.ts",
+    "verify:all": "tsx tools/cli.ts verify",
+    "verify": "npm run verify:all",
+    "hearthvale": "tsx tools/cli.ts",
+    "balance:report": "tsx tools/balance-report.ts",
+    "dev:client": "npm run --prefix client dev",
+    "build:client": "npm run --prefix client build",
+    "typecheck:client": "npm run --prefix client build",
+    "dev:compass": "npm run --prefix compass dev",
+    "mac:compass": "npm run --prefix compass mac:dev",
+    "build:compass": "npm run --prefix compass build",
+    "build:compass:mac": "npm run --prefix compass build:mac"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.29",
+    "tsx": "^4.19.4",
+    "typescript": "^5.8.3",
+    "zod": "^4.4.3"
+  }
+}

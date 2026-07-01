@@ -1,0 +1,10 @@
+node_modules/
+client/node_modules/
+compass/node_modules/
+client/dist/
+compass/dist/
+compass/release/
+.DS_Store
+*.log
+.env
+.env.*

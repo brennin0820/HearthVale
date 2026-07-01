@@ -1,0 +1,88 @@
+{
+  "version": 1,
+  "description": "Curated online resource hubs for HearthVale lane coders — starting points for unlimited search. Always verify license per asset.",
+  "hubs": [
+    {
+      "id": "opengameart",
+      "name": "OpenGameArt.org",
+      "url": "https://opengameart.org/",
+      "searchUrl": "https://opengameart.org/art-search-advanced?keys={query}",
+      "lanes": ["pixel", "world", "audio"],
+      "licenses": ["CC0", "CC-BY", "CC-BY-SA", "OGA-BY"],
+      "notes": "Large free art/audio library; check per-asset license."
+    },
+    {
+      "id": "itch-free",
+      "name": "itch.io Free Game Assets",
+      "url": "https://itch.io/game-assets/free",
+      "searchUrl": "https://itch.io/game-assets/free/tag-{query}",
+      "lanes": ["pixel", "world", "audio"],
+      "licenses": ["varies"],
+      "notes": "Filter by price=free; read each pack license."
+    },
+    {
+      "id": "kenney",
+      "name": "Kenney.nl",
+      "url": "https://kenney.nl/assets",
+      "searchUrl": "https://kenney.nl/assets?q={query}",
+      "lanes": ["pixel", "world", "audio", "ui"],
+      "licenses": ["CC0"],
+      "notes": "CC0 SFX/UI/tiles; also on OpenGameArt."
+    },
+    {
+      "id": "finalbossblues",
+      "name": "finalbossblues Open RTP",
+      "url": "https://finalbossblues.itch.io/openrtp-tiles",
+      "lanes": ["world", "pixel"],
+      "licenses": ["CC0"],
+      "notes": "Top-down RPG tilesets; 32px friendly."
+    },
+    {
+      "id": "phaser-tilemaps",
+      "name": "Phaser 3 Tilemaps FAQ",
+      "url": "https://github.com/samme/phaser3-faq/wiki/Tilemaps",
+      "lanes": ["world", "engine"],
+      "notes": "Tiled JSON pipeline, embed tilesets, createLayer."
+    },
+    {
+      "id": "tiled",
+      "name": "Tiled Map Editor",
+      "url": "https://www.mapeditor.org/",
+      "lanes": ["world"],
+      "notes": "Export JSON with embedded tilesets; object layers for spawns/portals."
+    },
+    {
+      "id": "github-pixel-srpg",
+      "name": "PixelSRPG-Forge",
+      "url": "https://github.com/Huu-Yuu/PixelSRPG-Forge",
+      "lanes": ["pixel"],
+      "licenses": ["MIT repo; verify per-asset"],
+      "notes": "SRPG pixel collection; check individual asset licenses."
+    },
+    {
+      "id": "freesound",
+      "name": "Freesound.org",
+      "url": "https://freesound.org/",
+      "searchUrl": "https://freesound.org/search/?q={query}",
+      "lanes": ["audio"],
+      "licenses": ["varies"],
+      "notes": "Community SFX; attribution often required."
+    },
+    {
+      "id": "incompetech",
+      "name": "Incompetech (Kevin MacLeod)",
+      "url": "https://incompetech.com/music/royalty-free/",
+      "searchUrl": "https://incompetech.com/music/royalty-free/?search={query}",
+      "lanes": ["audio"],
+      "licenses": ["CC-BY"],
+      "notes": "Royalty-free BGM with attribution."
+    }
+  ],
+  "laneDefaults": {
+    "engine": ["phaser-tilemaps", "tiled"],
+    "pixel": ["opengameart", "itch-free", "kenney", "github-pixel-srpg"],
+    "world": ["tiled", "phaser-tilemaps", "finalbossblues", "opengameart"],
+    "design": ["phaser-tilemaps"],
+    "audio": ["opengameart", "kenney", "freesound", "incompetech"]
+  }
+}
