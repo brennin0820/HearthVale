@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { hudOverlay, type HudPlayerSnapshot } from '../hud/HudOverlay.js';
+import { DEFAULT_PLAYER, hudOverlay, type HudPlayerSnapshot } from '../hud/HudOverlay.js';
 import { audioService } from '../services/AudioService.js';
 import { DevOverlay } from '../services/DevOverlay.js';
 import { loadCollisionMask, loadPropLayer } from '../services/mapArtData.js';
@@ -54,19 +54,7 @@ export class WorldScene extends Phaser.Scene {
   private devOverlay!: DevOverlay;
   private collisionMask: CollisionMaskDefinition | null = null;
   private ready = false;
-  private playerState: HudPlayerSnapshot = {
-    name: 'Hero',
-    level: 7,
-    hpCur: 129,
-    hpMax: 165,
-    mpCur: 48,
-    mpMax: 88,
-    spCur: 90,
-    spMax: 100,
-    xpCur: 1240,
-    xpNext: 2950,
-    stance: 'Steady',
-  };
+  private playerState: HudPlayerSnapshot = { ...DEFAULT_PLAYER };
 
   constructor() {
     super({ key: 'WorldScene' });

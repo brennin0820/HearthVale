@@ -226,7 +226,7 @@ const PLAYER = {
   xpCur: 1240, xpNext: 2950,
   stance: 'Steady',
 };
-const DEFAULT_PLAYER = PLAYER as HudPlayerSnapshot;
+export const DEFAULT_PLAYER = PLAYER as HudPlayerSnapshot;
 const BUFFS = [
   { letter: 'W', time: '8:12' },
   { letter: 'G', time: '2:40' },
