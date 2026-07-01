@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import { audioService } from '../services/AudioService.js';
-import { loadWorldMaps, getMapById } from '../services/worldData.js';
 import { loadCatalog } from '../services/catalogData.js';
+import { getMapById, loadMonsterCatalog, loadWorldMaps } from '../services/worldData.js';
 import { WorldScene } from './WorldScene.js';
 import { INITIAL_MAP_ID } from '../constants.js';
 
@@ -24,8 +24,7 @@ export class BootScene extends Phaser.Scene {
 
   async create(): Promise<void> {
     try {
-      await loadWorldMaps();
-      await loadCatalog();
+      await Promise.all([loadWorldMaps(), loadCatalog(), loadMonsterCatalog()]);
       await audioService.load();
       const startMap = getMapById(INITIAL_MAP_ID);
       if (!startMap) {
