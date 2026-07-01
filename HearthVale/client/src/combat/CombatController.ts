@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import { audioService } from '../services/AudioService.js';
 import type { MonsterCatalogEntry } from '../services/worldData.js';
+import type { SkillDefinition } from '../types/catalog.js';
 import type { SpawnTable, Vec2 } from '../types/world.js';
 import { calcPhysicalDamage, rollHit, type CombatStats } from './formulas.js';
 import { Monster } from './Monster.js';
@@ -25,6 +26,12 @@ export interface CombatBridge {
   onMonsterDefeated(monster: MonsterCatalogEntry): void;
   /** Current combat target changed (identity or HP) — refresh the HUD frame. */
   onTargetChanged(target: CombatTargetInfo | null): void;
+  /** Spend MP for a skill cast; returns false (no-op) if the player can't afford it. */
+  spendMp(amount: number): boolean;
+  /** A `heal`-kind skill restores player HP, clamped to max upstream. */
+  healPlayer(amount: number): void;
+  /** A `buff`-kind skill applies a timed stat bonus to the player. */
+  applyPlayerBuff(stat: string, amount: number, durationMs: number): void;
 }
 
 export interface CombatDepths {
@@ -47,6 +54,7 @@ export class CombatController {
   private playerAttackCooldown = 0;
   private target: Monster | null = null;
   private lastTargetKey = '';
+  private readonly skillCooldowns: Map<string, number> = new Map();
 
   constructor(
     private readonly scene: Phaser.Scene,
@@ -88,6 +96,15 @@ export class CombatController {
       this.playerAttackCooldown = Math.max(0, this.playerAttackCooldown - delta);
     }
 
+    for (const [skillId, remaining] of this.skillCooldowns) {
+      const next = remaining - delta;
+      if (next <= 0) {
+        this.skillCooldowns.delete(skillId);
+      } else {
+        this.skillCooldowns.set(skillId, next);
+      }
+    }
+
     const playerPos = this.bridge.getPlayerPosition();
     const playerAlive = this.bridge.isPlayerAlive();
     const step = (MONSTER_SPEED * delta) / 1000;
@@ -95,6 +112,7 @@ export class CombatController {
     for (const monster of this.monsters) {
       if (monster.tickRespawn(delta)) continue;
       if (!monster.isAlive) continue;
+      monster.tickEffects(delta);
 
       if (monster.attackCooldown > 0) {
         monster.attackCooldown = Math.max(0, monster.attackCooldown - delta);
@@ -167,6 +185,98 @@ export class CombatController {
       }
     }
     this.playerAttack();
+  }
+
+  /**
+   * Cast a job skill (hotbar 1-4). Only `damage`/`heal`/`buff`/`debuff`/`mark`
+   * effects are combat actions — `economy`/`gather`/`utility` skills (haggle,
+   * ore sense, pushcart, ...) are handled by the vendor/gather systems instead
+   * and are silently ignored here.
+   */
+  useSkill(skill: SkillDefinition): void {
+    if (!this.bridge.isPlayerAlive() || this.skillCooldowns.has(skill.id)) return;
+
+    const { effect } = skill;
+    const needsTarget = effect.kind === 'damage' || effect.kind === 'debuff' || effect.kind === 'mark';
+    let target: Monster | null = null;
+    if (needsTarget) {
+      target = this.acquireTarget();
+      if (!target) return;
+    }
+
+    if (!this.bridge.spendMp(skill.mpCost)) {
+      const pos = this.bridge.getPlayerPosition();
+      this.floatingText(pos.x, pos.y - 20, 'no MP', '#88aaff');
+      return;
+    }
+
+    switch (effect.kind) {
+      case 'damage':
+        this.castDamageSkill(skill, target!);
+        break;
+      case 'heal': {
+        const amount = effect.amount ?? 0;
+        this.bridge.healPlayer(amount);
+        const pos = this.bridge.getPlayerPosition();
+        this.floatingText(pos.x, pos.y - 20, `+${amount}`, '#9fe0a0');
+        break;
+      }
+      case 'buff':
+        if (effect.stat) {
+          this.bridge.applyPlayerBuff(effect.stat, effect.amount ?? 0, (effect.duration ?? 0) * 1000);
+        }
+        this.floatingText(this.bridge.getPlayerPosition().x, this.bridge.getPlayerPosition().y - 20, skill.displayName, '#ffe08a');
+        break;
+      case 'debuff':
+        target!.applyDebuff(effect.amount ?? 0, (effect.duration ?? 0) * 1000);
+        this.floatingText(target!.x, target!.y, skill.displayName, '#ff9a6a');
+        break;
+      case 'mark':
+        target!.applyMark(effect.amount ?? 0, (effect.duration ?? 0) * 1000);
+        this.floatingText(target!.x, target!.y, skill.displayName, '#f0c850');
+        break;
+      default:
+        // economy/gather/utility — not a combat action.
+        return;
+    }
+
+    this.skillCooldowns.set(skill.id, skill.cooldown * 1000);
+  }
+
+  private castDamageSkill(skill: SkillDefinition, target: Monster): void {
+    const baseStats = this.bridge.getPlayerStats();
+    const stats = skill.element ? { ...baseStats, element: skill.element } : baseStats;
+    const defenderStats = target.combatStats();
+
+    if (!rollHit(stats, defenderStats)) {
+      this.floatingText(target.x, target.y, 'miss', '#cfd0d8');
+      return;
+    }
+
+    const base = calcPhysicalDamage(stats, defenderStats, skill.effect.powerMultiplier ?? 1);
+    const damage = Math.max(1, Math.round(base * target.markMultiplier()));
+    const fatal = target.takeDamage(damage);
+    audioService.playSfx('sfx_combat_hit');
+    this.floatingText(target.x, target.y, String(damage), '#a8e0ff');
+
+    if (fatal) {
+      const def = target.def;
+      target.die();
+      this.floatingText(target.x, target.y - 8, `${def.displayName} defeated`, '#9fe0a0');
+      this.bridge.onMonsterDefeated(def);
+      if (this.target === target) {
+        this.target = null;
+      }
+    }
+  }
+
+  /** The current lock-on target if still valid, else the nearest alive monster in range. */
+  private acquireTarget(): Monster | null {
+    const playerPos = this.bridge.getPlayerPosition();
+    if (this.target && this.target.isAlive && this.distanceTo(this.target, playerPos) <= TARGET_RADIUS) {
+      return this.target;
+    }
+    return this.nearestAlive(playerPos, TARGET_RADIUS);
   }
 
   destroy(): void {

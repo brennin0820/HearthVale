@@ -162,3 +162,16 @@ Append-only. Never edit or remove existing entries.
 - Reasoning: Job classes shipped with skill-id stubs that resolved to nothing (Phase 5 design-loop gate requires skills connect to combat/economy); this closes that gap at the data layer without touching the in-flight combat client PR, and fixes stale roadmap status that contradicted the session log
 - Verification: `npm run verify` passed (13/13 checks); `npx tsc --noEmit` clean
 - Confidence: 92/100
+
+---
+
+## [2026-07-01] Autonomous design/production pass — wire skill effects into CombatController
+
+- Event: FeatureBuilt
+- Actions performed: Extended `client/src/services/catalogData.ts` to load `/catalog/jobs.json` + `/catalog/skills.json` (`getJobSkills`, `getSkillById`). Added `CombatController.useSkill()` dispatching on `SkillEffect.kind` (damage/heal/buff/debuff/mark), a per-skill cooldown map, and `CombatBridge.spendMp`/`healPlayer`/`applyPlayerBuff`. Added `Monster.applyDebuff`/`applyMark`/`tickEffects`/`markMultiplier` for the two enemy-targeted effect kinds (flee reduction, bonus damage taken), reset on respawn. `WorldScene` resolves the player's job (`novice` default, since job-selection UI doesn't exist yet) into a 4-slot hotbar bound to keys 1-4, tracks timed player buffs surfaced through the existing HUD aura-pill mechanism, and wires the new bridge methods.
+- Files created: none
+- Files modified: `client/src/services/catalogData.ts`, `client/src/types/catalog.ts`, `client/src/combat/CombatController.ts`, `client/src/combat/Monster.ts`, `client/src/scenes/WorldScene.ts`, `docs/ROADMAP.md`, `docs/14_SESSION_HANDOFF.md`
+- Dependencies added: none
+- Reasoning: Job classes (Phase 5 gate) and the skill catalog (previous session) only mattered once something actually cast them in combat — this closes that loop so classes mechanically differentiate combat, not just on paper. `economy`/`gather`/`utility` skill kinds are intentionally left uncast here; they belong to the not-yet-built vendor/gather systems.
+- Verification: `npx tsc --noEmit` and `vite build` clean in `client/`; root `npm run verify` (13/13) unaffected (data-layer untouched). Live-verified in a running dev server: direct calls into the loaded `WorldScene`/`CombatController` confirmed `basic_strike` dealing formula-correct damage, `first_aid` restoring its exact `amount` and spending its `mpCost`, `shield_bash` zeroing a monster's flee, `hunters_mark` raising `markMultiplier` to 1.15, and `guard_stance` adding +8 def for 10s — all through the production code path, zero console errors beyond an unrelated benign 404/connection-reset from dev-server HMR.
+- Confidence: 90/100

@@ -56,6 +56,13 @@ export class Monster {
   private readonly hpBarBg: Phaser.GameObjects.Rectangle;
   private readonly hpBarFill: Phaser.GameObjects.Rectangle;
 
+  /** Flee reduction from a `debuff`-kind skill (e.g. Shield Bash), and remaining ms. */
+  private fleeDebuff = 0;
+  private fleeDebuffRemaining = 0;
+  /** Bonus damage-taken percent from a `mark`-kind skill (e.g. Hunter's Mark), and remaining ms. */
+  private markBonusPercent = 0;
+  private markRemaining = 0;
+
   constructor(
     scene: Phaser.Scene,
     layer: Phaser.GameObjects.Container,
@@ -128,9 +135,44 @@ export class Monster {
       atk: this.def.atk,
       def: this.def.def,
       hit: this.level * 2,
-      flee: this.level,
+      flee: Math.max(0, this.level - this.fleeDebuff),
       element: this.def.element,
     };
+  }
+
+  /** Damage multiplier from an active `mark`-kind skill (1 when unmarked). */
+  markMultiplier(): number {
+    return 1 + this.markBonusPercent / 100;
+  }
+
+  /** Apply a `debuff`-kind skill effect (e.g. Shield Bash lowering flee). */
+  applyDebuff(fleeDelta: number, durationMs: number): void {
+    this.fleeDebuff = fleeDelta;
+    this.fleeDebuffRemaining = durationMs;
+  }
+
+  /** Apply a `mark`-kind skill effect (e.g. Hunter's Mark raising damage taken). */
+  applyMark(bonusPercent: number, durationMs: number): void {
+    this.markBonusPercent = bonusPercent;
+    this.markRemaining = durationMs;
+  }
+
+  /** Decrement active debuff/mark timers; called once per frame while alive. */
+  tickEffects(delta: number): void {
+    if (this.fleeDebuffRemaining > 0) {
+      this.fleeDebuffRemaining -= delta;
+      if (this.fleeDebuffRemaining <= 0) {
+        this.fleeDebuffRemaining = 0;
+        this.fleeDebuff = 0;
+      }
+    }
+    if (this.markRemaining > 0) {
+      this.markRemaining -= delta;
+      if (this.markRemaining <= 0) {
+        this.markRemaining = 0;
+        this.markBonusPercent = 0;
+      }
+    }
   }
 
   /** Apply damage; returns true if this blow was fatal. */
@@ -171,6 +213,10 @@ export class Monster {
     this.hpCur = this.hpMax;
     this.state = 'alive';
     this.attackCooldown = 0;
+    this.fleeDebuff = 0;
+    this.fleeDebuffRemaining = 0;
+    this.markBonusPercent = 0;
+    this.markRemaining = 0;
     this.setPosition(this.home.x, this.home.y);
     this.setPartsVisible(true);
     this.hpBarBg.setVisible(false);
