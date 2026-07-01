@@ -1,15 +1,34 @@
 import Phaser from 'phaser';
-import { DEFAULT_PLAYER, hudOverlay, type HudPlayerSnapshot } from '../hud/HudOverlay.js';
+import {
+  DEFAULT_CURRENCY,
+  DEFAULT_HOTBAR,
+  DEFAULT_INVENTORY,
+  DEFAULT_PARTY,
+  DEFAULT_PLAYER,
+  hudOverlay,
+  type HudAura,
+  type HudPlayerSnapshot,
+  type HudTarget,
+} from '../hud/HudOverlay.js';
 import { audioService } from '../services/AudioService.js';
 import { DevOverlay } from '../services/DevOverlay.js';
 import { loadCollisionMask, loadPropLayer } from '../services/mapArtData.js';
+<<<<<<< HEAD
 import { loadNpcCatalog } from '../services/npcData.js';
 import { getMapById } from '../services/worldData.js';
 import type { NpcCatalogEntry, NpcRole } from '../types/npc.js';
+=======
+import { getMapById, loadMonsterCatalog, type MonsterCatalogEntry } from '../services/worldData.js';
+import { getNpcById, getQuestsForNpc } from '../services/catalogData.js';
+import { DialogueBox, PANEL_HEIGHT, PANEL_MARGIN_BOTTOM } from '../ui/DialogueBox.js';
+import type { NpcDefinition } from '../types/catalog.js';
+>>>>>>> origin/main
 import {
   BIOME_COLORS,
   DEFAULT_MAP_COLOR,
+  HUD_DEPTH,
   KIND_ACCENT,
+  NPC_ROLE_COLORS,
   PLAYER_SPEED,
   PORTAL_TRIGGER_RADIUS,
   TILE_SIZE,
@@ -24,12 +43,32 @@ export interface WorldSceneData {
   spawn: Vec2;
 }
 
+/** Lightweight world-space record of a drawn monster, used to drive the HUD target frame. */
+interface MonsterInstance {
+  name: string;
+  level: number;
+  x: number;
+  y: number;
+}
+
 const PLAYER_COLLISION_SAMPLES: Vec2[] = [
   { x: 0, y: 0 },
   { x: -8, y: 8 },
   { x: 8, y: 8 },
   { x: 0, y: 12 },
 ];
+const NPC_INTERACT_RADIUS = 46;
+/** Vertical gap between the talk prompt and the dialogue panel above it. */
+const TALK_PROMPT_PANEL_GAP = 12;
+
+interface NpcInteractable {
+  def: NpcDefinition;
+  position: Vec2;
+}
+
+/** Radius (world px) within which the nearest monster becomes the HUD target. */
+const TARGET_LOCK_RADIUS = 96;
+const LOW_HP_AURA_THRESHOLD = 0.3;
 const VITAL_STAMINA_DRAIN_PER_SECOND = 16;
 const VITAL_STAMINA_REGEN_PER_SECOND = 9;
 const VITAL_MP_DRAIN_PER_SECOND_MOVING = 1.5;
@@ -126,6 +165,11 @@ export class WorldScene extends Phaser.Scene {
   private portalCooldown = 0;
   private worldLayer!: Phaser.GameObjects.Container;
   private nearestPortal: MapPortal | null = null;
+  private interactKey!: Phaser.Input.Keyboard.Key;
+  private npcs: NpcInteractable[] = [];
+  private nearestNpc: NpcInteractable | null = null;
+  private dialogue!: DialogueBox;
+  private talkPrompt!: Phaser.GameObjects.Text;
   private inSafeZone = false;
   private devOverlay!: DevOverlay;
   private collisionMask: CollisionMaskDefinition | null = null;
@@ -134,6 +178,7 @@ export class WorldScene extends Phaser.Scene {
   private autoPath: Vec2[] = [];
   private autoPathMarker: Phaser.GameObjects.Arc | null = null;
   private playerState: HudPlayerSnapshot = { ...DEFAULT_PLAYER };
+<<<<<<< HEAD
   private npcCatalog: Map<string, NpcCatalogEntry> = new Map();
   private npcs: NpcInstance[] = [];
   private nearestNpc: NpcInstance | null = null;
@@ -141,6 +186,10 @@ export class WorldScene extends Phaser.Scene {
   private interactPrompt: Phaser.GameObjects.Text | null = null;
   private dialogueBubble: Phaser.GameObjects.Container | null = null;
   private dialogueTimer = 0;
+=======
+  private monsters: MonsterInstance[] = [];
+  private monsterCatalog: Map<string, MonsterCatalogEntry> = new Map();
+>>>>>>> origin/main
 
   constructor() {
     super({ key: 'WorldScene' });
@@ -151,6 +200,7 @@ export class WorldScene extends Phaser.Scene {
     this.portalCooldown = 500;
     this.ready = false;
     this.collisionMask = null;
+<<<<<<< HEAD
     this.monsterSpawns = [];
     // Game objects are destroyed on scene.restart; drop stale references so a
     // fresh map starts with clean NPC/interaction state.
@@ -160,6 +210,11 @@ export class WorldScene extends Phaser.Scene {
     this.interactPrompt = null;
     this.dialogueBubble = null;
     this.dialogueTimer = 0;
+=======
+    this.nearestNpc = null;
+    this.npcs = [];
+    this.monsters = [];
+>>>>>>> origin/main
   }
 
   async create(data: WorldSceneData): Promise<void> {
@@ -175,6 +230,7 @@ export class WorldScene extends Phaser.Scene {
     this.cameras.main.setBackgroundColor('#121018');
 
     try {
+<<<<<<< HEAD
       const [collisionMask, propLayer, npcCatalog] = await Promise.all([
         loadCollisionMask(this.mapId),
         loadPropLayer(this.mapId),
@@ -183,6 +239,16 @@ export class WorldScene extends Phaser.Scene {
 
       this.collisionMask = collisionMask;
       this.npcCatalog = npcCatalog;
+=======
+      const [collisionMask, propLayer, monsterCatalog] = await Promise.all([
+        loadCollisionMask(this.mapId),
+        loadPropLayer(this.mapId),
+        loadMonsterCatalog(),
+      ]);
+
+      this.collisionMask = collisionMask;
+      this.monsterCatalog = monsterCatalog;
+>>>>>>> origin/main
       this.drawMapBackground(mapDef);
       this.drawPropLayer(propLayer.props);
       this.drawSafeZone(mapDef);
@@ -206,12 +272,31 @@ export class WorldScene extends Phaser.Scene {
         D: this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.D),
       };
       this.interactKey = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.E);
+<<<<<<< HEAD
       this.autoPathMarker = this.add.circle(0, 0, 7, 0x88ff88, 0.55);
       this.autoPathMarker.setDepth(WORLD_DEPTH.labels);
       this.autoPathMarker.setVisible(false);
 
       this.input.on('pointerdown', this.handlePointerDown, this);
       this.input.mouse?.disableContextMenu();
+=======
+
+      this.dialogue = new DialogueBox(this);
+      this.talkPrompt = this.add
+        .text(0, 0, '', {
+          fontFamily: 'sans-serif',
+          fontSize: '12px',
+          color: '#ffe8b0',
+          backgroundColor: '#161320cc',
+          padding: { x: 8, y: 4 },
+          stroke: '#1a1520',
+          strokeThickness: 2,
+        })
+        .setOrigin(0.5, 1)
+        .setDepth(HUD_DEPTH + 4)
+        .setScrollFactor(0)
+        .setVisible(false);
+>>>>>>> origin/main
 
       this.devOverlay = new DevOverlay(this);
       this.devOverlay.mount(mapDef);
@@ -235,6 +320,16 @@ export class WorldScene extends Phaser.Scene {
       this.portalCooldown = Math.max(0, this.portalCooldown - delta);
     }
 
+    this.handleInteraction();
+
+    if (this.dialogue.isOpen) {
+      // Freeze movement, portals, and vital drain while a conversation is open.
+      this.updatePlayerVitals(delta, false);
+      this.syncHud({ x: this.player.x, y: this.player.y });
+      this.devOverlay.update(this.mapDef, { x: this.player.x, y: this.player.y });
+      return;
+    }
+
     const moved = this.handleMovement(delta);
     const autoPathMoved = this.followAutoPath(delta);
 
@@ -243,10 +338,63 @@ export class WorldScene extends Phaser.Scene {
     this.processMonsterRespawns(delta);
     this.updateNpcInteraction(delta);
     this.inSafeZone = this.isInSafeZone({ x: this.player.x, y: this.player.y });
+<<<<<<< HEAD
     this.updatePlayerVitals(delta, actuallyMoved);
+=======
+    this.updatePlayerVitals(delta, moved);
+    this.updateNearestNpc();
+>>>>>>> origin/main
     this.checkPortals();
     this.syncHud({ x: this.player.x, y: this.player.y });
     this.devOverlay.update(this.mapDef, { x: this.player.x, y: this.player.y });
+  }
+
+  private handleInteraction(): void {
+    if (!Phaser.Input.Keyboard.JustDown(this.interactKey)) {
+      return;
+    }
+
+    if (this.dialogue.isOpen) {
+      this.dialogue.advance();
+      return;
+    }
+
+    if (this.nearestNpc) {
+      const quests = getQuestsForNpc(this.nearestNpc.def.id);
+      this.dialogue.show(this.nearestNpc.def, quests);
+      this.talkPrompt.setVisible(false);
+    }
+  }
+
+  private updateNearestNpc(): void {
+    let nearest: NpcInteractable | null = null;
+    let nearestDist = NPC_INTERACT_RADIUS;
+
+    for (const npc of this.npcs) {
+      const dist = Phaser.Math.Distance.Between(
+        this.player.x,
+        this.player.y,
+        npc.position.x,
+        npc.position.y,
+      );
+      if (dist <= nearestDist) {
+        nearestDist = dist;
+        nearest = npc;
+      }
+    }
+
+    this.nearestNpc = nearest;
+
+    if (nearest) {
+      this.talkPrompt.setText(`[E] Talk to ${nearest.def.displayName}`);
+      this.talkPrompt.setPosition(
+        this.scale.width / 2,
+        this.scale.height - (PANEL_MARGIN_BOTTOM + PANEL_HEIGHT + TALK_PROMPT_PANEL_GAP),
+      );
+      this.talkPrompt.setVisible(true);
+    } else {
+      this.talkPrompt.setVisible(false);
+    }
   }
 
   private handleMovement(delta: number): boolean {
@@ -927,6 +1075,7 @@ export class WorldScene extends Phaser.Scene {
   }
 
   private drawNpcs(map: MapDefinition): void {
+<<<<<<< HEAD
     for (const placement of map.npcs) {
       const entry = this.npcCatalog.get(placement.npcId);
       const role: NpcRole = entry?.role ?? 'flavor';
@@ -950,6 +1099,25 @@ export class WorldScene extends Phaser.Scene {
 
       const name = this.add
         .text(0, -20, displayName, {
+=======
+    this.npcs = [];
+
+    for (const npc of map.npcs) {
+      const def = getNpcById(npc.npcId);
+      if (!def) {
+        console.warn(`NPC catalog entry missing: ${npc.npcId}`);
+      }
+      const displayName = def?.displayName ?? npc.npcId.replace(/_/g, ' ');
+      const bodyColor = def ? NPC_ROLE_COLORS[def.role] : 0xc9a86c;
+
+      const body = this.add.rectangle(npc.position.x, npc.position.y, 20, 28, bodyColor, 1);
+      body.setStrokeStyle(2, 0xf0e0b0);
+      body.setDepth(WORLD_DEPTH.npc);
+      this.worldLayer.add(body);
+
+      const name = this.add
+        .text(npc.position.x, npc.position.y - 22, displayName, {
+>>>>>>> origin/main
           fontFamily: 'sans-serif',
           fontSize: '10px',
           color: '#ffe8b0',
@@ -957,6 +1125,7 @@ export class WorldScene extends Phaser.Scene {
           strokeThickness: 2,
         })
         .setOrigin(0.5, 1);
+<<<<<<< HEAD
 
       container.add([shadow, figure, name]);
       this.worldLayer.add(container);
@@ -977,10 +1146,23 @@ export class WorldScene extends Phaser.Scene {
             fontFamily: 'Georgia, serif',
             fontSize: role === 'quest' ? '18px' : '14px',
             color: style.glyphColor,
+=======
+      name.setDepth(WORLD_DEPTH.labels);
+      this.worldLayer.add(name);
+
+      // Quest-givers get a small marker so players can spot them at a glance.
+      if (def && getQuestsForNpc(def.id).length > 0) {
+        const marker = this.add
+          .text(npc.position.x, npc.position.y - 34, '!', {
+            fontFamily: 'Georgia, serif',
+            fontSize: '16px',
+            color: '#f0c850',
+>>>>>>> origin/main
             stroke: '#1a1520',
             strokeThickness: 3,
           })
           .setOrigin(0.5, 1);
+<<<<<<< HEAD
         glyph.setDepth(WORLD_DEPTH.labels);
         this.worldLayer.add(glyph);
         this.tweens.add({
@@ -1003,6 +1185,15 @@ export class WorldScene extends Phaser.Scene {
         position: pos,
         dialogueIndex: 0,
       });
+=======
+        marker.setDepth(WORLD_DEPTH.labels);
+        this.worldLayer.add(marker);
+      }
+
+      if (def) {
+        this.npcs.push({ def, position: { x: npc.position.x, y: npc.position.y } });
+      }
+>>>>>>> origin/main
     }
   }
 
@@ -1027,9 +1218,34 @@ export class WorldScene extends Phaser.Scene {
         continue;
       }
 
+<<<<<<< HEAD
       const initialCount = runtime.maxConcurrent;
       for (let i = 0; i < initialCount; i += 1) {
         this.spawnMonster(runtime);
+=======
+          const meta = this.monsterCatalog.get(entry.monsterId);
+          this.monsters.push({
+            name: meta?.displayName ?? entry.monsterId.replace(/_/g, ' '),
+            level: meta?.baseLevel ?? this.mapDef.levelRange.min,
+            x,
+            y,
+          });
+
+          const tag = this.add
+            .text(x, y - 16, entry.monsterId, {
+              fontFamily: 'sans-serif',
+              fontSize: '9px',
+              color: '#ffbbaa',
+              stroke: '#1a1520',
+              strokeThickness: 2,
+            })
+            .setOrigin(0.5, 1);
+          tag.setDepth(WORLD_DEPTH.labels);
+          this.worldLayer.add(tag);
+
+          index += 1;
+        }
+>>>>>>> origin/main
       }
     }
   }
@@ -1287,13 +1503,58 @@ export class WorldScene extends Phaser.Scene {
 
   private syncHud(position: Vec2): void {
     this.inSafeZone = this.isInSafeZone(position);
+    const auras = this.getAuras();
     hudOverlay.sync({
       map: this.mapDef,
       position,
       nearestPortal: this.nearestPortal,
       inSafeZone: this.inSafeZone,
       player: this.getPlayerSnapshot(),
+      buffs: auras.buffs,
+      debuffs: auras.debuffs,
+      target: this.getTargetSnapshot(position),
+      // No party/economy/inventory systems yet — pass the design seed data through
+      // the snapshot so the scene stays the single owner of HUD state.
+      party: DEFAULT_PARTY,
+      currency: DEFAULT_CURRENCY,
+      hotbar: DEFAULT_HOTBAR,
+      inventory: DEFAULT_INVENTORY,
     });
+  }
+
+  /** Locks the HUD target frame onto the nearest monster within range (no combat
+   * system yet, so HP reads full and there is no cast bar). */
+  private getTargetSnapshot(position: Vec2): HudTarget | null {
+    let nearest: MonsterInstance | null = null;
+    let bestDist = TARGET_LOCK_RADIUS;
+    for (const monster of this.monsters) {
+      const dist = Phaser.Math.Distance.Between(position.x, position.y, monster.x, monster.y);
+      if (dist <= bestDist) {
+        bestDist = dist;
+        nearest = monster;
+      }
+    }
+    if (!nearest) return null;
+    return { name: nearest.name, level: nearest.level, hpPct: '100%' };
+  }
+
+  /** Derives status auras from live player vitals and zone state. */
+  private getAuras(): { buffs: HudAura[]; debuffs: HudAura[] } {
+    const buffs: HudAura[] = [];
+    const debuffs: HudAura[] = [];
+    const state = this.playerState;
+
+    if (this.inSafeZone) {
+      buffs.push({ letter: 'R', time: 'Rest' });
+    }
+    if (state.stance === 'Tired' || state.spCur <= 0) {
+      debuffs.push({ letter: 'T', time: 'Tired' });
+    }
+    const hpRatio = state.hpMax > 0 ? state.hpCur / state.hpMax : 0;
+    if (hpRatio > 0 && hpRatio < LOW_HP_AURA_THRESHOLD) {
+      debuffs.push({ letter: '!', time: 'Low' });
+    }
+    return { buffs, debuffs };
   }
 
   private updatePlayerVitals(delta: number, moved: boolean): void {

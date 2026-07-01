@@ -3,11 +3,19 @@
     "id": "elder",
     "displayName": "Elder Gemhorn",
     "role": "quest",
+<<<<<<< HEAD
     "title": "Town Elder",
     "dialogue": [
       "Welcome to Hearthvale, traveler. The vale keeps its warmth even in hard years.",
       "When you reach your stride, carry a letter for me to Millwick Crossing.",
       "The fountain behind me has run since my grandmother’s day. Make a wish, if you like."
+=======
+    "title": "Vale Elder",
+    "dialogue": [
+      "Welcome to Hearthlight Vale, traveler. The lanterns burn brighter now that you are here.",
+      "Old Millwick has gone quiet, and I fear a letter of mine never reached him.",
+      "When your legs are steady — say, level eight — come back and I will ask a favor of you."
+>>>>>>> origin/main
     ]
   },
   {
@@ -16,103 +24,178 @@
     "role": "merchant",
     "title": "General Goods",
     "dialogue": [
+<<<<<<< HEAD
       "Fresh goods straight from the vale roads. Care to browse the stall?",
       "Potions, rope, a lantern for the mine — I stock what a wanderer needs.",
       "Buy low in town, sell high on the road. That’s the whole trick."
+=======
+      "Potions, rope, a lantern or two — everything a green adventurer forgets to pack.",
+      "Coin up front, and I will not ask where the monsters found it."
+>>>>>>> origin/main
     ]
   },
   {
     "id": "hearth_courier",
     "displayName": "Hearth Courier",
     "role": "warp",
+<<<<<<< HEAD
     "title": "Warp Attendant",
     "dialogue": [
       "Need to travel far? The Hearth network can spare you the walk — for a fee.",
       "I can only send you where a warp stone still burns. Unlock more as you explore."
+=======
+    "title": "Warp Keeper",
+    "dialogue": [
+      "Need to be somewhere yesterday? The hearth-lines run to every town that will have me.",
+      "Step onto the glow and I will fold the road beneath your feet — for a modest fee."
+>>>>>>> origin/main
     ]
   },
   {
     "id": "innkeeper_mara",
     "displayName": "Innkeeper Mara",
     "role": "flavor",
+<<<<<<< HEAD
     "title": "The Warm Hearth Inn",
     "dialogue": [
       "Rooms are warm and the stew is hot. Rest here and your wounds mend faster.",
       "Plenty of stories drift through my common room. Stay awhile and listen."
+=======
+    "title": "Innkeeper",
+    "dialogue": [
+      "A warm bed and warmer stew — the Hearthlight Inn never turns a tired soul away.",
+      "Rest here and the road will feel kinder in the morning, I promise you that."
+>>>>>>> origin/main
     ]
   },
   {
     "id": "trainer_bram",
     "displayName": "Trainer Bram",
     "role": "trainer",
+<<<<<<< HEAD
     "title": "Combat Instructor",
     "dialogue": [
       "Grab a stance and hit the dummies. Footwork first, swagger later.",
       "Clear your First Hunt and I’ll show you a trick or two.",
       "Stamina wins fights as often as steel. Watch your green bar."
+=======
+    "title": "Combat Trainer",
+    "dialogue": [
+      "Grip loose, weight low, eyes on the whole field — that is how you live past level one.",
+      "Bring me proof of your first honest hunt and I will teach you a thing or two."
+>>>>>>> origin/main
     ]
   },
   {
     "id": "herbalist_lyra",
     "displayName": "Herbalist Lyra",
     "role": "merchant",
+<<<<<<< HEAD
     "title": "Field Apothecary",
     "dialogue": [
       "Clover salve and spore tonics — the plains provide, if you know where to look."
+=======
+    "title": "Herbalist",
+    "dialogue": [
+      "Cloverleaf salve, mushroom tonic, a pinch of moonpetal — I stock what the fields give up.",
+      "Fresh cuttings today. The plains have been generous since the rains."
+>>>>>>> origin/main
     ]
   },
   {
     "id": "scout_pip",
     "displayName": "Scout Pip",
     "role": "quest",
+<<<<<<< HEAD
     "title": "Plains Scout",
     "dialogue": [
       "Keep low in the tall clover. The jellybuds bounce harder than they look."
+=======
+    "title": "Field Scout",
+    "dialogue": [
+      "Keep low in the clover — the plains look calm until something with teeth disagrees.",
+      "I have been mapping the far hedgerows. Could use sharp eyes out there before long."
+>>>>>>> origin/main
     ]
   },
   {
     "id": "mycologist_fern",
     "displayName": "Mycologist Fern",
     "role": "quest",
+<<<<<<< HEAD
     "title": "Spore Researcher",
     "dialogue": [
       "Every mushroom here has a temper. Bring me caps and I’ll pay in coin and lore."
+=======
+    "title": "Mycologist",
+    "dialogue": [
+      "The Hollow breathes, you know — spores in, spores out, all day and night.",
+      "Some caps glow, some bite back. I could use a runner to gather the harmless sort."
+>>>>>>> origin/main
     ]
   },
   {
     "id": "ranger_elowen",
     "displayName": "Ranger Elowen",
     "role": "quest",
+<<<<<<< HEAD
     "title": "Whisperwood Warden",
     "dialogue": [
       "The wood whispers to those who tread softly. Loud boots draw the barklings."
+=======
+    "title": "Whisperwood Ranger",
+    "dialogue": [
+      "The Whisperwood remembers every footstep. Tread it with respect.",
+      "Something has been thinning the deer trails. Walk with me and we may learn what."
+>>>>>>> origin/main
     ]
   },
   {
     "id": "miller_tobin",
     "displayName": "Miller Tobin",
     "role": "flavor",
+<<<<<<< HEAD
     "title": "Road Miller",
     "dialogue": [
       "Wind’s been fickle, so the mill’s been slow. Mind the roadjacks past the verge."
+=======
+    "title": "Miller",
+    "dialogue": [
+      "Wheel turns, stone grinds, flour flies — same song every day and I love it still.",
+      "Mind the sacks by the door. Trip over one and the whole town hears about it."
+>>>>>>> origin/main
     ]
   },
   {
     "id": "caravan_guard",
     "displayName": "Caravan Guard",
     "role": "flavor",
+<<<<<<< HEAD
     "title": "Hired Blade",
     "dialogue": [
       "Move along the road and you’ll be fine. Stray off it and you’re on your own."
+=======
+    "title": "Caravan Guard",
+    "dialogue": [
+      "Eyes open, blade oiled. The road pays best to those who reach the end of it.",
+      "We roll for the riverside town come dawn. Long haul, but the ale is worth it."
+>>>>>>> origin/main
     ]
   },
   {
     "id": "mayor_holt",
     "displayName": "Mayor Holt",
     "role": "quest",
+<<<<<<< HEAD
     "title": "Millwick Mayor",
     "dialogue": [
       "Millwick welcomes honest travelers. Trouble at the moonwell, though — ask around."
+=======
+    "title": "Town Mayor",
+    "dialogue": [
+      "Riverside welcomes you. Keep your boots dry and your temper drier.",
+      "The docks have troubles I would rather solve quietly. Perhaps you are the quiet sort."
+>>>>>>> origin/main
     ]
   },
   {
@@ -121,16 +204,28 @@
     "role": "merchant",
     "title": "Riverside Trader",
     "dialogue": [
+<<<<<<< HEAD
       "River trade brings the finest wares upstream. Take a look before you cross."
+=======
+      "Goods off the barges, fresh as the tide — I undercut the town square and sleep fine for it.",
+      "Haggle if you like, but my prices already float lower than most."
+>>>>>>> origin/main
     ]
   },
   {
     "id": "prospector_garrick",
     "displayName": "Prospector Garrick",
     "role": "quest",
+<<<<<<< HEAD
     "title": "Crystal Prospector",
     "dialogue": [
       "The vein runs deep and mean. Bring me shards and I’ll mark the safe ledges."
+=======
+    "title": "Prospector",
+    "dialogue": [
+      "These foothills are lousy with crystal, if you know where the seams hide.",
+      "My last dig ran into something that dug back. Might pay a brave soul to have a look."
+>>>>>>> origin/main
     ]
   },
   {
@@ -139,6 +234,7 @@
     "role": "quest",
     "title": "Moonwell Watcher",
     "dialogue": [
+<<<<<<< HEAD
       "The moonwell stirs. Recover its sigil before the wraiths finish what they started."
     ]
   },
@@ -190,6 +286,10 @@
     "dialogue": [
       "May the hearthlight keep you. Rest in the vale and let its calm settle your spirit.",
       "Dark things stir beyond Millwick. When you are ready, the vale will ask much of you."
+=======
+      "The Moonwell only opens to those it deems ready. Patience, wanderer.",
+      "Bring me the sigil the glade keeps hidden — near level ten, when your spirit can bear it."
+>>>>>>> origin/main
     ]
   }
 ]
