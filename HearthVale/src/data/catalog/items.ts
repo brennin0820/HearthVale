@@ -8,6 +8,8 @@ export const ITEMS: ItemDefinition[] = [
   { id: 'millwick_letter', displayName: 'Millwick Letter', kind: 'quest', stackMax: 1, sellPrice: 0 },
   { id: 'healing_brew', displayName: 'Healing Brew', kind: 'consumable', stackMax: 20, sellPrice: 15 },
   { id: 'wooden_blade', displayName: 'Wooden Blade', kind: 'equipment', stackMax: 1, sellPrice: 40 },
+  { id: 'gale_feather', displayName: 'Gale Feather', kind: 'material', stackMax: 99, sellPrice: 18 },
+  { id: 'moon_flake', displayName: 'Moon Flake', kind: 'material', stackMax: 99, sellPrice: 22 },
 ];
 
 export const ITEM_BY_ID = new Map(ITEMS.map((i) => [i.id, i]));
