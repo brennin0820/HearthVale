@@ -8,6 +8,7 @@ import { AUDIO_MANIFEST } from '../src/data/audio/manifest.js';
 import {
   DROP_TABLES,
   ITEMS,
+  JOB_CLASSES,
   MONSTERS,
   NPCS,
   QUESTS,
@@ -67,6 +68,7 @@ await writeJson('catalog/npcs.json', NPCS);
 await writeJson('catalog/items.json', ITEMS);
 await writeJson('catalog/quests.json', QUESTS);
 await writeJson('catalog/drops.json', DROP_TABLES);
+await writeJson('catalog/jobs.json', JOB_CLASSES);
 await writeJson('biomes.json', BIOMES);
 await writeJson('animations.json', ANIMATIONS);
 await writeJson('audio/manifest.json', AUDIO_MANIFEST);
