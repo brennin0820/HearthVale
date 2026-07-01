@@ -15,7 +15,7 @@ import { DevOverlay } from '../services/DevOverlay.js';
 import { loadCollisionMask, loadPropLayer } from '../services/mapArtData.js';
 import { getMapById, loadMonsterCatalog, type MonsterCatalogEntry } from '../services/worldData.js';
 import { getNpcById, getQuestsForNpc } from '../services/catalogData.js';
-import { DialogueBox } from '../ui/DialogueBox.js';
+import { DialogueBox, PANEL_HEIGHT, PANEL_MARGIN_BOTTOM } from '../ui/DialogueBox.js';
 import type { NpcDefinition } from '../types/catalog.js';
 import {
   BIOME_COLORS,
@@ -52,6 +52,8 @@ const PLAYER_COLLISION_SAMPLES: Vec2[] = [
   { x: 0, y: 12 },
 ];
 const NPC_INTERACT_RADIUS = 46;
+/** Vertical gap between the talk prompt and the dialogue panel above it. */
+const TALK_PROMPT_PANEL_GAP = 12;
 
 interface NpcInteractable {
   def: NpcDefinition;
@@ -249,7 +251,10 @@ export class WorldScene extends Phaser.Scene {
 
     if (nearest) {
       this.talkPrompt.setText(`[E] Talk to ${nearest.def.displayName}`);
-      this.talkPrompt.setPosition(this.scale.width / 2, this.scale.height - 236);
+      this.talkPrompt.setPosition(
+        this.scale.width / 2,
+        this.scale.height - (PANEL_MARGIN_BOTTOM + PANEL_HEIGHT + TALK_PROMPT_PANEL_GAP),
+      );
       this.talkPrompt.setVisible(true);
     } else {
       this.talkPrompt.setVisible(false);
@@ -647,6 +652,9 @@ export class WorldScene extends Phaser.Scene {
 
     for (const npc of map.npcs) {
       const def = getNpcById(npc.npcId);
+      if (!def) {
+        console.warn(`NPC catalog entry missing: ${npc.npcId}`);
+      }
       const displayName = def?.displayName ?? npc.npcId.replace(/_/g, ' ');
       const bodyColor = def ? NPC_ROLE_COLORS[def.role] : 0xc9a86c;
 
@@ -668,7 +676,7 @@ export class WorldScene extends Phaser.Scene {
       this.worldLayer.add(name);
 
       // Quest-givers get a small marker so players can spot them at a glance.
-      if (def && def.role === 'quest' && getQuestsForNpc(def.id).length > 0) {
+      if (def && getQuestsForNpc(def.id).length > 0) {
         const marker = this.add
           .text(npc.position.x, npc.position.y - 34, '!', {
             fontFamily: 'Georgia, serif',

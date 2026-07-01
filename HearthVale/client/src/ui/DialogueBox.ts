@@ -2,9 +2,9 @@ import Phaser from 'phaser';
 import { HUD_DEPTH, NPC_ROLE_COLORS } from '../constants.js';
 import type { NpcDefinition, NpcRole, QuestDefinition } from '../types/catalog.js';
 
-const PANEL_WIDTH = 560;
-const PANEL_HEIGHT = 176;
-const PANEL_MARGIN_BOTTOM = 48;
+export const PANEL_WIDTH = 560;
+export const PANEL_HEIGHT = 176;
+export const PANEL_MARGIN_BOTTOM = 48;
 
 const ROLE_LABEL: Record<NpcRole, string> = {
   quest: 'Quest',

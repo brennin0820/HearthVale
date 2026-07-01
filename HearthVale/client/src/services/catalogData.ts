@@ -7,8 +7,10 @@ let npcById: Record<string, NpcDefinition> = {};
 let questsByGiver: Record<string, QuestDefinition[]> = {};
 let loaded = false;
 
+const FETCH_TIMEOUT_MS = 10000;
+
 async function fetchJson<T>(url: string): Promise<T> {
-  const response = await fetch(url);
+  const response = await fetch(url, { signal: AbortSignal.timeout(FETCH_TIMEOUT_MS) });
   if (!response.ok) {
     throw new Error(`Failed to load ${url} (${response.status})`);
   }
