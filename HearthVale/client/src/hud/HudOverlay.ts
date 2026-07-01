@@ -451,12 +451,20 @@ export class HudOverlay {
     this.mount();
     if (!this.refs) return;
 
+    const previous = this.lastSnapshot;
+    const mapChanged = !previous || snapshot.map.id !== previous.map.id;
+    const portalChanged = (previous?.nearestPortal?.label ?? null) !== (snapshot.nearestPortal?.label ?? null);
+    const safeZoneChanged = !previous || snapshot.inSafeZone !== previous.inSafeZone;
+
     this.lastSnapshot = snapshot;
     this.renderPlayer(snapshot);
-    if (snapshot.map.id !== this.lastMapId) {
+    if (mapChanged) {
       this.lastMapId = snapshot.map.id;
       this.renderBanner(snapshot);
       this.renderMinimapPoints(snapshot.map);
+    }
+
+    if (mapChanged || portalChanged || safeZoneChanged) {
       this.renderQuestList(snapshot);
       this.renderChatLog(snapshot);
     }
@@ -475,7 +483,7 @@ export class HudOverlay {
   private renderPlayer(snapshot: HudSnapshot): void {
     if (!this.refs) return;
     const player = snapshot.player ?? DEFAULT_PLAYER;
-    this.refs.playerName.textContent = esc(player.name);
+    this.refs.playerName.textContent = player.name;
     this.refs.playerLevel.textContent = String(player.level);
     this.refs.hpFill.style.width = clampPercent(player.hpCur, player.hpMax);
     this.refs.hpLabel.textContent = formatStatLabel(player.hpCur, player.hpMax);

@@ -26,7 +26,7 @@
   top: 0;
   width: 3440px;
   height: 1440px;
-  transform: translate(var(--hv-hud-offset-x), var(--hv-hud-offset-y)) scale(var(--hv-hud-scale));
+  transform: scale(var(--hv-hud-scale)) translate(var(--hv-hud-offset-x), var(--hv-hud-offset-y));
   transform-origin: top left;
   pointer-events: none;
   font-family: var(--t-fontBody);
