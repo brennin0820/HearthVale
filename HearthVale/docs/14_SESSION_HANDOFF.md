@@ -6,6 +6,7 @@
 
 ## Current state / focus
 
++# **2026-07-01** — Added interactive NPCs: authored `title` + `dialogue` on every `NpcDefinition` (`src/data/catalog/npcs.ts`), new client `catalogData` service (loads `/catalog/npcs.json` + `/catalog/quests.json`), a camera-fixed `DialogueBox` (`client/src/ui/DialogueBox.ts`), and `WorldScene` proximity talk (press **E** near an NPC to open role-colored dialogue + quest hints; quest-givers show a `!` marker; movement freezes while talking).
 +# **2026-07-01** — Implemented scene-level monster spawn + AI behavior in `client/src/scenes/WorldScene.ts` using map `spawnTables` (weighted entries, max concurrency, respawn timer, chase/wander movement, and proximity return behavior).
 +# **2026-06-30** — Wired player HUD panel fields in `client/src/hud/HudOverlay.ts` to live `WorldScene` snapshot data (`name`, `level`, `HP`, `MP`, `SP`, `XP`, `stance`) so the overlay is no longer static for those channels.
 +# Phase B complete — Phaser client loop playable. **HearthVale Compass** (NightRaven guidance UI) added under `compass/` with macOS Electron shell. Next: Phase C (dungeon depth, combat hooks, level-gated portals).
@@ -25,6 +26,7 @@
 
 ## Recent sessions
 
++# **2026-07-01** — Interactive NPC talk system: `NpcDefinition` gained `title` + `dialogue`; new `client/src/services/catalogData.ts` and `client/src/ui/DialogueBox.ts`; `WorldScene` now resolves NPC display names/role colors from the catalog, shows a `[E] Talk` prompt on proximity, opens a paged dialogue box (advance/close with **E**) that appends quest hints for quest-givers, and freezes movement while open. `npm run export:data`, `npm run verify:all`, and `npm run build:client` all passed.
 +# **2026-07-01** — Fixed HUD positioning by applying HUD scale before translation in `client/src/hud/hud.css`; viewport offsets now remain pixel-accurate and no longer compress/drift with resize.
 +# **2026-07-01** — HUD overlay resize sync remains in `HudOverlay.syncScale` with clamped offsets for small viewports.
 +# **2026-07-01** — Added right-click auto-pathing to `WorldScene` with A* tile pathing on collision masks, destination marker, and automatic follow when movement keys are idle.

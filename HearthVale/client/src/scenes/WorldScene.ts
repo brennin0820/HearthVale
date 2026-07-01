@@ -4,9 +4,13 @@ import { audioService } from '../services/AudioService.js';
 import { DevOverlay } from '../services/DevOverlay.js';
 import { loadCollisionMask, loadPropLayer } from '../services/mapArtData.js';
 import { getMapById } from '../services/worldData.js';
+import { getNpcById, getQuestsForNpc } from '../services/catalogData.js';
+import { DialogueBox } from '../ui/DialogueBox.js';
+import type { NpcDefinition, NpcRole } from '../types/catalog.js';
 import {
   BIOME_COLORS,
   DEFAULT_MAP_COLOR,
+  HUD_DEPTH,
   KIND_ACCENT,
   PLAYER_SPEED,
   PORTAL_TRIGGER_RADIUS,
@@ -28,6 +32,20 @@ const PLAYER_COLLISION_SAMPLES: Vec2[] = [
   { x: 8, y: 8 },
   { x: 0, y: 12 },
 ];
+const NPC_INTERACT_RADIUS = 46;
+const NPC_ROLE_COLORS: Record<NpcRole, number> = {
+  quest: 0xf0c850,
+  merchant: 0x6cc98a,
+  trainer: 0xd88050,
+  warp: 0x8a9cf0,
+  flavor: 0xc9a86c,
+};
+
+interface NpcInteractable {
+  def: NpcDefinition;
+  position: Vec2;
+}
+
 const VITAL_STAMINA_DRAIN_PER_SECOND = 16;
 const VITAL_STAMINA_REGEN_PER_SECOND = 9;
 const VITAL_MP_DRAIN_PER_SECOND_MOVING = 1.5;
@@ -50,6 +68,11 @@ export class WorldScene extends Phaser.Scene {
   private portalCooldown = 0;
   private worldLayer!: Phaser.GameObjects.Container;
   private nearestPortal: MapPortal | null = null;
+  private interactKey!: Phaser.Input.Keyboard.Key;
+  private npcs: NpcInteractable[] = [];
+  private nearestNpc: NpcInteractable | null = null;
+  private dialogue!: DialogueBox;
+  private talkPrompt!: Phaser.GameObjects.Text;
   private inSafeZone = false;
   private devOverlay!: DevOverlay;
   private collisionMask: CollisionMaskDefinition | null = null;
@@ -65,6 +88,8 @@ export class WorldScene extends Phaser.Scene {
     this.portalCooldown = 500;
     this.ready = false;
     this.collisionMask = null;
+    this.nearestNpc = null;
+    this.npcs = [];
   }
 
   async create(data: WorldSceneData): Promise<void> {
@@ -107,6 +132,23 @@ export class WorldScene extends Phaser.Scene {
         S: this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.S),
         D: this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.D),
       };
+      this.interactKey = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.E);
+
+      this.dialogue = new DialogueBox(this);
+      this.talkPrompt = this.add
+        .text(0, 0, '', {
+          fontFamily: 'sans-serif',
+          fontSize: '12px',
+          color: '#ffe8b0',
+          backgroundColor: '#161320cc',
+          padding: { x: 8, y: 4 },
+          stroke: '#1a1520',
+          strokeThickness: 2,
+        })
+        .setOrigin(0.5, 1)
+        .setDepth(HUD_DEPTH + 4)
+        .setScrollFactor(0)
+        .setVisible(false);
 
       this.devOverlay = new DevOverlay(this);
       this.devOverlay.mount(mapDef);
@@ -130,12 +172,68 @@ export class WorldScene extends Phaser.Scene {
       this.portalCooldown = Math.max(0, this.portalCooldown - delta);
     }
 
+    this.handleInteraction();
+
+    if (this.dialogue.isOpen) {
+      // Freeze movement, portals, and vital drain while a conversation is open.
+      this.updatePlayerVitals(delta, false);
+      this.syncHud({ x: this.player.x, y: this.player.y });
+      this.devOverlay.update(this.mapDef, { x: this.player.x, y: this.player.y });
+      return;
+    }
+
     const moved = this.handleMovement(delta);
     this.inSafeZone = this.isInSafeZone({ x: this.player.x, y: this.player.y });
     this.updatePlayerVitals(delta, moved);
+    this.updateNearestNpc();
     this.checkPortals();
     this.syncHud({ x: this.player.x, y: this.player.y });
     this.devOverlay.update(this.mapDef, { x: this.player.x, y: this.player.y });
+  }
+
+  private handleInteraction(): void {
+    if (!Phaser.Input.Keyboard.JustDown(this.interactKey)) {
+      return;
+    }
+
+    if (this.dialogue.isOpen) {
+      this.dialogue.advance();
+      return;
+    }
+
+    if (this.nearestNpc) {
+      const quests = getQuestsForNpc(this.nearestNpc.def.id);
+      this.dialogue.show(this.nearestNpc.def, quests);
+      this.talkPrompt.setVisible(false);
+    }
+  }
+
+  private updateNearestNpc(): void {
+    let nearest: NpcInteractable | null = null;
+    let nearestDist = NPC_INTERACT_RADIUS;
+
+    for (const npc of this.npcs) {
+      const dist = Phaser.Math.Distance.Between(
+        this.player.x,
+        this.player.y,
+        npc.position.x,
+        npc.position.y,
+      );
+      if (dist <= nearestDist) {
+        nearestDist = dist;
+        nearest = npc;
+      }
+    }
+
+    this.nearestNpc = nearest;
+
+    if (nearest) {
+      this.talkPrompt.setText(`[E] Talk to ${nearest.def.displayName}`);
+      this.talkPrompt.setPosition(this.scale.width / 2, this.scale.height - 236);
+      this.talkPrompt.setVisible(true);
+    } else {
+      this.talkPrompt.setVisible(false);
+    }
   }
 
   private handleMovement(delta: number): boolean {
@@ -525,14 +623,20 @@ export class WorldScene extends Phaser.Scene {
   }
 
   private drawNpcs(map: MapDefinition): void {
+    this.npcs = [];
+
     for (const npc of map.npcs) {
-      const body = this.add.rectangle(npc.position.x, npc.position.y, 20, 28, 0xc9a86c, 1);
+      const def = getNpcById(npc.npcId);
+      const displayName = def?.displayName ?? npc.npcId.replace(/_/g, ' ');
+      const bodyColor = def ? NPC_ROLE_COLORS[def.role] : 0xc9a86c;
+
+      const body = this.add.rectangle(npc.position.x, npc.position.y, 20, 28, bodyColor, 1);
       body.setStrokeStyle(2, 0xf0e0b0);
       body.setDepth(WORLD_DEPTH.npc);
       this.worldLayer.add(body);
 
       const name = this.add
-        .text(npc.position.x, npc.position.y - 22, npc.npcId.replace(/_/g, ' '), {
+        .text(npc.position.x, npc.position.y - 22, displayName, {
           fontFamily: 'sans-serif',
           fontSize: '10px',
           color: '#ffe8b0',
@@ -542,6 +646,25 @@ export class WorldScene extends Phaser.Scene {
         .setOrigin(0.5, 1);
       name.setDepth(WORLD_DEPTH.labels);
       this.worldLayer.add(name);
+
+      // Quest-givers get a small marker so players can spot them at a glance.
+      if (def && def.role === 'quest' && getQuestsForNpc(def.id).length > 0) {
+        const marker = this.add
+          .text(npc.position.x, npc.position.y - 34, '!', {
+            fontFamily: 'Georgia, serif',
+            fontSize: '16px',
+            color: '#f0c850',
+            stroke: '#1a1520',
+            strokeThickness: 3,
+          })
+          .setOrigin(0.5, 1);
+        marker.setDepth(WORLD_DEPTH.labels);
+        this.worldLayer.add(marker);
+      }
+
+      if (def) {
+        this.npcs.push({ def, position: { x: npc.position.x, y: npc.position.y } });
+      }
     }
   }
 
