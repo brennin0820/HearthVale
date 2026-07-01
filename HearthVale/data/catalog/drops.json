@@ -46,5 +46,149 @@
         "maxCount": 1
       }
     ]
+  },
+  {
+    "id": "drops_spriggle",
+    "monsterId": "spriggle",
+    "entries": [
+      {
+        "itemId": "clover_herb",
+        "weight": 75,
+        "minCount": 1,
+        "maxCount": 2
+      }
+    ]
+  },
+  {
+    "id": "drops_sporeling",
+    "monsterId": "sporeling",
+    "entries": [
+      {
+        "itemId": "spore_cap",
+        "weight": 65,
+        "minCount": 1,
+        "maxCount": 2
+      }
+    ]
+  },
+  {
+    "id": "drops_leafsprite",
+    "monsterId": "leafsprite",
+    "entries": [
+      {
+        "itemId": "clover_herb",
+        "weight": 60,
+        "minCount": 1,
+        "maxCount": 2
+      }
+    ]
+  },
+  {
+    "id": "drops_barkling",
+    "monsterId": "barkling",
+    "entries": [
+      {
+        "itemId": "clover_herb",
+        "weight": 55,
+        "minCount": 1,
+        "maxCount": 2
+      }
+    ]
+  },
+  {
+    "id": "drops_roadjack",
+    "monsterId": "roadjack",
+    "entries": [
+      {
+        "itemId": "healing_brew",
+        "weight": 35,
+        "minCount": 1,
+        "maxCount": 1
+      }
+    ]
+  },
+  {
+    "id": "drops_windmite",
+    "monsterId": "windmite",
+    "entries": [
+      {
+        "itemId": "gale_feather",
+        "weight": 55,
+        "minCount": 1,
+        "maxCount": 2
+      }
+    ]
+  },
+  {
+    "id": "drops_cavebat",
+    "monsterId": "cavebat",
+    "entries": [
+      {
+        "itemId": "crystal_shard",
+        "weight": 45,
+        "minCount": 1,
+        "maxCount": 1
+      }
+    ]
+  },
+  {
+    "id": "drops_crystal_golem",
+    "monsterId": "crystal_golem",
+    "entries": [
+      {
+        "itemId": "crystal_shard",
+        "weight": 80,
+        "minCount": 1,
+        "maxCount": 3
+      }
+    ]
+  },
+  {
+    "id": "drops_vein_wraith",
+    "monsterId": "vein_wraith",
+    "entries": [
+      {
+        "itemId": "crystal_shard",
+        "weight": 50,
+        "minCount": 1,
+        "maxCount": 2
+      }
+    ]
+  },
+  {
+    "id": "drops_moonmoth",
+    "monsterId": "moonmoth",
+    "entries": [
+      {
+        "itemId": "moon_flake",
+        "weight": 55,
+        "minCount": 1,
+        "maxCount": 2
+      }
+    ]
+  },
+  {
+    "id": "drops_glade_stalker",
+    "monsterId": "glade_stalker",
+    "entries": [
+      {
+        "itemId": "clover_herb",
+        "weight": 50,
+        "minCount": 1,
+        "maxCount": 2
+      }
+    ]
+  },
+  {
+    "id": "drops_rune_sentinel",
+    "monsterId": "rune_sentinel",
+    "entries": [
+      {
+        "itemId": "crystal_shard",
+        "weight": 55,
+        "minCount": 1,
+        "maxCount": 2
+      }
+    ]
   }
 ]

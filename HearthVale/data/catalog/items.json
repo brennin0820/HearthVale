@@ -47,5 +47,19 @@
     "kind": "equipment",
     "stackMax": 1,
     "sellPrice": 40
+  },
+  {
+    "id": "gale_feather",
+    "displayName": "Gale Feather",
+    "kind": "material",
+    "stackMax": 99,
+    "sellPrice": 18
+  },
+  {
+    "id": "moon_flake",
+    "displayName": "Moon Flake",
+    "kind": "material",
+    "stackMax": 99,
+    "sellPrice": 22
   }
 ]
