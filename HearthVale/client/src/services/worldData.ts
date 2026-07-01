@@ -1,9 +1,35 @@
 import type { MapDefinition } from '../types/world.js';
 
 const MAPS_URL = '/maps.json';
+const MONSTERS_URL = '/catalog/monsters.json';
 
 let cachedMaps: MapDefinition[] | null = null;
 let mapById: Record<string, MapDefinition> = {};
+
+/** Subset of the exported monster catalog the client needs for the HUD target frame. */
+export interface MonsterCatalogEntry {
+  id: string;
+  displayName: string;
+  baseLevel: number;
+  hp: number;
+}
+
+let cachedMonsters: Map<string, MonsterCatalogEntry> | null = null;
+
+export async function loadMonsterCatalog(): Promise<Map<string, MonsterCatalogEntry>> {
+  if (cachedMonsters) {
+    return cachedMonsters;
+  }
+
+  const response = await fetch(MONSTERS_URL);
+  if (!response.ok) {
+    throw new Error(`Failed to load monsters.json (${response.status})`);
+  }
+
+  const monsters = (await response.json()) as MonsterCatalogEntry[];
+  cachedMonsters = new Map(monsters.map((monster) => [monster.id, monster]));
+  return cachedMonsters;
+}
 
 export async function loadWorldMaps(): Promise<MapDefinition[]> {
   if (cachedMaps) {

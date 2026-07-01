@@ -8,6 +8,41 @@ export interface HudSnapshot {
   nearestPortal: MapPortal | null;
   inSafeZone: boolean;
   player: HudPlayerSnapshot;
+  /** Live status auras derived from player vitals/zone (see WorldScene). */
+  buffs: HudAura[];
+  debuffs: HudAura[];
+  /** Nearest locked-on monster, or null when nothing is in range. */
+  target: HudTarget | null;
+  /** Scene-owned seed panels — no party/economy/inventory systems exist yet. */
+  party: HudPartyMember[];
+  currency: HudCurrency[];
+  hotbar: SlotItem[];
+  inventory: SlotItem[];
+}
+
+export interface HudAura {
+  letter: string;
+  time: string;
+}
+
+export interface HudPartyMember {
+  initial: string;
+  name: string;
+  role: string;
+  hpPct: string;
+  mpPct: string;
+}
+
+export interface HudTarget {
+  name: string;
+  level: number;
+  hpPct: string;
+  cast?: string;
+  castPct?: string;
+}
+
+export interface HudCurrency {
+  value: string;
 }
 
 export interface HudPlayerSnapshot {
@@ -68,7 +103,7 @@ interface ThemeTokens {
   hasDiamond: boolean;
 }
 
-interface SlotItem {
+export interface SlotItem {
   shape: ItemShape;
   tint: string;
   qty?: number;
@@ -227,27 +262,32 @@ const PLAYER = {
   stance: 'Steady',
 };
 export const DEFAULT_PLAYER = PLAYER as HudPlayerSnapshot;
-const BUFFS = [
+
+/** Seed panels below are the mock content shipped by the Hearthlight Vale HUD
+ * design. WorldScene owns them now and passes them through the snapshot; the
+ * party/currency/hotbar/bag sets stay static until real systems back them, while
+ * buffs/debuffs/target are recomputed live each frame from scene state. */
+export const DEFAULT_BUFFS: HudAura[] = [
   { letter: 'W', time: '8:12' },
   { letter: 'G', time: '2:40' },
   { letter: 'B', time: '14:55' },
   { letter: 'C', time: '0:45' },
 ];
-const DEBUFFS = [
+export const DEFAULT_DEBUFFS: HudAura[] = [
   { letter: 'W', time: '0:12' },
   { letter: 'C', time: '1:05' },
 ];
-const PARTY = [
+export const DEFAULT_PARTY: HudPartyMember[] = [
   { initial: 'B', name: 'Brynn', role: 'Guardian', hpPct: '82%', mpPct: '40%' },
   { initial: 'O', name: 'Oswin', role: 'Ranger', hpPct: '65%', mpPct: '90%' },
   { initial: 'S', name: 'Sable', role: 'Mender', hpPct: '100%', mpPct: '55%' },
 ];
-const TARGET = { name: 'Bandit Captain', level: 9, hpPct: '34%', cast: 'Reckless Swing', castPct: '60%' };
-const CURRENCY = [
+export const DEFAULT_TARGET: HudTarget = { name: 'Bandit Captain', level: 9, hpPct: '34%', cast: 'Reckless Swing', castPct: '60%' };
+export const DEFAULT_CURRENCY: HudCurrency[] = [
   { value: '1,248' },
   { value: '36' },
 ];
-const HOTBAR: SlotItem[] = [
+export const DEFAULT_HOTBAR: SlotItem[] = [
   { shape: 'stance', tint: '#e3c77d', active: true, keybind: '1' },
   { shape: 'blade', tint: '#c9a227', keybind: '2' },
   { shape: 'guard', tint: '#8fa3c9', cdPct: 0.4, cdLabel: '4s', keybind: '3' },
@@ -259,7 +299,7 @@ const HOTBAR: SlotItem[] = [
   { shape: 'empty', tint: '#888', keybind: '9' },
   { shape: 'empty', tint: '#888', keybind: '0' },
 ];
-const INVENTORY: SlotItem[] = [
+export const DEFAULT_INVENTORY: SlotItem[] = [
   { shape: 'blade', tint: '#c9a227', rare: true }, { shape: 'guard', tint: '#8fa3c9' },
   { shape: 'potion', tint: '#c85450', qty: 6 }, { shape: 'potion', tint: '#4f7fc9', qty: 2 },
   { shape: 'scroll', tint: '#d8c9a3', qty: 3 }, { shape: 'gem', tint: '#7fd9d0', rare: true },
@@ -295,6 +335,8 @@ interface HudRefs {
   minimapGrid: HTMLElement;
   questList: HTMLElement;
   chatLog: HTMLElement;
+  auras: HTMLElement;
+  target: HTMLElement;
 }
 
 function esc(value: string): string {
@@ -421,6 +463,40 @@ function cornerAccents(tk: ThemeTokens): string {
   return html;
 }
 
+function auraMarkup(kind: 'buff' | 'debuff', aura: HudAura): string {
+  return `<div class="hv-hud__aura">
+    <div class="hv-hud__aura-icon hv-hud__aura-icon--${kind}">${esc(aura.letter)}</div>
+    <div class="hv-hud__aura-time">${esc(aura.time)}</div>
+  </div>`;
+}
+
+function aurasMarkup(buffs: HudAura[], debuffs: HudAura[]): string {
+  const buffHtml = buffs.map((buff) => auraMarkup('buff', buff)).join('');
+  const debuffHtml = debuffs.map((debuff) => auraMarkup('debuff', debuff)).join('');
+  const divider = buffs.length && debuffs.length ? '<div class="hv-hud__aura-divider"></div>' : '';
+  return `${buffHtml}${divider}${debuffHtml}`;
+}
+
+function targetInnerMarkup(tk: ThemeTokens, target: HudTarget): string {
+  const castHtml = target.cast && target.castPct
+    ? `<div class="hv-hud__target-cast-row">
+        <div class="hv-hud__target-cast-track"><div class="hv-hud__target-cast-fill" style="width:${esc(target.castPct)}"></div></div>
+        <span class="hv-hud__target-cast-label">${esc(target.cast)}</span>
+      </div>`
+    : '';
+  return `${cornerAccents(tk)}
+    <div class="hv-hud__target-row">
+      <span class="hv-hud__target-name">${esc(target.name)}</span>
+      <span class="hv-hud__target-level">Lv ${target.level}</span>
+    </div>
+    <div class="hv-hud__target-hp"><div class="hv-hud__target-hp-fill" style="width:${esc(target.hpPct)}"></div></div>
+    ${castHtml}`;
+}
+
+function targetKey(target: HudTarget | null): string {
+  return target ? `${target.name}|${target.level}|${target.hpPct}|${target.cast ?? ''}|${target.castPct ?? ''}` : '';
+}
+
 export class HudOverlay {
   private root: HTMLElement | null = null;
   private refs: HudRefs | null = null;
@@ -428,7 +504,8 @@ export class HudOverlay {
   private lastMapId = '';
   private resizeBound = false;
   private theme: HudTheme = DEFAULT_THEME;
-  private inCombat = false;
+  private lastAurasKey = '';
+  private lastTargetKey = '';
 
   mount(): void {
     if (this.root) return;
@@ -458,6 +535,7 @@ export class HudOverlay {
 
     this.lastSnapshot = snapshot;
     this.renderPlayer(snapshot);
+    this.syncLivePanels(snapshot);
     if (mapChanged) {
       this.lastMapId = snapshot.map.id;
       this.renderBanner(snapshot);
@@ -478,6 +556,58 @@ export class HudOverlay {
     this.refs.playerTitle.textContent = `${snapshot.player.name} · ${humanize(map.regionId)}`;
     this.refs.bannerTitle.textContent = map.displayName;
     this.refs.bannerSubtitle.textContent = this.buildSubtitle(snapshot);
+  }
+
+  /** Live per-frame panels: only re-render when their content actually changes. */
+  private syncLivePanels(snapshot: HudSnapshot): void {
+    if (!this.refs) return;
+    const aurasKey = JSON.stringify([snapshot.buffs, snapshot.debuffs]);
+    if (aurasKey !== this.lastAurasKey) {
+      this.lastAurasKey = aurasKey;
+      this.renderAuras(snapshot.buffs, snapshot.debuffs);
+    }
+    const key = targetKey(snapshot.target);
+    if (key !== this.lastTargetKey) {
+      this.lastTargetKey = key;
+      this.renderTarget(snapshot.target);
+    }
+  }
+
+  private renderAuras(buffs: HudAura[], debuffs: HudAura[]): void {
+    if (!this.refs) return;
+    this.refs.auras.innerHTML = aurasMarkup(buffs, debuffs);
+  }
+
+  private renderTarget(target: HudTarget | null): void {
+    if (!this.refs) return;
+    const el = this.refs.target;
+    if (!target) {
+      el.style.display = 'none';
+      el.innerHTML = '';
+      return;
+    }
+    el.style.display = '';
+    el.innerHTML = targetInnerMarkup(THEME_TOKENS[this.theme], target);
+  }
+
+  /** Resolves the seed panels for skeleton rendering — live snapshot or design defaults. */
+  private panels(): {
+    buffs: HudAura[];
+    debuffs: HudAura[];
+    party: HudPartyMember[];
+    currency: HudCurrency[];
+    hotbar: SlotItem[];
+    inventory: SlotItem[];
+  } {
+    const s = this.lastSnapshot;
+    return {
+      buffs: s?.buffs ?? DEFAULT_BUFFS,
+      debuffs: s?.debuffs ?? DEFAULT_DEBUFFS,
+      party: s?.party ?? DEFAULT_PARTY,
+      currency: s?.currency ?? DEFAULT_CURRENCY,
+      hotbar: s?.hotbar ?? DEFAULT_HOTBAR,
+      inventory: s?.inventory ?? DEFAULT_INVENTORY,
+    };
   }
 
   private renderPlayer(snapshot: HudSnapshot): void {
@@ -590,16 +720,14 @@ export class HudOverlay {
     window.addEventListener('resize', this.syncScale);
   }
 
-  /** Dev-only hooks — F4 cycles the HUD skin, F5 previews the (unbuilt) combat target frame. No settings UI exists yet. */
+  /** Dev-only hook — F4 cycles the HUD skin. No settings UI exists yet. The target
+   * frame is now driven by live scene state (nearest monster), so the old F5
+   * combat-preview toggle is gone. */
   private bindDevKeys(): void {
     window.addEventListener('keydown', (event) => {
       if (event.code === 'F4') {
         event.preventDefault();
         this.cycleTheme();
-      } else if (event.code === 'F5') {
-        event.preventDefault();
-        this.inCombat = !this.inCombat;
-        this.rebuild();
       }
     });
   }
@@ -678,7 +806,13 @@ export class HudOverlay {
       minimapGrid: this.getRef('minimap-grid'),
       questList: this.getRef('quest-list'),
       chatLog: this.getRef('chat-log'),
+      auras: this.getRef('auras'),
+      target: this.getRef('target'),
     };
+
+    // DOM was recreated — force live panels to re-render on the next sync.
+    this.lastAurasKey = '';
+    this.lastTargetKey = '';
 
     if (this.lastSnapshot) {
       this.renderBanner(this.lastSnapshot);
@@ -686,6 +820,7 @@ export class HudOverlay {
       this.renderQuestList(this.lastSnapshot);
       this.renderChatLog(this.lastSnapshot);
       this.renderPlayer(this.lastSnapshot);
+      this.renderTarget(this.lastSnapshot.target);
       this.updatePosition(this.lastSnapshot);
     }
   }
@@ -695,18 +830,10 @@ export class HudOverlay {
     const playerMpPct = clampPercent(player.mpCur, player.mpMax);
     const playerSpPct = clampPercent(player.spCur, player.spMax);
     const xpPct = clampPercent(player.xpCur, player.xpNext);
-    const buffsHtml = BUFFS.map((b) => `
-      <div class="hv-hud__aura">
-        <div class="hv-hud__aura-icon hv-hud__aura-icon--buff">${esc(b.letter)}</div>
-        <div class="hv-hud__aura-time">${esc(b.time)}</div>
-      </div>`).join('');
-    const debuffsHtml = DEBUFFS.map((d) => `
-      <div class="hv-hud__aura">
-        <div class="hv-hud__aura-icon hv-hud__aura-icon--debuff">${esc(d.letter)}</div>
-        <div class="hv-hud__aura-time">${esc(d.time)}</div>
-      </div>`).join('');
+    const panels = this.panels();
+    const aurasHtml = aurasMarkup(panels.buffs, panels.debuffs);
 
-    const partyHtml = PARTY.map((p) => `
+    const partyHtml = panels.party.map((p) => `
       <div class="hv-hud__party-member">
         <div class="hv-hud__party-avatar">${esc(p.initial)}</div>
         <div class="hv-hud__party-info">
@@ -716,7 +843,7 @@ export class HudOverlay {
         </div>
       </div>`).join('');
 
-    const currencyHtml = CURRENCY.map((c) => `
+    const currencyHtml = panels.currency.map((c) => `
       <div class="hv-hud__currency-item">
         <div class="hv-hud__currency-coin"></div>
         <span>${esc(c.value)}</span>
@@ -725,22 +852,8 @@ export class HudOverlay {
     const bagTabsHtml = BAG_TABS.map((tab) => `
       <span class="hv-hud__bag-tab${tab === 'Bag' ? ' hv-hud__bag-tab--active' : ''}">${tab}</span>`).join('');
 
-    const inventoryHtml = INVENTORY.map((item) => itemSlotHtml(tk.slotTheme, item, 58)).join('');
-    const hotbarHtml = HOTBAR.map((item) => itemSlotHtml(tk.slotTheme, item, 64)).join('');
-
-    const targetHtml = this.inCombat ? `
-      <div class="hv-hud__target">
-        ${cornerAccents(tk)}
-        <div class="hv-hud__target-row">
-          <span class="hv-hud__target-name">${esc(TARGET.name)}</span>
-          <span class="hv-hud__target-level">Lv ${TARGET.level}</span>
-        </div>
-        <div class="hv-hud__target-hp"><div class="hv-hud__target-hp-fill" style="width:${TARGET.hpPct}"></div></div>
-        <div class="hv-hud__target-cast-row">
-          <div class="hv-hud__target-cast-track"><div class="hv-hud__target-cast-fill" style="width:${TARGET.castPct}"></div></div>
-          <span class="hv-hud__target-cast-label">${esc(TARGET.cast)}</span>
-        </div>
-      </div>` : '';
+    const inventoryHtml = panels.inventory.map((item) => itemSlotHtml(tk.slotTheme, item, 58)).join('');
+    const hotbarHtml = panels.hotbar.map((item) => itemSlotHtml(tk.slotTheme, item, 64)).join('');
 
     return `
       <section class="hv-hud__player">
@@ -761,7 +874,7 @@ export class HudOverlay {
         </div>
       </section>
 
-      <div class="hv-hud__auras">${buffsHtml}<div class="hv-hud__aura-divider"></div>${debuffsHtml}</div>
+      <div class="hv-hud__auras" data-hud="auras">${aurasHtml}</div>
 
       <div class="hv-hud__party">${partyHtml}</div>
 
@@ -778,7 +891,7 @@ export class HudOverlay {
         <div class="hv-hud__banner-subtitle" data-hud="banner-subtitle">Loading map data&hellip;</div>
       </section>
 
-      ${targetHtml}
+      <section class="hv-hud__target" data-hud="target" style="display:none"></section>
 
       <section class="hv-hud__minimap">
         <div class="hv-hud__minimap-dots"></div>
