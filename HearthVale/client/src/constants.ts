@@ -52,4 +52,5 @@ export const WORLD_DEPTH = {
   monster: 25,
   player: 30,
   labels: 40,
+  floatingText: 46,
 } as const;

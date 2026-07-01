@@ -4,7 +4,6 @@ import {
   DEFAULT_HOTBAR,
   DEFAULT_INVENTORY,
   DEFAULT_PARTY,
-  DEFAULT_PLAYER,
   hudOverlay,
   type HudAura,
   type HudPlayerSnapshot,
@@ -16,6 +15,15 @@ import { loadCollisionMask, loadPropLayer } from '../services/mapArtData.js';
 import { loadNpcCatalog } from '../services/npcData.js';
 import type { NpcCatalogEntry, NpcRole } from '../types/npc.js';
 import { getMapById, loadMonsterCatalog, type MonsterCatalogEntry } from '../services/worldData.js';
+import { CombatController, type CombatBridge, type CombatTargetInfo } from '../combat/CombatController.js';
+import type { CombatStats } from '../combat/formulas.js';
+import {
+  monsterXpReward,
+  playerCombatStats,
+  playerVitals,
+  STARTER_REGION_LEVEL_CAP,
+  xpToNextLevel,
+} from '../combat/progression.js';
 import {
   BIOME_COLORS,
   DEFAULT_MAP_COLOR,
@@ -26,8 +34,27 @@ import {
   WORLD_DEPTH,
 } from '../constants.js';
 import type { CollisionMaskDefinition, MapPropDefinition } from '../types/mapArt.js';
-import type { MapDefinition, MapPortal, Rect, SpawnTableEntry, Vec2 } from '../types/world.js';
+import type { MapDefinition, MapPortal, Vec2 } from '../types/world.js';
 import { clampToBounds, getMapBounds, type MapBounds } from '../utils/mapBounds.js';
+
+/** A fresh solo hero at the bottom of the starter-region curve. */
+function createStartingPlayer(): HudPlayerSnapshot {
+  const level = 1;
+  const { hpMax, mpMax } = playerVitals(level);
+  return {
+    name: 'Hero',
+    level,
+    hpCur: hpMax,
+    hpMax,
+    mpCur: mpMax,
+    mpMax,
+    spCur: 100,
+    spMax: 100,
+    xpCur: 0,
+    xpNext: xpToNextLevel(level),
+    stance: 'Ready',
+  };
+}
 
 export interface WorldSceneData {
   mapId: string;
@@ -40,7 +67,6 @@ const PLAYER_COLLISION_SAMPLES: Vec2[] = [
   { x: 8, y: 8 },
   { x: 0, y: 12 },
 ];
-const TARGET_LOCK_RADIUS = 96;
 const LOW_HP_AURA_THRESHOLD = 0.3;
 const VITAL_STAMINA_DRAIN_PER_SECOND = 16;
 const VITAL_STAMINA_REGEN_PER_SECOND = 9;
@@ -49,16 +75,6 @@ const VITAL_HP_REGEN_PER_SECOND_SAFE = 6;
 const VITAL_MP_REGEN_PER_SECOND_SAFE = 10;
 const VITAL_SP_REGEN_PER_SECOND_SAFE = 20;
 const AUTO_PATH_REACH_RADIUS = 3.5;
-const MONSTER_BASE_SPEED = 75;
-const MONSTER_SPEED_VARIATION = 18;
-const MONSTER_AGGRO_RADIUS = 170;
-const MONSTER_LEASH_RADIUS = 240;
-const MONSTER_WANDER_RADIUS = 86;
-const MONSTER_WANDER_DELAY_MIN = 900;
-const MONSTER_WANDER_DELAY_MAX = 2200;
-const MONSTER_HOME_RETURN_TOLERANCE = 14;
-const MONSTER_WANDER_POINT_ATTEMPTS = 16;
-const MONSTER_SPAWN_ATTEMPTS = 24;
 const AUTO_PATH_SEARCH_LIMIT = 2400;
 const PATH_NEIGHBOR_STEPS: ReadonlyArray<[number, number]> = [
   [1, 0],
@@ -90,28 +106,6 @@ const NPC_ROLE_STYLE: Record<NpcRole, NpcRoleStyle> = {
 };
 
 type TileCoord = { row: number; col: number; };
-type MonsterAIState = 'idle' | 'chase' | 'return';
-
-interface MonsterInstance {
-  monsterId: string;
-  body: Phaser.GameObjects.Arc;
-  label: Phaser.GameObjects.Text;
-  speed: number;
-  home: Vec2;
-  state: MonsterAIState;
-  nextActionMs: number;
-  target: Vec2;
-}
-
-interface MonsterSpawnRuntime {
-  tableId: string;
-  bounds: Rect;
-  maxConcurrent: number;
-  respawnMs: number;
-  entries: SpawnTableEntry[];
-  nextRespawnMs: number;
-  active: MonsterInstance[];
-}
 
 interface NpcInstance {
   npcId: string;
@@ -142,11 +136,10 @@ export class WorldScene extends Phaser.Scene {
   private inSafeZone = false;
   private devOverlay!: DevOverlay;
   private collisionMask: CollisionMaskDefinition | null = null;
-  private monsterSpawns: MonsterSpawnRuntime[] = [];
   private ready = false;
   private autoPath: Vec2[] = [];
   private autoPathMarker: Phaser.GameObjects.Arc | null = null;
-  private playerState: HudPlayerSnapshot = { ...DEFAULT_PLAYER };
+  private playerState: HudPlayerSnapshot = createStartingPlayer();
   private npcCatalog: Map<string, NpcCatalogEntry> = new Map();
   private npcs: NpcInstance[] = [];
   private nearestNpc: NpcInstance | null = null;
@@ -154,6 +147,11 @@ export class WorldScene extends Phaser.Scene {
   private dialogueBubble: Phaser.GameObjects.Container | null = null;
   private dialogueTimer = 0;
   private monsterCatalog: Map<string, MonsterCatalogEntry> = new Map();
+  private combat!: CombatController;
+  private attackKey!: Phaser.Input.Keyboard.Key;
+  private inCombat = false;
+  private playerInvuln = 0;
+  private liveCombatTarget: CombatTargetInfo | null = null;
 
   constructor() {
     super({ key: 'WorldScene' });
@@ -164,7 +162,6 @@ export class WorldScene extends Phaser.Scene {
     this.portalCooldown = 500;
     this.ready = false;
     this.collisionMask = null;
-    this.monsterSpawns = [];
     // Game objects are destroyed on scene.restart; drop stale references so a
     // fresh map starts with clean NPC/interaction state.
     this.npcs = [];
@@ -172,6 +169,9 @@ export class WorldScene extends Phaser.Scene {
     this.interactPrompt = null;
     this.dialogueBubble = null;
     this.dialogueTimer = 0;
+    this.liveCombatTarget = null;
+    this.inCombat = false;
+    this.playerInvuln = 0;
   }
 
   async create(data: WorldSceneData): Promise<void> {
@@ -204,10 +204,11 @@ export class WorldScene extends Phaser.Scene {
       this.drawSpawnAreas(mapDef);
       this.drawPortals(mapDef);
       this.drawNpcs(mapDef);
-      this.setupMonsterSpawns(mapDef);
 
       this.player = this.createPlayer(data.spawn);
       this.worldLayer.add(this.player);
+
+      this.setupCombat(mapDef);
 
       this.cameras.main.startFollow(this.player, true, 0.12, 0.12);
       this.cameras.main.setZoom(1);
@@ -223,6 +224,9 @@ export class WorldScene extends Phaser.Scene {
       this.autoPathMarker = this.add.circle(0, 0, 7, 0x88ff88, 0.55);
       this.autoPathMarker.setDepth(WORLD_DEPTH.labels);
       this.autoPathMarker.setVisible(false);
+      this.attackKey = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+      this.input.on('pointerdown', this.handlePointerAttack, this);
+      this.events.once(Phaser.Scenes.Events.SHUTDOWN, this.onShutdown, this);
 
       this.input.on('pointerdown', this.handlePointerDown, this);
       this.input.mouse?.disableContextMenu();
@@ -248,16 +252,25 @@ export class WorldScene extends Phaser.Scene {
     if (this.portalCooldown > 0) {
       this.portalCooldown = Math.max(0, this.portalCooldown - delta);
     }
-
+    if (this.playerInvuln > 0) {
+      this.playerInvuln = Math.max(0, this.playerInvuln - delta);
+    }
     const moved = this.handleMovement(delta);
     const autoPathMoved = this.followAutoPath(delta);
 
     const actuallyMoved = moved || autoPathMoved;
-    this.updateMonsters(delta);
-    this.processMonsterRespawns(delta);
     this.updateNpcInteraction(delta);
     this.inSafeZone = this.isInSafeZone({ x: this.player.x, y: this.player.y });
     this.updatePlayerVitals(delta, actuallyMoved);
+    this.combat.update(delta);
+    if (Phaser.Input.Keyboard.JustDown(this.attackKey)) {
+      this.combat.playerAttack();
+    }
+    if (this.playerInvuln > 0) {
+      this.playerState.stance = 'Recovering';
+    } else if (this.inCombat && !this.inSafeZone && this.playerState.hpCur > 0) {
+      this.playerState.stance = 'Fighting';
+    }
     this.checkPortals();
     this.syncHud({ x: this.player.x, y: this.player.y });
     this.devOverlay.update(this.mapDef, { x: this.player.x, y: this.player.y });
@@ -1020,269 +1033,8 @@ export class WorldScene extends Phaser.Scene {
     }
   }
 
-  private setupMonsterSpawns(map: MapDefinition): void {
-    if (map.kind === 'town') return;
-    if (!this.collisionMask) {
-      return;
-    }
-
-    this.monsterSpawns = map.spawnTables.map((table) => ({
-      tableId: table.id,
-      bounds: table.bounds,
-      maxConcurrent: table.maxConcurrent,
-      respawnMs: table.respawnSeconds * 1000,
-      entries: table.entries,
-      nextRespawnMs: table.respawnSeconds * 1000,
-      active: [],
-    }));
-
-    for (const runtime of this.monsterSpawns) {
-      if (runtime.maxConcurrent <= 0 || runtime.entries.length === 0) {
-        continue;
-      }
-
-      const initialCount = runtime.maxConcurrent;
-      for (let i = 0; i < initialCount; i += 1) {
-        this.spawnMonster(runtime);
-      }
-    }
-  }
-
-  private processMonsterRespawns(delta: number): void {
-    if (!this.collisionMask) {
-      return;
-    }
-
-    for (const runtime of this.monsterSpawns) {
-      if (runtime.maxConcurrent <= 0 || runtime.entries.length === 0 || runtime.active.length >= runtime.maxConcurrent) {
-        continue;
-      }
-
-      runtime.nextRespawnMs -= delta;
-      if (runtime.nextRespawnMs <= 0) {
-        this.spawnMonster(runtime);
-        runtime.nextRespawnMs = runtime.respawnMs;
-      }
-    }
-  }
-
-  private updateMonsters(delta: number): void {
-    const playerPos = { x: this.player.x, y: this.player.y };
-    for (const runtime of this.monsterSpawns) {
-      for (const monster of runtime.active) {
-        const playerDistance = Phaser.Math.Distance.Between(
-          monster.body.x,
-          monster.body.y,
-          playerPos.x,
-          playerPos.y,
-        );
-        const homeDistance = Phaser.Math.Distance.Between(
-          monster.body.x,
-          monster.body.y,
-          monster.home.x,
-          monster.home.y,
-        );
-
-        if (playerDistance <= MONSTER_AGGRO_RADIUS) {
-          monster.state = 'chase';
-        } else if (monster.state === 'chase' && playerDistance > MONSTER_LEASH_RADIUS) {
-          monster.state = 'return';
-          monster.target = { ...monster.home };
-        }
-
-        if (monster.state === 'return' && homeDistance <= MONSTER_HOME_RETURN_TOLERANCE) {
-          monster.state = 'idle';
-          monster.nextActionMs = 0;
-        }
-
-        if (monster.state === 'idle') {
-          monster.nextActionMs = Math.max(0, monster.nextActionMs - delta);
-          if (
-            monster.nextActionMs <= 0 ||
-            Phaser.Math.Distance.Between(monster.body.x, monster.body.y, monster.target.x, monster.target.y) <= 8
-          ) {
-            monster.target = this.pickWanderTarget(monster.home);
-            monster.nextActionMs = this.randomRange(MONSTER_WANDER_DELAY_MIN, MONSTER_WANDER_DELAY_MAX);
-          }
-        } else if (monster.state === 'return') {
-          monster.target = { ...monster.home };
-        } else if (monster.state === 'chase') {
-          monster.target = { ...playerPos };
-        }
-
-        const speed = monster.state === 'chase' ? monster.speed * 1.2 : monster.speed;
-        this.moveMonster(monster, monster.target, speed, delta);
-        monster.label.setPosition(monster.body.x, monster.body.y - 16);
-      }
-    }
-  }
-
-  private spawnMonster(runtime: MonsterSpawnRuntime): boolean {
-    if (!this.collisionMask || runtime.active.length >= runtime.maxConcurrent) {
-      return false;
-    }
-
-    const entry = this.pickWeightedEntry(runtime.entries);
-    if (!entry) {
-      return false;
-    }
-
-    const spawnPoint = this.findMonsterSpawnPoint(runtime.bounds);
-    if (!spawnPoint) {
-      return false;
-    }
-
-    const body = this.add.circle(spawnPoint.x, spawnPoint.y, 10, this.monsterColor(entry.monsterId), 0.9);
-    body.setStrokeStyle(2, 0xff8866);
-    body.setDepth(WORLD_DEPTH.monster);
-
-    const label = this.add
-      .text(spawnPoint.x, spawnPoint.y - 16, entry.monsterId.replace(/_/g, ' '), {
-        fontFamily: 'sans-serif',
-        fontSize: '9px',
-        color: '#ffbbaa',
-        stroke: '#1a1520',
-        strokeThickness: 2,
-      })
-      .setOrigin(0.5, 1);
-    label.setDepth(WORLD_DEPTH.labels);
-
-    this.worldLayer.add([body, label]);
-
-    runtime.active.push({
-      monsterId: entry.monsterId,
-      body,
-      label,
-      speed: MONSTER_BASE_SPEED + this.randomRange(-MONSTER_SPEED_VARIATION, MONSTER_SPEED_VARIATION),
-      home: { ...spawnPoint },
-      state: 'idle',
-      nextActionMs: this.randomRange(MONSTER_WANDER_DELAY_MIN, MONSTER_WANDER_DELAY_MAX),
-      target: { ...spawnPoint },
-    });
-
-    return true;
-  }
-
-  private pickWanderTarget(home: Vec2): Vec2 {
-    for (let i = 0; i < MONSTER_WANDER_POINT_ATTEMPTS; i += 1) {
-      const angle = Math.random() * Math.PI * 2;
-      const distance = Math.sqrt(Math.random()) * MONSTER_WANDER_RADIUS;
-      const point = {
-        x: home.x + Math.cos(angle) * distance,
-        y: home.y + Math.sin(angle) * distance,
-      };
-      const clamped = clampToBounds(point.x, point.y, this.bounds);
-      if (this.isWalkable(clamped.x, clamped.y)) {
-        return clamped;
-      }
-    }
-
-    return { ...home };
-  }
-
-  private moveMonster(monster: MonsterInstance, target: Vec2, speed: number, delta: number): void {
-    const dx = target.x - monster.body.x;
-    const dy = target.y - monster.body.y;
-    const distance = Math.hypot(dx, dy);
-    if (distance <= 0.001) {
-      return;
-    }
-
-    const step = (speed * delta) / 1000;
-    const vx = dx / distance;
-    const vy = dy / distance;
-
-    const nextX = monster.body.x + vx * step;
-    const nextY = monster.body.y + vy * step;
-
-    const attemptX = clampToBounds(nextX, monster.body.y, this.bounds);
-    if (this.isMonsterWalkable(attemptX.x, attemptX.y)) {
-      monster.body.x = attemptX.x;
-    }
-
-    const attemptY = clampToBounds(monster.body.x, nextY, this.bounds);
-    if (this.isMonsterWalkable(attemptY.x, attemptY.y)) {
-      monster.body.y = attemptY.y;
-    }
-
-    if (monster.state === 'idle' && Phaser.Math.Distance.Between(monster.body.x, monster.body.y, target.x, target.y) < 10) {
-      monster.nextActionMs = 0;
-      monster.target = this.pickWanderTarget(monster.home);
-    }
-  }
-
-  private findMonsterSpawnPoint(bounds: Rect): Vec2 | null {
-    const fallback = {
-      x: bounds.x + bounds.width / 2,
-      y: bounds.y + bounds.height / 2,
-    };
-
-    for (let i = 0; i < MONSTER_SPAWN_ATTEMPTS; i += 1) {
-      const candidate = {
-        x: bounds.x + Math.random() * bounds.width,
-        y: bounds.y + Math.random() * bounds.height,
-      };
-      const clamped = clampToBounds(candidate.x, candidate.y, this.bounds);
-      if (this.isWalkable(clamped.x, clamped.y)) {
-        return clamped;
-      }
-    }
-
-    const clampedFallback = clampToBounds(fallback.x, fallback.y, this.bounds);
-    return this.isWalkable(clampedFallback.x, clampedFallback.y) ? clampedFallback : null;
-  }
-
-  private pickWeightedEntry(entries: SpawnTableEntry[]): SpawnTableEntry | null {
-    const choices = entries.filter((entry) => entry.weight > 0);
-    if (!choices.length) {
-      return null;
-    }
-
-    const total = choices.reduce((sum, entry) => sum + entry.weight, 0);
-    if (total <= 0) {
-      return choices[0] ?? null;
-    }
-
-    let roll = Math.random() * total;
-    for (const entry of choices) {
-      roll -= entry.weight;
-      if (roll <= 0) {
-        return entry;
-      }
-    }
-
-    return choices[choices.length - 1] ?? null;
-  }
-
-  private monsterColor(monsterId: string): number {
-    if (monsterId.includes('wraith')) return 0x7440a6;
-    if (monsterId.includes('golem') || monsterId.includes('sentinel')) return 0x7f6db8;
-    if (monsterId.includes('moonmoth') || monsterId.includes('moonwell')) return 0x4f6ee0;
-    if (monsterId.includes('moth') || monsterId.includes('shard')) return 0xd08fd0;
-    return 0xcc6644;
-  }
-
   private randomRange(min: number, max: number): number {
     return min + Math.random() * (max - min);
-  }
-
-  private isMonsterWalkable(x: number, y: number): boolean {
-    if (!this.collisionMask) {
-      return true;
-    }
-
-    const { tileSize, walkable } = this.collisionMask;
-    const halfW = (this.mapDef.gridSize.width * tileSize) / 2;
-    const halfH = (this.mapDef.gridSize.height * tileSize) / 2;
-
-    const col = Math.floor((x + halfW) / tileSize);
-    const row = Math.floor((y + halfH) / tileSize);
-
-    if (row < 0 || row >= walkable.length || col < 0 || col >= walkable[row].length) {
-      return false;
-    }
-
-    return !!walkable[row][col];
   }
 
   private createPlayer(spawn: Vec2): Phaser.GameObjects.Container {
@@ -1299,6 +1051,129 @@ export class WorldScene extends Phaser.Scene {
     return container;
   }
 
+  private handlePointerAttack(pointer: Phaser.Input.Pointer): void {
+    if (!this.ready || !this.combat) return;
+    const world = this.cameras.main.getWorldPoint(pointer.x, pointer.y);
+    this.combat.attackAtPoint(world.x, world.y);
+  }
+
+  private onShutdown(): void {
+    this.input.off('pointerdown', this.handlePointerAttack, this);
+    this.combat?.destroy();
+    this.inCombat = false;
+    this.liveCombatTarget = null;
+  }
+
+  private setupCombat(map: MapDefinition): void {
+    const bridge: CombatBridge = {
+      getPlayerPosition: () => ({ x: this.player.x, y: this.player.y }),
+      getPlayerStats: () => this.getPlayerCombatStats(),
+      isPlayerAlive: () => this.playerState.hpCur > 0 && this.playerInvuln <= 0 && !this.inSafeZone,
+      clampToBounds: (x, y) => clampToBounds(x, y, this.bounds),
+      onPlayerDamaged: (amount) => this.applyPlayerDamage(amount),
+      onMonsterDefeated: (monster) => this.awardMonsterKill(monster),
+      onTargetChanged: (target) => this.onCombatTargetChanged(target),
+    };
+
+    this.combat = new CombatController(this, this.worldLayer, bridge, {
+      monster: WORLD_DEPTH.monster,
+      label: WORLD_DEPTH.labels,
+      floatingText: WORLD_DEPTH.floatingText,
+    });
+
+    if (map.kind !== 'town') {
+      this.combat.spawnFromTables(map.spawnTables, this.monsterCatalog);
+    }
+  }
+
+  private getPlayerCombatStats(): CombatStats {
+    return playerCombatStats(this.playerState.level);
+  }
+
+  private onCombatTargetChanged(target: CombatTargetInfo | null): void {
+    this.inCombat = target !== null;
+    this.liveCombatTarget = target;
+  }
+
+  private applyPlayerDamage(amount: number): void {
+    if (this.playerInvuln > 0 || this.playerState.hpCur <= 0) return;
+    this.playerState.hpCur = Math.max(0, this.playerState.hpCur - amount);
+    if (this.playerState.hpCur <= 0) {
+      this.handlePlayerDefeat();
+    }
+  }
+
+  private handlePlayerDefeat(): void {
+    const respawn = this.respawnPoint();
+    this.player.x = respawn.x;
+    this.player.y = respawn.y;
+    const { hpMax, mpMax } = playerVitals(this.playerState.level);
+    this.playerState.hpMax = hpMax;
+    this.playerState.mpMax = mpMax;
+    this.playerState.hpCur = hpMax;
+    this.playerState.mpCur = mpMax;
+    this.playerState.stance = 'Recovering';
+    this.playerInvuln = 2500;
+    audioService.playSfx('sfx_portal');
+  }
+
+  private respawnPoint(): Vec2 {
+    const zone = this.mapDef.safeZone;
+    if (zone) {
+      return clampToBounds(zone.x + zone.width / 2, zone.y + zone.height / 2, this.bounds);
+    }
+    return clampToBounds(this.mapDef.playerSpawn.x, this.mapDef.playerSpawn.y, this.bounds);
+  }
+
+  private awardMonsterKill(monster: MonsterCatalogEntry): void {
+    if (this.playerState.level >= STARTER_REGION_LEVEL_CAP) {
+      this.playerState.xpCur = this.playerState.xpNext;
+      return;
+    }
+
+    this.playerState.xpCur += monsterXpReward(monster);
+    while (
+      this.playerState.xpCur >= this.playerState.xpNext &&
+      this.playerState.level < STARTER_REGION_LEVEL_CAP
+    ) {
+      this.playerState.xpCur -= this.playerState.xpNext;
+      this.playerState.level += 1;
+      const { hpMax, mpMax } = playerVitals(this.playerState.level);
+      this.playerState.hpMax = hpMax;
+      this.playerState.mpMax = mpMax;
+      this.playerState.hpCur = hpMax;
+      this.playerState.mpCur = mpMax;
+      this.playerState.xpNext = xpToNextLevel(this.playerState.level);
+      this.spawnLevelUpText();
+    }
+
+    if (this.playerState.level >= STARTER_REGION_LEVEL_CAP) {
+      this.playerState.xpCur = this.playerState.xpNext;
+    }
+  }
+
+  private spawnLevelUpText(): void {
+    const label = this.add
+      .text(this.player.x, this.player.y - 30, `Level ${this.playerState.level}!`, {
+        fontFamily: 'Georgia, serif',
+        fontSize: '15px',
+        color: '#ffe9a8',
+        stroke: '#1a1520',
+        strokeThickness: 4,
+      })
+      .setOrigin(0.5, 1);
+    label.setDepth(WORLD_DEPTH.floatingText);
+    this.worldLayer.add(label);
+    this.tweens.add({
+      targets: label,
+      y: this.player.y - 62,
+      alpha: 0,
+      duration: 1100,
+      ease: 'Cubic.easeOut',
+      onComplete: () => label.destroy(),
+    });
+  }
+
   private syncHud(position: Vec2): void {
     this.inSafeZone = this.isInSafeZone(position);
     const auras = this.getAuras();
@@ -1310,7 +1185,7 @@ export class WorldScene extends Phaser.Scene {
       player: this.getPlayerSnapshot(),
       buffs: auras.buffs,
       debuffs: auras.debuffs,
-      target: this.getTargetSnapshot(position),
+      target: this.getTargetSnapshot(),
       // No party/economy/inventory systems yet — pass the design seed data through
       // the snapshot so the scene stays the single owner of HUD state.
       party: DEFAULT_PARTY,
@@ -1320,27 +1195,12 @@ export class WorldScene extends Phaser.Scene {
     });
   }
 
-  /** Locks the HUD target frame onto the nearest monster within range (no combat
-   * system yet, so HP reads full and there is no cast bar). */
-  private getTargetSnapshot(position: Vec2): HudTarget | null {
-    let nearest: MonsterInstance | null = null;
-    let bestDist = TARGET_LOCK_RADIUS;
-    for (const runtime of this.monsterSpawns) {
-      for (const monster of runtime.active) {
-        const dist = Phaser.Math.Distance.Between(position.x, position.y, monster.body.x, monster.body.y);
-        if (dist <= bestDist) {
-          bestDist = dist;
-          nearest = monster;
-        }
-      }
-    }
-    if (!nearest) return null;
-    const meta = this.monsterCatalog.get(nearest.monsterId);
-    return {
-      name: meta?.displayName ?? nearest.monsterId.replace(/_/g, ' '),
-      level: meta?.baseLevel ?? this.mapDef.levelRange.min,
-      hpPct: '100%',
-    };
+  /** Formats the CombatController's live target (if any) for the HUD frame. */
+  private getTargetSnapshot(): HudTarget | null {
+    const target = this.liveCombatTarget;
+    if (!target) return null;
+    const hpPct = target.hpMax > 0 ? Math.max(0, Math.min(100, (target.hpCur / target.hpMax) * 100)) : 0;
+    return { name: target.name, level: target.level, hpPct: `${hpPct}%` };
   }
 
   /** Derives status auras from live player vitals and zone state. */

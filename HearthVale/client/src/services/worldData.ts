@@ -6,12 +6,16 @@ const MONSTERS_URL = '/catalog/monsters.json';
 let cachedMaps: MapDefinition[] | null = null;
 let mapById: Record<string, MapDefinition> = {};
 
-/** Subset of the exported monster catalog the client needs for the HUD target frame. */
+/** Subset of the exported monster catalog the client needs for combat and the HUD target frame. */
 export interface MonsterCatalogEntry {
   id: string;
   displayName: string;
   baseLevel: number;
   hp: number;
+  atk: number;
+  def: number;
+  size: 'small' | 'medium' | 'large';
+  element: string;
 }
 
 let cachedMonsters: Map<string, MonsterCatalogEntry> | null = null;
