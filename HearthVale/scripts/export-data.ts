@@ -12,6 +12,7 @@ import {
   MONSTERS,
   NPCS,
   QUESTS,
+  SKILLS,
 } from '../src/data/catalog/index.js';
 import { BIOMES } from '../src/data/world/biomes.js';
 import { MAP_ART_BY_ID } from '../src/data/world/mapArt.js';
@@ -69,6 +70,7 @@ await writeJson('catalog/items.json', ITEMS);
 await writeJson('catalog/quests.json', QUESTS);
 await writeJson('catalog/drops.json', DROP_TABLES);
 await writeJson('catalog/jobs.json', JOB_CLASSES);
+await writeJson('catalog/skills.json', SKILLS);
 await writeJson('biomes.json', BIOMES);
 await writeJson('animations.json', ANIMATIONS);
 await writeJson('audio/manifest.json', AUDIO_MANIFEST);
@@ -92,4 +94,4 @@ for (const map of MAPS) {
 console.log(`Wrote ${mapsPath} (${MAPS.length} maps)`);
 console.log(`Wrote ${regionsPath} (${REGIONS.length} regions)`);
 console.log(`Validated ${MAP_ALIASES.length} map aliases`);
-console.log(`Exported catalog, biomes, animations, audio, assets, collision, props`);
+console.log(`Exported catalog (incl. jobs, skills), biomes, animations, audio, assets, collision, props`);

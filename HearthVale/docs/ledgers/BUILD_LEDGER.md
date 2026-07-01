@@ -149,3 +149,16 @@ Append-only. Never edit or remove existing entries.
 - Dependencies added: zod (dev)
 - Reasoning: Online-research-enabled tooling per user request; verify:all extended
 - Confidence: 93/100
+
+---
+
+## [2026-07-01] Autonomous design/production pass — skill catalog + roadmap correction
+
+- Event: FeatureBuilt
+- Actions performed: Added `SkillDefinition`/`SkillEffect`/`SkillType`/`SkillTargetType` types and `src/data/catalog/skills.ts` (20 skills covering every `JOB_CLASSES.startingSkills` id), `scripts/verify-skills.ts` (uniqueness, cost/cooldown/effect-shape, element cross-check against `ELEMENT_MODIFIERS`, job→skill reference resolution). Wired into `src/data/catalog/index.ts`, `scripts/export-data.ts` (`data/catalog/skills.json`), `package.json` (`verify:skills`), `tools/cli.ts` (help text + `verify` steps), `README.md`. Corrected `docs/ROADMAP.md` drift (read "Phase A current" though `docs/14_SESSION_HANDOFF.md` already showed Phase B complete / Phase C underway) — Phase A/B marked done, Phase C current with skills→combat wiring called out as the next task, combat/jobs moved out of the server-only "Later" backlog.
+- Files created: `src/data/catalog/skills.ts`, `scripts/verify-skills.ts`
+- Files modified: `src/data/catalog/types.ts`, `src/data/catalog/index.ts`, `scripts/export-data.ts`, `package.json`, `tools/cli.ts`, `README.md`, `docs/ROADMAP.md`, `docs/14_SESSION_HANDOFF.md`
+- Dependencies added: none
+- Reasoning: Job classes shipped with skill-id stubs that resolved to nothing (Phase 5 design-loop gate requires skills connect to combat/economy); this closes that gap at the data layer without touching the in-flight combat client PR, and fixes stale roadmap status that contradicted the session log
+- Verification: `npm run verify` passed (13/13 checks); `npx tsc --noEmit` clean
+- Confidence: 92/100
