@@ -16,12 +16,13 @@ import { loadCollisionMask, loadPropLayer } from '../services/mapArtData.js';
 import { getMapById, loadMonsterCatalog, type MonsterCatalogEntry } from '../services/worldData.js';
 import { getNpcById, getQuestsForNpc } from '../services/catalogData.js';
 import { DialogueBox } from '../ui/DialogueBox.js';
-import type { NpcDefinition, NpcRole } from '../types/catalog.js';
+import type { NpcDefinition } from '../types/catalog.js';
 import {
   BIOME_COLORS,
   DEFAULT_MAP_COLOR,
   HUD_DEPTH,
   KIND_ACCENT,
+  NPC_ROLE_COLORS,
   PLAYER_SPEED,
   PORTAL_TRIGGER_RADIUS,
   TILE_SIZE,
@@ -51,13 +52,6 @@ const PLAYER_COLLISION_SAMPLES: Vec2[] = [
   { x: 0, y: 12 },
 ];
 const NPC_INTERACT_RADIUS = 46;
-const NPC_ROLE_COLORS: Record<NpcRole, number> = {
-  quest: 0xf0c850,
-  merchant: 0x6cc98a,
-  trainer: 0xd88050,
-  warp: 0x8a9cf0,
-  flavor: 0xc9a86c,
-};
 
 interface NpcInteractable {
   def: NpcDefinition;

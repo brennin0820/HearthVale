@@ -1,3 +1,5 @@
+import type { NpcRole } from './types/catalog.js';
+
 /** World tile size in pixels — RO-style 32px cells. */
 export const TILE_SIZE = 32;
 
@@ -23,6 +25,14 @@ export const KIND_ACCENT: Record<string, number> = {
   field: 0x8fbc8f,
   dungeon: 0x7a6b8f,
   instance: 0x8f7a6b,
+};
+
+export const NPC_ROLE_COLORS: Record<NpcRole, number> = {
+  quest: 0xf0c850,
+  merchant: 0x6cc98a,
+  trainer: 0xd88050,
+  warp: 0x8a9cf0,
+  flavor: 0xc9a86c,
 };
 
 export const DEFAULT_MAP_COLOR = 0x3a3a4a;

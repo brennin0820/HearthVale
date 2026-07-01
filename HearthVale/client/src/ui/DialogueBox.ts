@@ -1,18 +1,10 @@
 import Phaser from 'phaser';
-import { HUD_DEPTH } from '../constants.js';
+import { HUD_DEPTH, NPC_ROLE_COLORS } from '../constants.js';
 import type { NpcDefinition, NpcRole, QuestDefinition } from '../types/catalog.js';
 
 const PANEL_WIDTH = 560;
 const PANEL_HEIGHT = 176;
 const PANEL_MARGIN_BOTTOM = 48;
-
-const ROLE_ACCENT: Record<NpcRole, number> = {
-  quest: 0xf0c850,
-  merchant: 0x6cc98a,
-  trainer: 0xd88050,
-  warp: 0x8a9cf0,
-  flavor: 0xc9a86c,
-};
 
 const ROLE_LABEL: Record<NpcRole, string> = {
   quest: 'Quest',
@@ -40,7 +32,7 @@ export class DialogueBox {
   private pages: string[] = [];
   private pageIndex = 0;
   private open = false;
-  private accent = ROLE_ACCENT.flavor;
+  private accent = NPC_ROLE_COLORS.flavor;
 
   private readonly onResize = () => this.reposition();
 
@@ -125,7 +117,7 @@ export class DialogueBox {
       this.pages = ['...'];
     }
 
-    this.accent = ROLE_ACCENT[npc.role];
+    this.accent = NPC_ROLE_COLORS[npc.role];
     this.accentBar.setFillStyle(this.accent, 1);
     this.background.setStrokeStyle(2, this.accent, 0.7);
     this.nameText.setText(npc.displayName);
