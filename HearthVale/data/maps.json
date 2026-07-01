@@ -24,40 +24,40 @@
       {
         "npcId": "elder",
         "position": {
-          "x": 320,
-          "y": 240
+          "x": 16,
+          "y": -48
         },
         "facing": "south"
       },
       {
         "npcId": "merchant_silas",
         "position": {
-          "x": 280,
-          "y": 260
+          "x": 304,
+          "y": -80
         },
-        "facing": "east"
+        "facing": "west"
       },
       {
         "npcId": "hearth_courier",
         "position": {
-          "x": 360,
-          "y": 220
+          "x": 528,
+          "y": 16
         },
         "facing": "west"
       },
       {
         "npcId": "innkeeper_mara",
         "position": {
-          "x": 400,
-          "y": 280
+          "x": -368,
+          "y": -144
         },
-        "facing": "north"
+        "facing": "south"
       },
       {
         "npcId": "trainer_bram",
         "position": {
-          "x": 240,
-          "y": 300
+          "x": 176,
+          "y": 368
         },
         "facing": "east"
       }
@@ -67,8 +67,8 @@
         "id": "east_gate",
         "label": "Cloverfield Plains",
         "position": {
-          "x": 920,
-          "y": 320
+          "x": 720,
+          "y": 16
         },
         "targetMapId": "cloverfield_plains",
         "targetSpawn": {
@@ -78,14 +78,14 @@
       }
     ],
     "playerSpawn": {
-      "x": 480,
-      "y": 320
+      "x": 16,
+      "y": 112
     },
     "safeZone": {
-      "x": 80,
-      "y": 120,
-      "width": 880,
-      "height": 520
+      "x": -704,
+      "y": -512,
+      "width": 1408,
+      "height": 1024
     },
     "assetKey": "map_hearthvale_town"
   },
@@ -164,8 +164,8 @@
         },
         "targetMapId": "hearthvale_town",
         "targetSpawn": {
-          "x": 600,
-          "y": 150
+          "x": 592,
+          "y": 16
         }
       },
       {

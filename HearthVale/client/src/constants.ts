@@ -33,8 +33,10 @@ export const HUD_DEPTH = 1000;
 
 export const WORLD_DEPTH = {
   ground: 0,
-  safeZone: 1,
-  spawnBounds: 2,
+  groundDetail: 1,
+  safeZone: 2,
+  props: 4,
+  spawnBounds: 6,
   portal: 10,
   npc: 20,
   monster: 25,

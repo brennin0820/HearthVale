@@ -1,4 +1,5 @@
 import type { MapAlias, MapDefinition } from './types.js';
+import { HEARTHVALE_TOWN_POINTS, HEARTHVALE_TOWN_SAFE_ZONE } from './mapArt.js';
 
 const REGION = 'hearthlight_vale';
 
@@ -16,23 +17,23 @@ export const MAPS: MapDefinition[] = [
     gridSize: { width: 48, height: 36 },
     spawnTables: [],
     npcs: [
-      { npcId: 'elder', position: { x: 320, y: 240 }, facing: 'south' },
-      { npcId: 'merchant_silas', position: { x: 280, y: 260 }, facing: 'east' },
-      { npcId: 'hearth_courier', position: { x: 360, y: 220 }, facing: 'west' },
-      { npcId: 'innkeeper_mara', position: { x: 400, y: 280 }, facing: 'north' },
-      { npcId: 'trainer_bram', position: { x: 240, y: 300 }, facing: 'east' },
+      { npcId: 'elder', position: HEARTHVALE_TOWN_POINTS.elder, facing: 'south' },
+      { npcId: 'merchant_silas', position: HEARTHVALE_TOWN_POINTS.merchantSilas, facing: 'west' },
+      { npcId: 'hearth_courier', position: HEARTHVALE_TOWN_POINTS.hearthCourier, facing: 'west' },
+      { npcId: 'innkeeper_mara', position: HEARTHVALE_TOWN_POINTS.innkeeperMara, facing: 'south' },
+      { npcId: 'trainer_bram', position: HEARTHVALE_TOWN_POINTS.trainerBram, facing: 'east' },
     ],
     portals: [
       {
         id: 'east_gate',
         label: 'Cloverfield Plains',
-        position: { x: 920, y: 320 },
+        position: HEARTHVALE_TOWN_POINTS.eastGate,
         targetMapId: 'cloverfield_plains',
         targetSpawn: { x: -610, y: 170 },
       },
     ],
-    playerSpawn: { x: 480, y: 320 },
-    safeZone: { x: 80, y: 120, width: 880, height: 520 },
+    playerSpawn: HEARTHVALE_TOWN_POINTS.playerSpawn,
+    safeZone: HEARTHVALE_TOWN_SAFE_ZONE,
     assetKey: 'map_hearthvale_town',
   },
 
@@ -69,7 +70,7 @@ export const MAPS: MapDefinition[] = [
         label: 'Hearthvale Town',
         position: { x: -680, y: 150 },
         targetMapId: 'hearthvale_town',
-        targetSpawn: { x: 600, y: 150 },
+        targetSpawn: HEARTHVALE_TOWN_POINTS.eastGateArrival,
       },
       {
         id: 'hollow_trail',
