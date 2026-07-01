@@ -1,7 +1,12 @@
 export type {
+  ConsumableEffect,
   DropEntry,
   DropTableDefinition,
+  EquipmentSlot,
   ItemDefinition,
+  ItemKind,
+  ItemRarity,
+  ItemStats,
   MonsterDefinition,
   NpcDefinition,
   QuestDefinition,
