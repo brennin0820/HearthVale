@@ -26,7 +26,11 @@
   top: 0;
   width: 3440px;
   height: 1440px;
-  transform: scale(var(--hv-hud-scale)) translate(var(--hv-hud-offset-x), var(--hv-hud-offset-y));
+  /* translate() is listed BEFORE scale() so the centering offsets (computed in
+     real viewport pixels by syncScale) are applied in unscaled space; putting
+     scale() first would shrink the offsets to scale*offset and mis-center the
+     HUD whenever scale < 1. */
+  transform: translate(var(--hv-hud-offset-x), var(--hv-hud-offset-y)) scale(var(--hv-hud-scale));
   transform-origin: top left;
   pointer-events: none;
   font-family: var(--t-fontBody);
@@ -697,7 +701,11 @@
   justify-content: center;
   box-sizing: border-box;
   transition: transform .15s ease;
-  pointer-events: auto;
+  /* Kept none while hotbar/bag are non-interactive mock panels: the HUD layer is
+     pointer-events:none so game clicks (incl. right-click-to-move) pass through
+     to the Phaser canvas. Re-enable to `auto` on slots once real inventory /
+     hotbar input systems exist. */
+  pointer-events: none;
 }
 .hv-slot:hover { transform: scale(1.06); }
 

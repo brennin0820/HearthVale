@@ -9,10 +9,16 @@ export interface MonsterDefinition {
   element: string;
 }
 
+export type NpcRole = 'quest' | 'merchant' | 'trainer' | 'warp' | 'flavor';
+
 export interface NpcDefinition {
   id: string;
   displayName: string;
-  role: 'quest' | 'merchant' | 'trainer' | 'warp' | 'flavor';
+  role: NpcRole;
+  /** Short honorific/subtitle shown under the name in-world (e.g. "Town Elder"). */
+  title?: string;
+  /** Lines spoken when the player talks to this NPC; cycled on repeat interaction. */
+  dialogue?: string[];
 }
 
 export interface ItemDefinition {

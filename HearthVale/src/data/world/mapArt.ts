@@ -614,6 +614,11 @@ export const HEARTHVALE_TOWN_POINTS = {
   hearthCourier: worldPointFromTile(HEARTHVALE_TOWN_GRID, 40, 18),
   innkeeperMara: worldPointFromTile(HEARTHVALE_TOWN_GRID, 12, 13),
   trainerBram: worldPointFromTile(HEARTHVALE_TOWN_GRID, 29, 29),
+  guardCaptainDell: worldPointFromTile(HEARTHVALE_TOWN_GRID, 43, 19),
+  bakerOdella: worldPointFromTile(HEARTHVALE_TOWN_GRID, 13, 8),
+  bardFinn: worldPointFromTile(HEARTHVALE_TOWN_GRID, 20, 13),
+  childNettle: worldPointFromTile(HEARTHVALE_TOWN_GRID, 26, 19),
+  priestessWren: worldPointFromTile(HEARTHVALE_TOWN_GRID, 17, 21),
 } as const satisfies Record<string, Vec2>;
 
 export const HEARTHVALE_TOWN_SAFE_ZONE = worldRectFromTiles(HEARTHVALE_TOWN_GRID, 2, 2, 44, 32);
