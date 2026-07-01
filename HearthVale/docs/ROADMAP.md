@@ -106,9 +106,9 @@ Note: a melee combat loop (`CombatController`, aggro/leash, XP/levels) has lande
 
 ### Deliverables
 
-- [ ] Merge the melee `CombatController` (open PR) — aggro/leash, XP, floating damage
-- [ ] Wire `SkillDefinition.effect` into `CombatController` so each job's `startingSkills` actually fire (damage skills via the existing `skillMultiplier` param; buffs/debuffs/heals as new bridge hooks)
-- [ ] Job selection UI — let a level-10 character branch into one of the six tier-1 paths
+- [x] Merge the melee `CombatController` (was PR #8) — aggro/leash, XP, floating damage
+- [x] Wire `SkillDefinition.effect` into `CombatController` — hotbar keys **1-4** cast the active job's `startingSkills` (damage/heal/buff/debuff/mark all fire for real; economy/gather/utility skills are left to the vendor/gather systems). Player starts as Vale Novice (`basic_strike`, `first_aid`) until job selection ships.
+- [ ] Job selection UI — let a level-10 character branch into one of the six tier-1 paths, which then changes their hotbar loadout (the mechanism above already supports this — it only needs a UI to change `STARTING_JOB_ID`/persist the chosen job)
 - [ ] Mine floor 2+ layouts and portal-down wiring
 - [ ] Boss encounter — **Gemhorn Sentinel** (original IP; not RO content)
 - [ ] Whisperwood portal gate (`requiredLevel: 5`)

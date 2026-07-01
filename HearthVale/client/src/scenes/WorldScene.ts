@@ -15,6 +15,8 @@ import { loadCollisionMask, loadPropLayer } from '../services/mapArtData.js';
 import { loadNpcCatalog } from '../services/npcData.js';
 import type { NpcCatalogEntry, NpcRole } from '../types/npc.js';
 import { getMapById, loadMonsterCatalog, type MonsterCatalogEntry } from '../services/worldData.js';
+import { getJobSkills, getSkillById } from '../services/catalogData.js';
+import type { SkillEffectKind } from '../types/catalog.js';
 import { CombatController, type CombatBridge, type CombatTargetInfo } from '../combat/CombatController.js';
 import type { CombatStats } from '../combat/formulas.js';
 import {
@@ -67,6 +69,17 @@ const PLAYER_COLLISION_SAMPLES: Vec2[] = [
   { x: 8, y: 8 },
   { x: 0, y: 12 },
 ];
+/** Every character starts as the tier-0 Vale Novice — job selection UI is future Phase C work. */
+const STARTING_JOB_ID = 'novice';
+/** Effect kinds a hotbar press actually casts; economy/gather/utility skills belong to other systems. */
+const COMBAT_CASTABLE_KINDS: ReadonlySet<SkillEffectKind> = new Set(['damage', 'heal', 'buff', 'debuff', 'mark']);
+
+interface PlayerBuff {
+  stat: string;
+  amount: number;
+  remainingMs: number;
+}
+
 const LOW_HP_AURA_THRESHOLD = 0.3;
 const VITAL_STAMINA_DRAIN_PER_SECOND = 16;
 const VITAL_STAMINA_REGEN_PER_SECOND = 9;
@@ -149,6 +162,9 @@ export class WorldScene extends Phaser.Scene {
   private monsterCatalog: Map<string, MonsterCatalogEntry> = new Map();
   private combat!: CombatController;
   private attackKey!: Phaser.Input.Keyboard.Key;
+  private skillKeys: Phaser.Input.Keyboard.Key[] = [];
+  private skillLoadout: string[] = [];
+  private playerBuffs: PlayerBuff[] = [];
   private inCombat = false;
   private playerInvuln = 0;
   private liveCombatTarget: CombatTargetInfo | null = null;
@@ -172,6 +188,7 @@ export class WorldScene extends Phaser.Scene {
     this.liveCombatTarget = null;
     this.inCombat = false;
     this.playerInvuln = 0;
+    this.playerBuffs = [];
   }
 
   async create(data: WorldSceneData): Promise<void> {
@@ -225,6 +242,13 @@ export class WorldScene extends Phaser.Scene {
       this.autoPathMarker.setDepth(WORLD_DEPTH.labels);
       this.autoPathMarker.setVisible(false);
       this.attackKey = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+      this.skillLoadout = getJobSkills(STARTING_JOB_ID);
+      this.skillKeys = [
+        Phaser.Input.Keyboard.KeyCodes.ONE,
+        Phaser.Input.Keyboard.KeyCodes.TWO,
+        Phaser.Input.Keyboard.KeyCodes.THREE,
+        Phaser.Input.Keyboard.KeyCodes.FOUR,
+      ].map((code) => this.input.keyboard!.addKey(code));
       this.input.on('pointerdown', this.handlePointerAttack, this);
       this.events.once(Phaser.Scenes.Events.SHUTDOWN, this.onShutdown, this);
 
@@ -262,9 +286,15 @@ export class WorldScene extends Phaser.Scene {
     this.updateNpcInteraction(delta);
     this.inSafeZone = this.isInSafeZone({ x: this.player.x, y: this.player.y });
     this.updatePlayerVitals(delta, actuallyMoved);
+    this.updatePlayerBuffs(delta);
     this.combat.update(delta);
     if (Phaser.Input.Keyboard.JustDown(this.attackKey)) {
       this.combat.playerAttack();
+    }
+    for (let i = 0; i < this.skillKeys.length; i += 1) {
+      if (Phaser.Input.Keyboard.JustDown(this.skillKeys[i])) {
+        this.tryUseSkill(i);
+      }
     }
     if (this.playerInvuln > 0) {
       this.playerState.stance = 'Recovering';
@@ -1073,6 +1103,9 @@ export class WorldScene extends Phaser.Scene {
       onPlayerDamaged: (amount) => this.applyPlayerDamage(amount),
       onMonsterDefeated: (monster) => this.awardMonsterKill(monster),
       onTargetChanged: (target) => this.onCombatTargetChanged(target),
+      spendMp: (amount) => this.spendPlayerMp(amount),
+      healPlayer: (amount) => this.healPlayer(amount),
+      applyPlayerBuff: (stat, amount, durationMs) => this.applyPlayerBuff(stat, amount, durationMs),
     };
 
     this.combat = new CombatController(this, this.worldLayer, bridge, {
@@ -1086,8 +1119,54 @@ export class WorldScene extends Phaser.Scene {
     }
   }
 
+  /** Combat stats plus any active skill buffs (atk/def/flee — matk/spr have no client-side hook yet). */
   private getPlayerCombatStats(): CombatStats {
-    return playerCombatStats(this.playerState.level);
+    const base = playerCombatStats(this.playerState.level);
+    let { atk, def, flee } = base;
+    for (const buff of this.playerBuffs) {
+      if (buff.stat === 'atk') atk += buff.amount;
+      else if (buff.stat === 'def') def += buff.amount;
+      else if (buff.stat === 'flee') flee += buff.amount;
+    }
+    return { ...base, atk, def, flee };
+  }
+
+  /** Try to cast the skill in the given hotbar slot (1-4); no-op if empty or not a combat skill. */
+  private tryUseSkill(slotIndex: number): void {
+    const skillId = this.skillLoadout[slotIndex];
+    if (!skillId) return;
+    const skill = getSkillById(skillId);
+    if (!skill || !COMBAT_CASTABLE_KINDS.has(skill.effect.kind)) return;
+    this.combat.useSkill(skill);
+  }
+
+  private spendPlayerMp(amount: number): boolean {
+    if (amount <= 0) return true;
+    if (this.playerState.mpCur < amount) return false;
+    this.playerState.mpCur -= amount;
+    return true;
+  }
+
+  private healPlayer(amount: number): void {
+    this.playerState.hpCur = Math.min(this.playerState.hpMax, this.playerState.hpCur + amount);
+  }
+
+  private applyPlayerBuff(stat: string, amount: number, durationMs: number): void {
+    const existing = this.playerBuffs.find((buff) => buff.stat === stat);
+    if (existing) {
+      existing.amount = amount;
+      existing.remainingMs = durationMs;
+    } else {
+      this.playerBuffs.push({ stat, amount, remainingMs: durationMs });
+    }
+  }
+
+  private updatePlayerBuffs(delta: number): void {
+    if (this.playerBuffs.length === 0) return;
+    for (const buff of this.playerBuffs) {
+      buff.remainingMs -= delta;
+    }
+    this.playerBuffs = this.playerBuffs.filter((buff) => buff.remainingMs > 0);
   }
 
   private onCombatTargetChanged(target: CombatTargetInfo | null): void {
@@ -1211,6 +1290,9 @@ export class WorldScene extends Phaser.Scene {
 
     if (this.inSafeZone) {
       buffs.push({ letter: 'R', time: 'Rest' });
+    }
+    for (const buff of this.playerBuffs) {
+      buffs.push({ letter: buff.stat.slice(0, 1).toUpperCase(), time: `${Math.ceil(buff.remainingMs / 1000)}s` });
     }
     if (state.stance === 'Tired' || state.spCur <= 0) {
       debuffs.push({ letter: 'T', time: 'Tired' });
