@@ -7,6 +7,21 @@ export interface HudSnapshot {
   position: Vec2;
   nearestPortal: MapPortal | null;
   inSafeZone: boolean;
+  player: HudPlayerSnapshot;
+}
+
+export interface HudPlayerSnapshot {
+  name: string;
+  level: number;
+  hpCur: number;
+  hpMax: number;
+  mpCur: number;
+  mpMax: number;
+  spCur: number;
+  spMax: number;
+  xpCur: number;
+  xpNext: number;
+  stance: string;
 }
 
 export type HudTheme = 'Ironbound' | 'Radiant Vale' | 'Hearthlight';
@@ -200,16 +215,18 @@ const TOKEN_VAR_KEYS: (keyof ThemeTokens)[] = [
   'portraitRadius', 'portraitFace', 'portraitHead', 'portraitBody',
 ];
 
-/** Mock content ported verbatim from the Hearthlight Vale HUD design — no
- * party/combat/inventory/economy systems exist yet to source it from. */
+/** Mock content ported from the Hearthlight Vale HUD design — no systems exist yet
+ * for party/combat/inventory/economy. */
 const PLAYER = {
   name: 'Hero',
   level: 7,
-  hpCur: 129, hpMax: 165, hpPct: '78%',
-  mpCur: 48, mpMax: 88, mpPct: '55%',
-  spPct: '90%',
-  xpPct: '42%', xpLabel: '1,240 / 2,950 XP',
+  hpCur: 129, hpMax: 165,
+  mpCur: 48, mpMax: 88,
+  spCur: 90, spMax: 100,
+  xpCur: 1240, xpNext: 2950,
+  stance: 'Steady',
 };
+export const DEFAULT_PLAYER = PLAYER as HudPlayerSnapshot;
 const BUFFS = [
   { letter: 'W', time: '8:12' },
   { letter: 'G', time: '2:40' },
@@ -262,6 +279,16 @@ const HUD_MIN_SCALE = 0.4;
 
 interface HudRefs {
   playerTitle: HTMLElement;
+  playerName: HTMLElement;
+  playerLevel: HTMLElement;
+  hpFill: HTMLElement;
+  hpLabel: HTMLElement;
+  mpFill: HTMLElement;
+  spFill: HTMLElement;
+  xpLevel: HTMLElement;
+  xpFill: HTMLElement;
+  xpLabel: HTMLElement;
+  stance: HTMLElement;
   bannerTitle: HTMLElement;
   bannerSubtitle: HTMLElement;
   minimapCoords: HTMLElement;
@@ -282,6 +309,20 @@ function humanize(value: string): string {
 
 function percent(value: number): string {
   return `${Math.max(0, Math.min(100, value))}%`;
+}
+
+function clampPercent(current: number, max: number): string {
+  if (!max || !Number.isFinite(max) || max <= 0) return '0%';
+  return percent((current / max) * 100);
+}
+
+function formatStatLabel(cur: number, max: number): string {
+  if (!max || max <= 0) return '0 / 0';
+  return `${Math.max(0, Math.round(cur)).toLocaleString()} / ${Math.max(0, Math.round(max)).toLocaleString()}`;
+}
+
+function formatXpLabel(cur: number, next: number): string {
+  return `${Math.max(0, Math.round(cur)).toLocaleString()} / ${Math.max(0, Math.round(next)).toLocaleString()} XP`;
 }
 
 function shapeMarkup(shape: ItemShape, tint: string, active: boolean): string {
@@ -410,11 +451,20 @@ export class HudOverlay {
     this.mount();
     if (!this.refs) return;
 
+    const previous = this.lastSnapshot;
+    const mapChanged = !previous || snapshot.map.id !== previous.map.id;
+    const portalChanged = (previous?.nearestPortal?.label ?? null) !== (snapshot.nearestPortal?.label ?? null);
+    const safeZoneChanged = !previous || snapshot.inSafeZone !== previous.inSafeZone;
+
     this.lastSnapshot = snapshot;
-    if (snapshot.map.id !== this.lastMapId) {
+    this.renderPlayer(snapshot);
+    if (mapChanged) {
       this.lastMapId = snapshot.map.id;
       this.renderBanner(snapshot);
       this.renderMinimapPoints(snapshot.map);
+    }
+
+    if (mapChanged || portalChanged || safeZoneChanged) {
       this.renderQuestList(snapshot);
       this.renderChatLog(snapshot);
     }
@@ -425,9 +475,24 @@ export class HudOverlay {
   private renderBanner(snapshot: HudSnapshot): void {
     if (!this.refs) return;
     const { map } = snapshot;
-    this.refs.playerTitle.textContent = `Wanderer · ${humanize(map.regionId)}`;
+    this.refs.playerTitle.textContent = `${snapshot.player.name} · ${humanize(map.regionId)}`;
     this.refs.bannerTitle.textContent = map.displayName;
     this.refs.bannerSubtitle.textContent = this.buildSubtitle(snapshot);
+  }
+
+  private renderPlayer(snapshot: HudSnapshot): void {
+    if (!this.refs) return;
+    const player = snapshot.player ?? DEFAULT_PLAYER;
+    this.refs.playerName.textContent = player.name;
+    this.refs.playerLevel.textContent = String(player.level);
+    this.refs.hpFill.style.width = clampPercent(player.hpCur, player.hpMax);
+    this.refs.hpLabel.textContent = formatStatLabel(player.hpCur, player.hpMax);
+    this.refs.mpFill.style.width = clampPercent(player.mpCur, player.mpMax);
+    this.refs.spFill.style.width = clampPercent(player.spCur, player.spMax);
+    this.refs.xpLevel.textContent = String(player.level);
+    this.refs.xpFill.style.width = clampPercent(player.xpCur, player.xpNext);
+    this.refs.xpLabel.textContent = formatXpLabel(player.xpCur, player.xpNext);
+    this.refs.stance.textContent = `Stance: ${player.stance ?? 'Steady'}`;
   }
 
   private updatePosition(snapshot: HudSnapshot): void {
@@ -569,7 +634,13 @@ export class HudOverlay {
     const widthScale = window.innerWidth / HUD_BASE_WIDTH;
     const heightScale = window.innerHeight / HUD_BASE_HEIGHT;
     const scale = Math.max(HUD_MIN_SCALE, Math.min(1, widthScale, heightScale));
+    const scaledWidth = HUD_BASE_WIDTH * scale;
+    const scaledHeight = HUD_BASE_HEIGHT * scale;
+    const offsetX = Math.max(0, Math.floor((window.innerWidth - scaledWidth) / 2));
+    const offsetY = Math.max(0, Math.floor((window.innerHeight - scaledHeight) / 2));
     this.root.parentElement?.style.setProperty('--hv-hud-scale', scale.toFixed(4));
+    this.root.parentElement?.style.setProperty('--hv-hud-offset-x', `${offsetX}px`);
+    this.root.parentElement?.style.setProperty('--hv-hud-offset-y', `${offsetY}px`);
   };
 
   /** Rebuilds the full skeleton (theme + all static/mock panels) and re-binds
@@ -579,6 +650,7 @@ export class HudOverlay {
     if (!this.root) return;
     const host = this.root.parentElement;
     const tk = THEME_TOKENS[this.theme];
+    const player = this.lastSnapshot?.player ?? DEFAULT_PLAYER;
 
     if (host) {
       for (const key of TOKEN_VAR_KEYS) {
@@ -587,9 +659,19 @@ export class HudOverlay {
     }
     this.root.classList.toggle('hv-hud--portrait-glow', !!tk.portraitAnim);
 
-    this.root.innerHTML = this.template(tk);
+    this.root.innerHTML = this.template(tk, player);
     this.refs = {
       playerTitle: this.getRef('player-title'),
+      playerName: this.getRef('player-name'),
+      playerLevel: this.getRef('player-level'),
+      hpFill: this.getRef('player-hp-fill'),
+      hpLabel: this.getRef('player-hp-label'),
+      mpFill: this.getRef('player-mp-fill'),
+      spFill: this.getRef('player-sp-fill'),
+      xpLevel: this.getRef('player-xp-level'),
+      xpFill: this.getRef('player-xp-fill'),
+      xpLabel: this.getRef('player-xp-label'),
+      stance: this.getRef('player-stance'),
       bannerTitle: this.getRef('banner-title'),
       bannerSubtitle: this.getRef('banner-subtitle'),
       minimapCoords: this.getRef('minimap-coords'),
@@ -603,11 +685,16 @@ export class HudOverlay {
       this.renderMinimapPoints(this.lastSnapshot.map);
       this.renderQuestList(this.lastSnapshot);
       this.renderChatLog(this.lastSnapshot);
+      this.renderPlayer(this.lastSnapshot);
       this.updatePosition(this.lastSnapshot);
     }
   }
 
-  private template(tk: ThemeTokens): string {
+  private template(tk: ThemeTokens, player: HudPlayerSnapshot): string {
+    const playerHpPct = clampPercent(player.hpCur, player.hpMax);
+    const playerMpPct = clampPercent(player.mpCur, player.mpMax);
+    const playerSpPct = clampPercent(player.spCur, player.spMax);
+    const xpPct = clampPercent(player.xpCur, player.xpNext);
     const buffsHtml = BUFFS.map((b) => `
       <div class="hv-hud__aura">
         <div class="hv-hud__aura-icon hv-hud__aura-icon--buff">${esc(b.letter)}</div>
@@ -663,14 +750,14 @@ export class HudOverlay {
             <div class="hv-hud__portrait-head"></div>
             <div class="hv-hud__portrait-body"></div>
           </div>
-          <div class="hv-hud__portrait-level">${PLAYER.level}</div>
-        </div>
+        <div class="hv-hud__portrait-level" data-hud="player-level">${player.level}</div>
+      </div>
         <div class="hv-hud__player-info">
-          <div class="hv-hud__player-name">${esc(PLAYER.name)}</div>
+          <div class="hv-hud__player-name" data-hud="player-name">${esc(player.name)}</div>
           <div class="hv-hud__player-title" data-hud="player-title">Wanderer · Hearthlight Vale</div>
-          <div class="hv-hud__hp-bar"><div class="hv-hud__hp-fill" style="width:${PLAYER.hpPct}"></div><div class="hv-hud__hp-label">${PLAYER.hpCur} / ${PLAYER.hpMax}</div></div>
-          <div class="hv-hud__mp-bar"><div class="hv-hud__mp-fill" style="width:${PLAYER.mpPct}"></div></div>
-          <div class="hv-hud__sp-bar"><div class="hv-hud__sp-fill" style="width:${PLAYER.spPct}"></div></div>
+          <div class="hv-hud__hp-bar"><div class="hv-hud__hp-fill" data-hud="player-hp-fill" style="width:${playerHpPct}"></div><div class="hv-hud__hp-label" data-hud="player-hp-label">${formatStatLabel(player.hpCur, player.hpMax)}</div></div>
+          <div class="hv-hud__mp-bar"><div class="hv-hud__mp-fill" data-hud="player-mp-fill" style="width:${playerMpPct}"></div></div>
+          <div class="hv-hud__sp-bar"><div class="hv-hud__sp-fill" data-hud="player-sp-fill" style="width:${playerSpPct}"></div></div>
         </div>
       </section>
 
@@ -715,13 +802,13 @@ export class HudOverlay {
       </section>
 
       <div class="hv-hud__xp">
-        <div class="hv-hud__xp-level">${PLAYER.level}</div>
-        <div class="hv-hud__xp-track"><div class="hv-hud__xp-fill" style="width:${PLAYER.xpPct}"></div></div>
-        <span class="hv-hud__xp-label">${PLAYER.xpLabel}</span>
+        <div class="hv-hud__xp-level" data-hud="player-xp-level">${player.level}</div>
+        <div class="hv-hud__xp-track"><div class="hv-hud__xp-fill" data-hud="player-xp-fill" style="width:${xpPct}"></div></div>
+        <span class="hv-hud__xp-label" data-hud="player-xp-label">${formatXpLabel(player.xpCur, player.xpNext)}</span>
       </div>
 
       <div class="hv-hud__hotbar">${hotbarHtml}</div>
-      <div class="hv-hud__stance">Stance: Steady</div>
+      <div class="hv-hud__stance" data-hud="player-stance">Stance: ${esc(player.stance)}</div>
     `;
   }
 }

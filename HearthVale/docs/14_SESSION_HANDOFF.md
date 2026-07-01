@@ -6,6 +6,8 @@
 
 ## Current state / focus
 
++# **2026-07-01** — Implemented scene-level monster spawn + AI behavior in `client/src/scenes/WorldScene.ts` using map `spawnTables` (weighted entries, max concurrency, respawn timer, chase/wander movement, and proximity return behavior).
++# **2026-06-30** — Wired player HUD panel fields in `client/src/hud/HudOverlay.ts` to live `WorldScene` snapshot data (`name`, `level`, `HP`, `MP`, `SP`, `XP`, `stance`) so the overlay is no longer static for those channels.
 +# Phase B complete — Phaser client loop playable. **HearthVale Compass** (NightRaven guidance UI) added under `compass/` with macOS Electron shell. Next: Phase C (dungeon depth, combat hooks, level-gated portals).
 
 ---
@@ -23,6 +25,11 @@
 
 ## Recent sessions
 
++# **2026-07-01** — Fixed HUD positioning by applying HUD scale before translation in `client/src/hud/hud.css`; viewport offsets now remain pixel-accurate and no longer compress/drift with resize.
++# **2026-07-01** — HUD overlay resize sync remains in `HudOverlay.syncScale` with clamped offsets for small viewports.
++# **2026-07-01** — Added right-click auto-pathing to `WorldScene` with A* tile pathing on collision masks, destination marker, and automatic follow when movement keys are idle.
+# **2026-07-01** — Fixed HUD dynamic status text updates so quest/chat lines refresh on safe-zone or nearby-portal context changes while staying in the same map.
++# **2026-07-01** — Wired HUD player rendering to live scene state: `WorldScene` now drives `HudOverlay` with movement-based SP drain/regen and safe-zone HP/MP/SP recovery, plus snapshot-backed player shell rendering for name/level/HP/MP/SP/XP/stance.
 +# **2026-06-30** — Implemented the "Hearthlight Vale HUD" Claude Design handoff (`.codex_tmp/hud_ref/Hearthlight Vale HUD.dc.html`) pixel-faithfully in `client/src/hud/`: full theme-token system with all 3 skins (Ironbound/Radiant Vale/Hearthlight, default Hearthlight, F4 to cycle — dev-only, no settings UI yet), player bars, buffs/debuffs, party frames, combat/chat log, zone banner, minimap, currency, quests, 24-slot bag + 10-slot hotbar with themed item-slot rendering, XP bar, hidden-by-default target frame (F5 dev preview). Live data (map/position/portal/safe zone) still drives banner/quest/log/minimap as before; everything else (party, buffs, target, bag, hotbar, currency) is the mock data the .dc.html ships with — no such systems exist yet. `npm run build` passed. Added `.claude/launch.json` for preview tooling.
 +# **2026-06-30** — Hearthvale Town now ships as a full greybox playable hub: authored prop/collision export, obstacle-aware movement in `client/`, repositioned town NPCs/portal/spawn, and `npm run export:data`, `npm run build:client`, `npm run verify:bounds`, `npm run verify:npcs`, `npm run verify:portals` all passed
 +# **2026-06-30** — HUD overlay now auto-scales with window resize in `client/`; scale is driven from viewport size instead of breakpoint-only layout changes, and `npm run build` passed
@@ -40,3 +47,5 @@
 - **This repo only** — no cross-repo handoff bleed
 - **Path A** — Phaser + TS data now; Colyseus later
 - **Append-only ledgers** — never edit prior `BUILD_LEDGER` / `AUDIT_LEDGER` entries
+
+
