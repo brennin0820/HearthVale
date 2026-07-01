@@ -1,6 +1,8 @@
 #hud-root {
   pointer-events: none;
   --hv-hud-scale: 1;
+  --hv-hud-offset-x: 0px;
+  --hv-hud-offset-y: 0px;
 }
 
 @keyframes pulseSoft {
@@ -20,12 +22,12 @@
 
 .hv-hud {
   position: absolute;
-  left: 50%;
-  top: 50%;
+  left: 0;
+  top: 0;
   width: 3440px;
   height: 1440px;
-  transform: translate(-50%, -50%) scale(var(--hv-hud-scale));
-  transform-origin: center center;
+  transform: translate(var(--hv-hud-offset-x), var(--hv-hud-offset-y)) scale(var(--hv-hud-scale));
+  transform-origin: top left;
   pointer-events: none;
   font-family: var(--t-fontBody);
 }

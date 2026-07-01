@@ -28,6 +28,12 @@ const PLAYER_COLLISION_SAMPLES: Vec2[] = [
   { x: 8, y: 8 },
   { x: 0, y: 12 },
 ];
+const VITAL_STAMINA_DRAIN_PER_SECOND = 16;
+const VITAL_STAMINA_REGEN_PER_SECOND = 9;
+const VITAL_MP_DRAIN_PER_SECOND_MOVING = 1.5;
+const VITAL_HP_REGEN_PER_SECOND_SAFE = 6;
+const VITAL_MP_REGEN_PER_SECOND_SAFE = 10;
+const VITAL_SP_REGEN_PER_SECOND_SAFE = 20;
 
 export class WorldScene extends Phaser.Scene {
   private mapId = '';
@@ -117,6 +123,8 @@ export class WorldScene extends Phaser.Scene {
       this.devOverlay = new DevOverlay(this);
       this.devOverlay.mount(mapDef);
       audioService.playMapMusic(mapDef.musicKey);
+      this.inSafeZone = this.isInSafeZone({ x: this.player.x, y: this.player.y });
+      this.updatePlayerVitals(0, false);
       this.syncHud({ x: this.player.x, y: this.player.y });
       this.ready = true;
     } catch (error) {
@@ -134,13 +142,15 @@ export class WorldScene extends Phaser.Scene {
       this.portalCooldown = Math.max(0, this.portalCooldown - delta);
     }
 
-    this.handleMovement(delta);
+    const moved = this.handleMovement(delta);
+    this.inSafeZone = this.isInSafeZone({ x: this.player.x, y: this.player.y });
+    this.updatePlayerVitals(delta, moved);
     this.checkPortals();
     this.syncHud({ x: this.player.x, y: this.player.y });
     this.devOverlay.update(this.mapDef, { x: this.player.x, y: this.player.y });
   }
 
-  private handleMovement(delta: number): void {
+  private handleMovement(delta: number): boolean {
     let vx = 0;
     let vy = 0;
 
@@ -149,8 +159,9 @@ export class WorldScene extends Phaser.Scene {
     if (this.cursors.up.isDown || this.wasd.W.isDown) vy -= 1;
     if (this.cursors.down.isDown || this.wasd.S.isDown) vy += 1;
 
-    if (vx === 0 && vy === 0) return;
+    if (vx === 0 && vy === 0) return false;
 
+    let moved = false;
     const len = Math.hypot(vx, vy);
     const step = (PLAYER_SPEED * delta) / 1000;
     const nextX = this.player.x + (vx / len) * step;
@@ -159,12 +170,16 @@ export class WorldScene extends Phaser.Scene {
     const attemptX = clampToBounds(nextX, this.player.y, this.bounds);
     if (this.isWalkable(attemptX.x, attemptX.y)) {
       this.player.x = attemptX.x;
+      moved = true;
     }
 
     const attemptY = clampToBounds(this.player.x, nextY, this.bounds);
     if (this.isWalkable(attemptY.x, attemptY.y)) {
       this.player.y = attemptY.y;
+      moved = true;
     }
+
+    return moved;
   }
 
   private isWalkable(x: number, y: number): boolean {
@@ -601,6 +616,55 @@ export class WorldScene extends Phaser.Scene {
       inSafeZone: this.inSafeZone,
       player: this.getPlayerSnapshot(),
     });
+  }
+
+  private updatePlayerVitals(delta: number, moved: boolean): void {
+    const dt = delta / 1000;
+    if (dt <= 0) {
+      this.playerState.stance = this.inSafeZone ? 'Resting' : this.playerState.stance;
+      return;
+    }
+
+    if (this.inSafeZone) {
+      this.playerState.stance = 'Resting';
+      this.playerState.hpCur = this.adjustStat(this.playerState.hpCur, this.playerState.hpMax, VITAL_HP_REGEN_PER_SECOND_SAFE * dt);
+      this.playerState.mpCur = this.adjustStat(this.playerState.mpCur, this.playerState.mpMax, VITAL_MP_REGEN_PER_SECOND_SAFE * dt);
+      this.playerState.spCur = this.adjustStat(this.playerState.spCur, this.playerState.spMax, VITAL_SP_REGEN_PER_SECOND_SAFE * dt);
+      return;
+    }
+
+    if (moved) {
+      this.playerState.spCur = this.adjustStat(
+        this.playerState.spCur,
+        this.playerState.spMax,
+        -VITAL_STAMINA_DRAIN_PER_SECOND * dt,
+      );
+      this.playerState.mpCur = this.adjustStat(
+        this.playerState.mpCur,
+        this.playerState.mpMax,
+        -VITAL_MP_DRAIN_PER_SECOND_MOVING * dt,
+      );
+      this.playerState.stance = this.playerState.spCur > 0 ? 'Steady' : 'Tired';
+      return;
+    }
+
+    this.playerState.spCur = this.adjustStat(
+      this.playerState.spCur,
+      this.playerState.spMax,
+      VITAL_STAMINA_REGEN_PER_SECOND * dt,
+    );
+    this.playerState.stance = 'Ready';
+  }
+
+  private adjustStat(current: number, max: number, delta: number): number {
+    if (!Number.isFinite(current) || !Number.isFinite(max) || max <= 0) {
+      return current;
+    }
+    const next = current + delta;
+    if (!Number.isFinite(next)) {
+      return current;
+    }
+    return Math.max(0, Math.min(max, next));
   }
 
   private isInSafeZone(position: Vec2): boolean {

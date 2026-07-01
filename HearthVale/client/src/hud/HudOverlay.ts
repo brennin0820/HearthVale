@@ -215,8 +215,8 @@ const TOKEN_VAR_KEYS: (keyof ThemeTokens)[] = [
   'portraitRadius', 'portraitFace', 'portraitHead', 'portraitBody',
 ];
 
-/** Mock content ported verbatim from the Hearthlight Vale HUD design — no
- * party/combat/inventory/economy systems exist yet to source it from. */
+/** Mock content ported from the Hearthlight Vale HUD design — no systems exist yet
+ * for party/combat/inventory/economy. */
 const PLAYER = {
   name: 'Hero',
   level: 7,
@@ -626,7 +626,13 @@ export class HudOverlay {
     const widthScale = window.innerWidth / HUD_BASE_WIDTH;
     const heightScale = window.innerHeight / HUD_BASE_HEIGHT;
     const scale = Math.max(HUD_MIN_SCALE, Math.min(1, widthScale, heightScale));
+    const scaledWidth = HUD_BASE_WIDTH * scale;
+    const scaledHeight = HUD_BASE_HEIGHT * scale;
+    const offsetX = Math.max(0, Math.floor((window.innerWidth - scaledWidth) / 2));
+    const offsetY = Math.max(0, Math.floor((window.innerHeight - scaledHeight) / 2));
     this.root.parentElement?.style.setProperty('--hv-hud-scale', scale.toFixed(4));
+    this.root.parentElement?.style.setProperty('--hv-hud-offset-x', `${offsetX}px`);
+    this.root.parentElement?.style.setProperty('--hv-hud-offset-y', `${offsetY}px`);
   };
 
   /** Rebuilds the full skeleton (theme + all static/mock panels) and re-binds
@@ -636,6 +642,7 @@ export class HudOverlay {
     if (!this.root) return;
     const host = this.root.parentElement;
     const tk = THEME_TOKENS[this.theme];
+    const player = this.lastSnapshot?.player ?? DEFAULT_PLAYER;
 
     if (host) {
       for (const key of TOKEN_VAR_KEYS) {
@@ -644,7 +651,7 @@ export class HudOverlay {
     }
     this.root.classList.toggle('hv-hud--portrait-glow', !!tk.portraitAnim);
 
-    this.root.innerHTML = this.template(tk);
+    this.root.innerHTML = this.template(tk, player);
     this.refs = {
       playerTitle: this.getRef('player-title'),
       playerName: this.getRef('player-name'),
@@ -675,11 +682,11 @@ export class HudOverlay {
     }
   }
 
-  private template(tk: ThemeTokens): string {
-    const playerHpPct = clampPercent(PLAYER.hpCur, PLAYER.hpMax);
-    const playerMpPct = clampPercent(PLAYER.mpCur, PLAYER.mpMax);
-    const playerSpPct = clampPercent(PLAYER.spCur, PLAYER.spMax);
-    const xpPct = clampPercent(PLAYER.xpCur, PLAYER.xpNext);
+  private template(tk: ThemeTokens, player: HudPlayerSnapshot): string {
+    const playerHpPct = clampPercent(player.hpCur, player.hpMax);
+    const playerMpPct = clampPercent(player.mpCur, player.mpMax);
+    const playerSpPct = clampPercent(player.spCur, player.spMax);
+    const xpPct = clampPercent(player.xpCur, player.xpNext);
     const buffsHtml = BUFFS.map((b) => `
       <div class="hv-hud__aura">
         <div class="hv-hud__aura-icon hv-hud__aura-icon--buff">${esc(b.letter)}</div>
@@ -735,12 +742,12 @@ export class HudOverlay {
             <div class="hv-hud__portrait-head"></div>
             <div class="hv-hud__portrait-body"></div>
           </div>
-          <div class="hv-hud__portrait-level" data-hud="player-level">${PLAYER.level}</div>
-        </div>
+        <div class="hv-hud__portrait-level" data-hud="player-level">${player.level}</div>
+      </div>
         <div class="hv-hud__player-info">
-          <div class="hv-hud__player-name" data-hud="player-name">${esc(PLAYER.name)}</div>
+          <div class="hv-hud__player-name" data-hud="player-name">${esc(player.name)}</div>
           <div class="hv-hud__player-title" data-hud="player-title">Wanderer · Hearthlight Vale</div>
-          <div class="hv-hud__hp-bar"><div class="hv-hud__hp-fill" data-hud="player-hp-fill" style="width:${playerHpPct}"></div><div class="hv-hud__hp-label" data-hud="player-hp-label">${formatStatLabel(PLAYER.hpCur, PLAYER.hpMax)}</div></div>
+          <div class="hv-hud__hp-bar"><div class="hv-hud__hp-fill" data-hud="player-hp-fill" style="width:${playerHpPct}"></div><div class="hv-hud__hp-label" data-hud="player-hp-label">${formatStatLabel(player.hpCur, player.hpMax)}</div></div>
           <div class="hv-hud__mp-bar"><div class="hv-hud__mp-fill" data-hud="player-mp-fill" style="width:${playerMpPct}"></div></div>
           <div class="hv-hud__sp-bar"><div class="hv-hud__sp-fill" data-hud="player-sp-fill" style="width:${playerSpPct}"></div></div>
         </div>
@@ -787,13 +794,13 @@ export class HudOverlay {
       </section>
 
       <div class="hv-hud__xp">
-        <div class="hv-hud__xp-level" data-hud="player-xp-level">${PLAYER.level}</div>
+        <div class="hv-hud__xp-level" data-hud="player-xp-level">${player.level}</div>
         <div class="hv-hud__xp-track"><div class="hv-hud__xp-fill" data-hud="player-xp-fill" style="width:${xpPct}"></div></div>
-        <span class="hv-hud__xp-label" data-hud="player-xp-label">${formatXpLabel(PLAYER.xpCur, PLAYER.xpNext)}</span>
+        <span class="hv-hud__xp-label" data-hud="player-xp-label">${formatXpLabel(player.xpCur, player.xpNext)}</span>
       </div>
 
       <div class="hv-hud__hotbar">${hotbarHtml}</div>
-      <div class="hv-hud__stance" data-hud="player-stance">Stance: ${esc(PLAYER.stance)}</div>
+      <div class="hv-hud__stance" data-hud="player-stance">Stance: ${esc(player.stance)}</div>
     `;
   }
 }
