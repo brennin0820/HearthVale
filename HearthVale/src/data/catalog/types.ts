@@ -9,10 +9,16 @@ export interface MonsterDefinition {
   element: string;
 }
 
+export type NpcRole = 'quest' | 'merchant' | 'trainer' | 'warp' | 'flavor';
+
 export interface NpcDefinition {
   id: string;
   displayName: string;
-  role: 'quest' | 'merchant' | 'trainer' | 'warp' | 'flavor';
+  role: NpcRole;
+  /** Short role/occupation subtitle shown under the name in the talk panel. */
+  title: string;
+  /** Ordered lines shown when the player talks to this NPC. */
+  dialogue: string[];
 }
 
 export type ItemKind = 'consumable' | 'material' | 'equipment' | 'quest';
