@@ -11,6 +11,7 @@
     "verify:bounds": "tsx scripts/verify-bounds.ts",
     "verify:drops": "tsx scripts/verify-drops.ts",
     "verify:quests": "tsx scripts/verify-quests.ts",
+    "verify:jobs": "tsx scripts/verify-jobs.ts",
     "verify:audio": "tsx scripts/verify-audio.ts",
     "verify:all": "tsx tools/cli.ts verify",
     "verify": "npm run verify:all",

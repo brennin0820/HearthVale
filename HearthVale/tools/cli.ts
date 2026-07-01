@@ -34,6 +34,7 @@ Data pipeline:
   verify-bounds       Map bounds check
   verify-drops        Drop table check
   verify-quests       Quest / warp unlock check
+  verify-jobs         Job class catalog check
   verify-audio        Audio manifest check
   verify-assets       Asset manifest vs map assetKeys
 
@@ -64,6 +65,7 @@ const scriptMap: Record<string, string> = {
   'verify-bounds': 'scripts/verify-bounds.ts',
   'verify-drops': 'scripts/verify-drops.ts',
   'verify-quests': 'scripts/verify-quests.ts',
+  'verify-jobs': 'scripts/verify-jobs.ts',
   'verify-audio': 'scripts/verify-audio.ts',
   'verify-assets': 'scripts/verify-assets.ts',
   'balance-report': 'tools/balance-report.ts',
@@ -87,6 +89,7 @@ switch (command) {
       'scripts/verify-bounds.ts',
       'scripts/verify-drops.ts',
       'scripts/verify-quests.ts',
+      'scripts/verify-jobs.ts',
       'scripts/verify-audio.ts',
       'scripts/verify-assets.ts',
     ];

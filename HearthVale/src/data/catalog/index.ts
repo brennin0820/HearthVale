@@ -2,6 +2,9 @@ export type {
   DropEntry,
   DropTableDefinition,
   ItemDefinition,
+  JobClassDefinition,
+  JobRole,
+  JobStatGrowth,
   MonsterDefinition,
   NpcDefinition,
   QuestDefinition,
@@ -12,3 +15,8 @@ export { NPCS, NPC_BY_ID } from './npcs.js';
 export { ITEMS, ITEM_BY_ID } from './items.js';
 export { QUESTS, QUEST_BY_ID } from './quests.js';
 export { DROP_TABLES, DROP_BY_MONSTER_ID } from './drops.js';
+export {
+  JOB_CLASSES,
+  JOB_CLASS_BY_ID,
+  JOB_CLASSES_BY_BASE_ID,
+} from './jobs.js';

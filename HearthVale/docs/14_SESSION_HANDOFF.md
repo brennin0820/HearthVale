@@ -6,6 +6,7 @@
 
 ## Current state / focus
 
++# **2026-07-01** — Added character **job classes** to the data layer: `src/data/catalog/jobs.ts` (`JobClassDefinition` in `types.ts`) with the tier-0 **Vale Novice** base branching into six tier-1 paths (Vale Warden, Glade Ranger, Thorn Channeler, Hearth Mender, Wayfarer Trader, Hollow Shade). Wired into catalog `index.ts`, `export-data.ts` (`data/catalog/jobs.json`), and a new `scripts/verify-jobs.ts` (tier/parent/level/growth checks) registered in `package.json`, `tools/cli.ts`, and `verify:all`. `npm run verify` passes (11 checks). Skill ids are Phase A design stubs — not yet wired to combat.
 +# **2026-07-01** — Implemented scene-level monster spawn + AI behavior in `client/src/scenes/WorldScene.ts` using map `spawnTables` (weighted entries, max concurrency, respawn timer, chase/wander movement, and proximity return behavior).
 +# **2026-06-30** — Wired player HUD panel fields in `client/src/hud/HudOverlay.ts` to live `WorldScene` snapshot data (`name`, `level`, `HP`, `MP`, `SP`, `XP`, `stance`) so the overlay is no longer static for those channels.
 +# Phase B complete — Phaser client loop playable. **HearthVale Compass** (NightRaven guidance UI) added under `compass/` with macOS Electron shell. Next: Phase C (dungeon depth, combat hooks, level-gated portals).
