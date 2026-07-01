@@ -6,6 +6,7 @@
 
 ## Current state / focus
 
++# **2026-06-30** — Wired player HUD panel fields in `client/src/hud/HudOverlay.ts` to live `WorldScene` snapshot data (`name`, `level`, `HP`, `MP`, `SP`, `XP`, `stance`) so the overlay is no longer static for those channels.
 +# Phase B complete — Phaser client loop playable. **HearthVale Compass** (NightRaven guidance UI) added under `compass/` with macOS Electron shell. Next: Phase C (dungeon depth, combat hooks, level-gated portals).
 
 ---
@@ -40,3 +41,4 @@
 - **This repo only** — no cross-repo handoff bleed
 - **Path A** — Phaser + TS data now; Colyseus later
 - **Append-only ledgers** — never edit prior `BUILD_LEDGER` / `AUDIT_LEDGER` entries
+
