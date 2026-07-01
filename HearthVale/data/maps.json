@@ -60,6 +60,46 @@
           "y": 368
         },
         "facing": "east"
+      },
+      {
+        "npcId": "guard_captain_dell",
+        "position": {
+          "x": 624,
+          "y": 48
+        },
+        "facing": "west"
+      },
+      {
+        "npcId": "baker_odella",
+        "position": {
+          "x": -336,
+          "y": -304
+        },
+        "facing": "south"
+      },
+      {
+        "npcId": "bard_finn",
+        "position": {
+          "x": -112,
+          "y": -144
+        },
+        "facing": "east"
+      },
+      {
+        "npcId": "child_nettle",
+        "position": {
+          "x": 80,
+          "y": 48
+        },
+        "facing": "north"
+      },
+      {
+        "npcId": "priestess_wren",
+        "position": {
+          "x": -208,
+          "y": 112
+        },
+        "facing": "south"
       }
     ],
     "portals": [

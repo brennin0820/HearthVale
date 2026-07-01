@@ -149,5 +149,55 @@
       "The Moonwell only opens to those it deems ready. Patience, wanderer.",
       "Bring me the sigil the glade keeps hidden — near level ten, when your spirit can bear it."
     ]
+  },
+  {
+    "id": "guard_captain_dell",
+    "displayName": "Captain Dell",
+    "role": "flavor",
+    "title": "Gate Watch",
+    "dialogue": [
+      "The east gate stays open, but the plains beyond do not forgive the careless.",
+      "Keep your blade sheathed in town. Outside the wall is another matter."
+    ]
+  },
+  {
+    "id": "baker_odella",
+    "displayName": "Baker Odella",
+    "role": "merchant",
+    "title": "Hearthstone Bakery",
+    "dialogue": [
+      "Honey rolls, fresh from the stone. A warm loaf mends more than you’d think.",
+      "Take one for the road — the plains are hungry work."
+    ]
+  },
+  {
+    "id": "bard_finn",
+    "displayName": "Bard Finn",
+    "role": "flavor",
+    "title": "Wandering Minstrel",
+    "dialogue": [
+      "A coin for a song? I know the ballad of the Moonwell, if your heart is brave.",
+      "They say every hero of the vale started right here, by this fountain."
+    ]
+  },
+  {
+    "id": "child_nettle",
+    "displayName": "Nettle",
+    "role": "flavor",
+    "title": "Vale Child",
+    "dialogue": [
+      "Are you a real adventurer? Can I see your sword? Pleeease?",
+      "I’m gonna be a ranger someday, just like Elowen in the woods!"
+    ]
+  },
+  {
+    "id": "priestess_wren",
+    "displayName": "Priestess Wren",
+    "role": "quest",
+    "title": "Keeper of the Hearth",
+    "dialogue": [
+      "May the hearthlight keep you. Rest in the vale and let its calm settle your spirit.",
+      "Dark things stir beyond Millwick. When you are ready, the vale will ask much of you."
+    ]
   }
 ]

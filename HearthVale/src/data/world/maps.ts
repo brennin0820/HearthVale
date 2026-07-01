@@ -22,6 +22,11 @@ export const MAPS: MapDefinition[] = [
       { npcId: 'hearth_courier', position: HEARTHVALE_TOWN_POINTS.hearthCourier, facing: 'west' },
       { npcId: 'innkeeper_mara', position: HEARTHVALE_TOWN_POINTS.innkeeperMara, facing: 'south' },
       { npcId: 'trainer_bram', position: HEARTHVALE_TOWN_POINTS.trainerBram, facing: 'east' },
+      { npcId: 'guard_captain_dell', position: HEARTHVALE_TOWN_POINTS.guardCaptainDell, facing: 'west' },
+      { npcId: 'baker_odella', position: HEARTHVALE_TOWN_POINTS.bakerOdella, facing: 'south' },
+      { npcId: 'bard_finn', position: HEARTHVALE_TOWN_POINTS.bardFinn, facing: 'east' },
+      { npcId: 'child_nettle', position: HEARTHVALE_TOWN_POINTS.childNettle, facing: 'north' },
+      { npcId: 'priestess_wren', position: HEARTHVALE_TOWN_POINTS.priestessWren, facing: 'south' },
     ],
     portals: [
       {

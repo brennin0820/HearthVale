@@ -315,7 +315,6 @@ const BAG_TABS = ['Char', 'Bag', 'Skill', 'Quest', 'Map', 'Menu'];
 
 const HUD_BASE_WIDTH = 3440;
 const HUD_BASE_HEIGHT = 1440;
-const HUD_MIN_SCALE = 0.4;
 
 interface HudRefs {
   playerTitle: HTMLElement;
@@ -504,6 +503,7 @@ export class HudOverlay {
   private lastMapId = '';
   private resizeBound = false;
   private theme: HudTheme = DEFAULT_THEME;
+  private npcLog: { speaker: string; text: string }[] = [];
   private lastAurasKey = '';
   private lastTargetKey = '';
 
@@ -656,9 +656,26 @@ export class HudOverlay {
       .join('');
   }
 
+  /** Appends a spoken NPC line to the chat log; the most recent few persist
+   * across map/portal context changes so a conversation stays readable. */
+  logNpcLine(speaker: string, text: string): void {
+    this.mount();
+    this.npcLog.unshift({ speaker, text });
+    if (this.npcLog.length > 3) {
+      this.npcLog.length = 3;
+    }
+    if (this.lastSnapshot) {
+      this.renderChatLog(this.lastSnapshot);
+    }
+  }
+
   private renderChatLog(snapshot: HudSnapshot): void {
     if (!this.refs) return;
+    const npcLines = this.npcLog.map((entry) => ({
+      plain: `<em>${esc(entry.speaker)}:</em> ${esc(entry.text)}`,
+    }));
     const lines = [
+      ...npcLines,
       { plain: `Welcome to <em>${esc(snapshot.map.displayName)}</em>.` },
       snapshot.inSafeZone
         ? { plain: '<span class="hv-hud__hint">Safe zone active.</span>' }
@@ -761,7 +778,10 @@ export class HudOverlay {
     if (!this.root) return;
     const widthScale = window.innerWidth / HUD_BASE_WIDTH;
     const heightScale = window.innerHeight / HUD_BASE_HEIGHT;
-    const scale = Math.max(HUD_MIN_SCALE, Math.min(1, widthScale, heightScale));
+    // Fit to the smaller axis with no lower floor: a floor above the fit scale
+    // would leave the HUD wider/taller than the viewport and push the
+    // right/bottom panels (minimap, coords, POI markers) off-screen.
+    const scale = Math.min(1, widthScale, heightScale);
     const scaledWidth = HUD_BASE_WIDTH * scale;
     const scaledHeight = HUD_BASE_HEIGHT * scale;
     const offsetX = Math.max(0, Math.floor((window.innerWidth - scaledWidth) / 2));
