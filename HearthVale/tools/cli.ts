@@ -33,6 +33,7 @@ Data pipeline:
   verify-npcs         NPC ID check
   verify-bounds       Map bounds check
   verify-drops        Drop table check
+  verify-items        Item catalog check
   verify-quests       Quest / warp unlock check
   verify-audio        Audio manifest check
   verify-assets       Asset manifest vs map assetKeys
@@ -63,6 +64,7 @@ const scriptMap: Record<string, string> = {
   'verify-npcs': 'scripts/verify-npcs.ts',
   'verify-bounds': 'scripts/verify-bounds.ts',
   'verify-drops': 'scripts/verify-drops.ts',
+  'verify-items': 'scripts/verify-items.ts',
   'verify-quests': 'scripts/verify-quests.ts',
   'verify-audio': 'scripts/verify-audio.ts',
   'verify-assets': 'scripts/verify-assets.ts',
@@ -86,6 +88,7 @@ switch (command) {
       'scripts/verify-npcs.ts',
       'scripts/verify-bounds.ts',
       'scripts/verify-drops.ts',
+      'scripts/verify-items.ts',
       'scripts/verify-quests.ts',
       'scripts/verify-audio.ts',
       'scripts/verify-assets.ts',
