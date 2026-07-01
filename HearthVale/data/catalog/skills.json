@@ -1,0 +1,283 @@
+[
+  {
+    "id": "basic_strike",
+    "displayName": "Basic Strike",
+    "type": "physical",
+    "targetType": "enemy",
+    "description": "A plain, reliable hit — the first thing every Vale Novice learns.",
+    "mpCost": 0,
+    "cooldown": 0.5,
+    "effect": {
+      "kind": "damage",
+      "powerMultiplier": 1
+    }
+  },
+  {
+    "id": "first_aid",
+    "displayName": "First Aid",
+    "type": "support",
+    "targetType": "self",
+    "description": "Field-dressing taught to every newcomer before they leave the hamlet.",
+    "mpCost": 6,
+    "cooldown": 20,
+    "effect": {
+      "kind": "heal",
+      "amount": 25,
+      "stat": "hp"
+    }
+  },
+  {
+    "id": "guard_stance",
+    "displayName": "Guard Stance",
+    "type": "support",
+    "targetType": "self",
+    "description": "Braces behind the shield, trading offense for a hard-to-crack defense.",
+    "mpCost": 8,
+    "cooldown": 15,
+    "effect": {
+      "kind": "buff",
+      "stat": "def",
+      "amount": 8,
+      "duration": 10
+    }
+  },
+  {
+    "id": "shield_bash",
+    "displayName": "Shield Bash",
+    "type": "physical",
+    "targetType": "enemy",
+    "description": "A rim-first check that rattles a foe’s footing along with their ribs.",
+    "mpCost": 10,
+    "cooldown": 8,
+    "effect": {
+      "kind": "debuff",
+      "stat": "flee",
+      "amount": 10,
+      "duration": 4
+    }
+  },
+  {
+    "id": "vale_slash",
+    "displayName": "Vale Slash",
+    "type": "physical",
+    "targetType": "enemy",
+    "description": "A committed two-handed cut favored by Wardens holding the line.",
+    "mpCost": 12,
+    "cooldown": 6,
+    "effect": {
+      "kind": "damage",
+      "powerMultiplier": 1.4
+    }
+  },
+  {
+    "id": "keen_shot",
+    "displayName": "Keen Shot",
+    "type": "physical",
+    "targetType": "enemy",
+    "description": "A precisely placed arrow that finds gaps in hide and bark alike.",
+    "mpCost": 8,
+    "cooldown": 5,
+    "effect": {
+      "kind": "damage",
+      "powerMultiplier": 1.3
+    }
+  },
+  {
+    "id": "thornvolley",
+    "displayName": "Thornvolley",
+    "type": "physical",
+    "targetType": "area",
+    "description": "A spread of barbed shafts loosed across a cluster of foes at once.",
+    "mpCost": 14,
+    "cooldown": 9,
+    "effect": {
+      "kind": "damage",
+      "powerMultiplier": 0.8
+    }
+  },
+  {
+    "id": "hunters_mark",
+    "displayName": "Hunter's Mark",
+    "type": "utility",
+    "targetType": "enemy",
+    "description": "Marks quarry so every following blow lands harder until it fades.",
+    "mpCost": 6,
+    "cooldown": 18,
+    "effect": {
+      "kind": "mark",
+      "stat": "damageTaken",
+      "amount": 15,
+      "duration": 12
+    }
+  },
+  {
+    "id": "sprout_bolt",
+    "displayName": "Sprout Bolt",
+    "type": "magical",
+    "targetType": "enemy",
+    "description": "A lashing vine of living growth, called up from the vale’s soil.",
+    "mpCost": 10,
+    "cooldown": 4,
+    "effect": {
+      "kind": "damage",
+      "powerMultiplier": 1.2
+    },
+    "element": "nature"
+  },
+  {
+    "id": "ember_wisp",
+    "displayName": "Ember Wisp",
+    "type": "magical",
+    "targetType": "enemy",
+    "description": "A drifting arcane spark that clings to its target before it bursts.",
+    "mpCost": 14,
+    "cooldown": 6,
+    "effect": {
+      "kind": "damage",
+      "powerMultiplier": 1.35
+    },
+    "element": "arcane"
+  },
+  {
+    "id": "crystal_lance",
+    "displayName": "Crystal Lance",
+    "type": "magical",
+    "targetType": "enemy",
+    "description": "A shard drawn from the vale’s deep veins, hurled with focused intent.",
+    "mpCost": 20,
+    "cooldown": 10,
+    "effect": {
+      "kind": "damage",
+      "powerMultiplier": 1.8
+    },
+    "element": "crystal"
+  },
+  {
+    "id": "mend_wounds",
+    "displayName": "Mend Wounds",
+    "type": "support",
+    "targetType": "ally",
+    "description": "A warding light that knits torn flesh and steadies a racing heart.",
+    "mpCost": 14,
+    "cooldown": 6,
+    "effect": {
+      "kind": "heal",
+      "amount": 40,
+      "stat": "hp"
+    }
+  },
+  {
+    "id": "warding_light",
+    "displayName": "Warding Light",
+    "type": "support",
+    "targetType": "ally",
+    "description": "A standing blessing that softens the next blows an ally would take.",
+    "mpCost": 16,
+    "cooldown": 16,
+    "effect": {
+      "kind": "buff",
+      "stat": "matk_resist",
+      "amount": 12,
+      "duration": 12
+    }
+  },
+  {
+    "id": "hearth_blessing",
+    "displayName": "Hearth Blessing",
+    "type": "support",
+    "targetType": "self",
+    "description": "Draws on hearth-fire warmth to sharpen both mind and muscle briefly.",
+    "mpCost": 18,
+    "cooldown": 20,
+    "effect": {
+      "kind": "buff",
+      "stat": "atk",
+      "amount": 6,
+      "duration": 15
+    }
+  },
+  {
+    "id": "haggle",
+    "displayName": "Haggle",
+    "type": "utility",
+    "targetType": "self",
+    "description": "Years on the road sharpen a trader’s ear for a fair price — or a better one.",
+    "mpCost": 0,
+    "cooldown": 0,
+    "effect": {
+      "kind": "economy",
+      "stat": "buyPrice",
+      "amount": -10
+    }
+  },
+  {
+    "id": "pushcart",
+    "displayName": "Pushcart",
+    "type": "utility",
+    "targetType": "self",
+    "description": "Hauls a reinforced cart that lets a Wayfarer carry far more than they can on their back.",
+    "mpCost": 0,
+    "cooldown": 0,
+    "effect": {
+      "kind": "utility",
+      "stat": "stackMax",
+      "amount": 20
+    }
+  },
+  {
+    "id": "ore_sense",
+    "displayName": "Ore Sense",
+    "type": "utility",
+    "targetType": "self",
+    "description": "A prospector’s instinct for where the vale’s crystal veins run richest.",
+    "mpCost": 0,
+    "cooldown": 0,
+    "effect": {
+      "kind": "gather",
+      "stat": "dropRate",
+      "amount": 15
+    }
+  },
+  {
+    "id": "shadowstep",
+    "displayName": "Shadowstep",
+    "type": "utility",
+    "targetType": "self",
+    "description": "A blink through the hollow-dark that closes distance and throws off pursuit.",
+    "mpCost": 10,
+    "cooldown": 10,
+    "effect": {
+      "kind": "buff",
+      "stat": "flee",
+      "amount": 20,
+      "duration": 3
+    }
+  },
+  {
+    "id": "twin_fang",
+    "displayName": "Twin Fang",
+    "type": "physical",
+    "targetType": "enemy",
+    "description": "Two strikes thrown so close together a foe only feels the second one land.",
+    "mpCost": 12,
+    "cooldown": 7,
+    "effect": {
+      "kind": "damage",
+      "powerMultiplier": 1.6
+    }
+  },
+  {
+    "id": "pilfer",
+    "displayName": "Pilfer",
+    "type": "utility",
+    "targetType": "enemy",
+    "description": "A quick hand that lifts a little extra from whatever a foe was carrying.",
+    "mpCost": 8,
+    "cooldown": 25,
+    "effect": {
+      "kind": "economy",
+      "stat": "bonusDropChance",
+      "amount": 20
+    }
+  }
+]

@@ -1,0 +1,161 @@
+[
+  {
+    "id": "novice",
+    "displayName": "Vale Novice",
+    "tier": 0,
+    "role": "novice",
+    "requiredLevel": 1,
+    "primaryStat": "vit",
+    "description": "Every newcomer to Hearthlight Vale starts here — a balanced footing before choosing a path.",
+    "growth": {
+      "hp": 12,
+      "mp": 4,
+      "atk": 2,
+      "def": 2,
+      "matk": 2,
+      "spr": 2
+    },
+    "startingSkills": [
+      "basic_strike",
+      "first_aid"
+    ]
+  },
+  {
+    "id": "warden",
+    "displayName": "Vale Warden",
+    "tier": 1,
+    "role": "melee",
+    "baseClassId": "novice",
+    "requiredLevel": 10,
+    "primaryStat": "str",
+    "description": "Sword-and-shield defenders of the vale who hold the line and shrug off heavy blows.",
+    "growth": {
+      "hp": 26,
+      "mp": 4,
+      "atk": 6,
+      "def": 7,
+      "matk": 1,
+      "spr": 3
+    },
+    "startingSkills": [
+      "guard_stance",
+      "shield_bash",
+      "vale_slash"
+    ]
+  },
+  {
+    "id": "ranger",
+    "displayName": "Glade Ranger",
+    "tier": 1,
+    "role": "ranged",
+    "baseClassId": "novice",
+    "requiredLevel": 10,
+    "primaryStat": "dex",
+    "description": "Keen-eyed hunters who thin threats from afar and mark quarry across the glades.",
+    "growth": {
+      "hp": 16,
+      "mp": 8,
+      "atk": 6,
+      "def": 3,
+      "matk": 2,
+      "spr": 3
+    },
+    "startingSkills": [
+      "keen_shot",
+      "thornvolley",
+      "hunters_mark"
+    ]
+  },
+  {
+    "id": "channeler",
+    "displayName": "Thorn Channeler",
+    "tier": 1,
+    "role": "magic",
+    "baseClassId": "novice",
+    "requiredLevel": 10,
+    "primaryStat": "int",
+    "description": "Elemental casters who draw on the vale’s living growth and crystal veins for burst damage.",
+    "growth": {
+      "hp": 12,
+      "mp": 16,
+      "atk": 2,
+      "def": 2,
+      "matk": 8,
+      "spr": 4
+    },
+    "startingSkills": [
+      "sprout_bolt",
+      "ember_wisp",
+      "crystal_lance"
+    ]
+  },
+  {
+    "id": "mender",
+    "displayName": "Hearth Mender",
+    "tier": 1,
+    "role": "support",
+    "baseClassId": "novice",
+    "requiredLevel": 10,
+    "primaryStat": "wis",
+    "description": "Warding healers whose blessings keep a lone wanderer standing through long hunts.",
+    "growth": {
+      "hp": 15,
+      "mp": 14,
+      "atk": 2,
+      "def": 3,
+      "matk": 5,
+      "spr": 8
+    },
+    "startingSkills": [
+      "mend_wounds",
+      "warding_light",
+      "hearth_blessing"
+    ]
+  },
+  {
+    "id": "wayfarer",
+    "displayName": "Wayfarer Trader",
+    "tier": 1,
+    "role": "artisan",
+    "baseClassId": "novice",
+    "requiredLevel": 10,
+    "primaryStat": "str",
+    "description": "Road-worn merchants who barter, haul, and sniff out ore — the vale’s economy on two feet.",
+    "growth": {
+      "hp": 20,
+      "mp": 6,
+      "atk": 5,
+      "def": 4,
+      "matk": 1,
+      "spr": 4
+    },
+    "startingSkills": [
+      "haggle",
+      "pushcart",
+      "ore_sense"
+    ]
+  },
+  {
+    "id": "shade",
+    "displayName": "Hollow Shade",
+    "tier": 1,
+    "role": "scout",
+    "baseClassId": "novice",
+    "requiredLevel": 10,
+    "primaryStat": "agi",
+    "description": "Nimble skirmishers who strike from the hollows, twist behind foes, and vanish again.",
+    "growth": {
+      "hp": 18,
+      "mp": 7,
+      "atk": 7,
+      "def": 3,
+      "matk": 2,
+      "spr": 2
+    },
+    "startingSkills": [
+      "shadowstep",
+      "twin_fang",
+      "pilfer"
+    ]
+  }
+]
