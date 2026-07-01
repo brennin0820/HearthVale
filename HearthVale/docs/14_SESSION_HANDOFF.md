@@ -6,6 +6,7 @@
 
 ## Current state / focus
 
++# **2026-07-01** — Made the HUD fully snapshot-driven: `HudOverlay` no longer holds hardcoded panel constants — `WorldScene` owns all HUD state via `HudSnapshot`. Live-wired the **target frame** (locks onto nearest drawn monster within `TARGET_LOCK_RADIUS`, real name/level from `/catalog/monsters.json`) and **buffs/debuffs** (derived from vitals/zone: Rested in safe zone, Tired on stamina drain, Low on <30% HP). Party/currency/hotbar/inventory pass through as scene-owned seed (no party/economy/inventory systems yet). Removed the F5 combat-preview dev toggle (target is now real). `npm run build` passed.
 +# **2026-07-01** — Implemented scene-level monster spawn + AI behavior in `client/src/scenes/WorldScene.ts` using map `spawnTables` (weighted entries, max concurrency, respawn timer, chase/wander movement, and proximity return behavior).
 +# **2026-06-30** — Wired player HUD panel fields in `client/src/hud/HudOverlay.ts` to live `WorldScene` snapshot data (`name`, `level`, `HP`, `MP`, `SP`, `XP`, `stance`) so the overlay is no longer static for those channels.
 +# Phase B complete — Phaser client loop playable. **HearthVale Compass** (NightRaven guidance UI) added under `compass/` with macOS Electron shell. Next: Phase C (dungeon depth, combat hooks, level-gated portals).
@@ -25,6 +26,7 @@
 
 ## Recent sessions
 
++# **2026-07-01** — Wired the mock HUD panels to the scene snapshot. Added `loadMonsterCatalog()` to `client/src/services/worldData.ts` (fetches `/catalog/monsters.json`, served via Vite `publicDir: ../data`); `WorldScene` records drawn monsters as `MonsterInstance[]` and derives target/auras each frame. `HudOverlay` gained `HudAura`/`HudTarget`/`HudPartyMember`/`HudCurrency` exports + `DEFAULT_*` seeds, a stable `data-hud="auras"`/`data-hud="target"` DOM with keyed change-detection so live panels only re-render on change.
 +# **2026-07-01** — Fixed HUD positioning by applying HUD scale before translation in `client/src/hud/hud.css`; viewport offsets now remain pixel-accurate and no longer compress/drift with resize.
 +# **2026-07-01** — HUD overlay resize sync remains in `HudOverlay.syncScale` with clamped offsets for small viewports.
 +# **2026-07-01** — Added right-click auto-pathing to `WorldScene` with A* tile pathing on collision masks, destination marker, and automatic follow when movement keys are idle.

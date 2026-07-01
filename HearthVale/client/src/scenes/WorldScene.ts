@@ -1,9 +1,19 @@
 import Phaser from 'phaser';
-import { DEFAULT_PLAYER, hudOverlay, type HudPlayerSnapshot } from '../hud/HudOverlay.js';
+import {
+  DEFAULT_CURRENCY,
+  DEFAULT_HOTBAR,
+  DEFAULT_INVENTORY,
+  DEFAULT_PARTY,
+  DEFAULT_PLAYER,
+  hudOverlay,
+  type HudAura,
+  type HudPlayerSnapshot,
+  type HudTarget,
+} from '../hud/HudOverlay.js';
 import { audioService } from '../services/AudioService.js';
 import { DevOverlay } from '../services/DevOverlay.js';
 import { loadCollisionMask, loadPropLayer } from '../services/mapArtData.js';
-import { getMapById } from '../services/worldData.js';
+import { getMapById, loadMonsterCatalog, type MonsterCatalogEntry } from '../services/worldData.js';
 import {
   BIOME_COLORS,
   DEFAULT_MAP_COLOR,
@@ -22,12 +32,23 @@ export interface WorldSceneData {
   spawn: Vec2;
 }
 
+/** Lightweight world-space record of a drawn monster, used to drive the HUD target frame. */
+interface MonsterInstance {
+  name: string;
+  level: number;
+  x: number;
+  y: number;
+}
+
 const PLAYER_COLLISION_SAMPLES: Vec2[] = [
   { x: 0, y: 0 },
   { x: -8, y: 8 },
   { x: 8, y: 8 },
   { x: 0, y: 12 },
 ];
+/** Radius (world px) within which the nearest monster becomes the HUD target. */
+const TARGET_LOCK_RADIUS = 96;
+const LOW_HP_AURA_THRESHOLD = 0.3;
 const VITAL_STAMINA_DRAIN_PER_SECOND = 16;
 const VITAL_STAMINA_REGEN_PER_SECOND = 9;
 const VITAL_MP_DRAIN_PER_SECOND_MOVING = 1.5;
@@ -55,6 +76,8 @@ export class WorldScene extends Phaser.Scene {
   private collisionMask: CollisionMaskDefinition | null = null;
   private ready = false;
   private playerState: HudPlayerSnapshot = { ...DEFAULT_PLAYER };
+  private monsters: MonsterInstance[] = [];
+  private monsterCatalog: Map<string, MonsterCatalogEntry> = new Map();
 
   constructor() {
     super({ key: 'WorldScene' });
@@ -65,6 +88,7 @@ export class WorldScene extends Phaser.Scene {
     this.portalCooldown = 500;
     this.ready = false;
     this.collisionMask = null;
+    this.monsters = [];
   }
 
   async create(data: WorldSceneData): Promise<void> {
@@ -80,12 +104,14 @@ export class WorldScene extends Phaser.Scene {
     this.cameras.main.setBackgroundColor('#121018');
 
     try {
-      const [collisionMask, propLayer] = await Promise.all([
+      const [collisionMask, propLayer, monsterCatalog] = await Promise.all([
         loadCollisionMask(this.mapId),
         loadPropLayer(this.mapId),
+        loadMonsterCatalog(),
       ]);
 
       this.collisionMask = collisionMask;
+      this.monsterCatalog = monsterCatalog;
       this.drawMapBackground(mapDef);
       this.drawPropLayer(propLayer.props);
       this.drawSafeZone(mapDef);
@@ -563,6 +589,14 @@ export class WorldScene extends Phaser.Scene {
           mob.setDepth(WORLD_DEPTH.monster);
           this.worldLayer.add(mob);
 
+          const meta = this.monsterCatalog.get(entry.monsterId);
+          this.monsters.push({
+            name: meta?.displayName ?? entry.monsterId.replace(/_/g, ' '),
+            level: meta?.baseLevel ?? this.mapDef.levelRange.min,
+            x,
+            y,
+          });
+
           const tag = this.add
             .text(x, y - 16, entry.monsterId, {
               fontFamily: 'sans-serif',
@@ -597,13 +631,58 @@ export class WorldScene extends Phaser.Scene {
 
   private syncHud(position: Vec2): void {
     this.inSafeZone = this.isInSafeZone(position);
+    const auras = this.getAuras();
     hudOverlay.sync({
       map: this.mapDef,
       position,
       nearestPortal: this.nearestPortal,
       inSafeZone: this.inSafeZone,
       player: this.getPlayerSnapshot(),
+      buffs: auras.buffs,
+      debuffs: auras.debuffs,
+      target: this.getTargetSnapshot(position),
+      // No party/economy/inventory systems yet — pass the design seed data through
+      // the snapshot so the scene stays the single owner of HUD state.
+      party: DEFAULT_PARTY,
+      currency: DEFAULT_CURRENCY,
+      hotbar: DEFAULT_HOTBAR,
+      inventory: DEFAULT_INVENTORY,
     });
+  }
+
+  /** Locks the HUD target frame onto the nearest monster within range (no combat
+   * system yet, so HP reads full and there is no cast bar). */
+  private getTargetSnapshot(position: Vec2): HudTarget | null {
+    let nearest: MonsterInstance | null = null;
+    let bestDist = TARGET_LOCK_RADIUS;
+    for (const monster of this.monsters) {
+      const dist = Phaser.Math.Distance.Between(position.x, position.y, monster.x, monster.y);
+      if (dist <= bestDist) {
+        bestDist = dist;
+        nearest = monster;
+      }
+    }
+    if (!nearest) return null;
+    return { name: nearest.name, level: nearest.level, hpPct: '100%' };
+  }
+
+  /** Derives status auras from live player vitals and zone state. */
+  private getAuras(): { buffs: HudAura[]; debuffs: HudAura[] } {
+    const buffs: HudAura[] = [];
+    const debuffs: HudAura[] = [];
+    const state = this.playerState;
+
+    if (this.inSafeZone) {
+      buffs.push({ letter: 'R', time: 'Rest' });
+    }
+    if (state.stance === 'Tired' || state.spCur <= 0) {
+      debuffs.push({ letter: 'T', time: 'Tired' });
+    }
+    const hpRatio = state.hpMax > 0 ? state.hpCur / state.hpMax : 0;
+    if (hpRatio > 0 && hpRatio < LOW_HP_AURA_THRESHOLD) {
+      debuffs.push({ letter: '!', time: 'Low' });
+    }
+    return { buffs, debuffs };
   }
 
   private updatePlayerVitals(delta: number, moved: boolean): void {
