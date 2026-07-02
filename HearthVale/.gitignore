@@ -25,3 +25,10 @@ client-unity/UserSettings/
 data/*.meta
 data/**/*.meta
 tools/generated/ragnarok-map-pack/
+
+# Vendored/downloaded tool source that agents sometimes drop in .codex_tmp
+# while using an editor (e.g. PhaserEditor2D) — not project code, don't track.
+.codex_tmp/*.zip
+.codex_tmp/*.tgz
+.codex_tmp/*-source/
+.codex_tmp/*-launcher-src/
