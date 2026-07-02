@@ -31,7 +31,7 @@ export default defineConfig({
   server: {
     // Bind all interfaces so phones / other PCs on the LAN can open the game.
     host: true,
-    port: 5173,
+    port: process.env.PORT ? Number(process.env.PORT) : 5173,
     fs: {
       allow: ['..'],
     },
