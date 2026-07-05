@@ -502,24 +502,53 @@ export class WorldScene extends Phaser.Scene {
     const startKey = toKey(start);
     const targetKey = toKey(end);
     const gScore = new Map<number, number>([[startKey, 0]]);
-    const fScore = new Map<number, number>([[startKey, Math.abs(start.row - end.row) + Math.abs(start.col - end.col)]]);
-    const openSet = new Set<number>([startKey]);
+    const startH = Math.abs(start.row - end.row) + Math.abs(start.col - end.col);
+    const fScore = new Map<number, number>([[startKey, startH]]);
     const cameFrom = new Int32Array(rows * cols);
     cameFrom.fill(-1);
 
-    while (openSet.size > 0) {
-      let current = -1;
-      let bestF = Infinity;
-      for (const key of openSet) {
-        const score = fScore.get(key) ?? Infinity;
-        if (score < bestF) {
-          bestF = score;
-          current = key;
+    // Binary min-heap: [fScore, nodeKey] pairs.  Lazy deletion handles stale
+    // entries pushed before a better path was discovered (no decrease-key needed).
+    const heap: Array<[number, number]> = [[startH, startKey]];
+
+    const heapPush = (f: number, k: number): void => {
+      heap.push([f, k]);
+      let i = heap.length - 1;
+      while (i > 0) {
+        const p = (i - 1) >> 1;
+        if (heap[p][0] <= heap[i][0]) break;
+        const tmp = heap[p]; heap[p] = heap[i]; heap[i] = tmp;
+        i = p;
+      }
+    };
+
+    const heapPop = (): [number, number] => {
+      const top = heap[0];
+      const last = heap.pop()!;
+      if (heap.length > 0) {
+        heap[0] = last;
+        let i = 0;
+        const n = heap.length;
+        for (;;) {
+          let s = i;
+          const l = (i << 1) + 1;
+          const r = l + 1;
+          if (l < n && heap[l][0] < heap[s][0]) s = l;
+          if (r < n && heap[r][0] < heap[s][0]) s = r;
+          if (s === i) break;
+          const tmp = heap[s]; heap[s] = heap[i]; heap[i] = tmp;
+          i = s;
         }
       }
-      if (current === -1) break;
+      return top;
+    };
 
-      openSet.delete(current);
+    while (heap.length > 0) {
+      const [f, current] = heapPop();
+
+      // Skip stale entries: a shorter path to this node was already processed.
+      if (f > (fScore.get(current) ?? Infinity)) continue;
+
       if (current === targetKey) {
         return this.reconstructPath(cameFrom, fromKey, startKey, targetKey);
       }
@@ -543,10 +572,9 @@ export class WorldScene extends Phaser.Scene {
         cameFrom[nextKey] = current;
         gScore.set(nextKey, tentativeG);
         const heuristic = Math.abs(end.row - next.row) + Math.abs(end.col - next.col);
-        fScore.set(nextKey, tentativeG + heuristic);
-        if (!openSet.has(nextKey)) {
-          openSet.add(nextKey);
-        }
+        const newF = tentativeG + heuristic;
+        fScore.set(nextKey, newF);
+        heapPush(newF, nextKey);
       }
     }
 
@@ -592,15 +620,15 @@ export class WorldScene extends Phaser.Scene {
 
     const visited = new Set<number>();
     const queue: TileCoord[] = [];
+    let qi = 0; // index pointer — avoids O(n) Array.shift() per dequeue
     const toKey = (tile: TileCoord): number => tile.row * cols + tile.col;
     const startKey = toKey(target);
     visited.add(startKey);
     queue.push(target);
     let searched = 0;
 
-    while (queue.length > 0 && searched < AUTO_PATH_SEARCH_LIMIT) {
-      const current = queue.shift();
-      if (!current) break;
+    while (qi < queue.length && searched < AUTO_PATH_SEARCH_LIMIT) {
+      const current = queue[qi++];
       searched += 1;
       for (const [dx, dy] of PATH_NEIGHBOR_STEPS) {
         const next = { row: current.row + dy, col: current.col + dx };
@@ -1483,7 +1511,7 @@ export class WorldScene extends Phaser.Scene {
   }
 
   private syncHud(position: Vec2): void {
-    this.inSafeZone = this.isInSafeZone(position);
+    // this.inSafeZone is already set by update() before syncHud is called.
     const auras = this.getAuras();
     hudOverlay.sync({
       map: this.mapDef,

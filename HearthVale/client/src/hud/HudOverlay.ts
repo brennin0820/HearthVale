@@ -564,7 +564,12 @@ export class HudOverlay {
   /** Live per-frame panels: only re-render when their content actually changes. */
   private syncLivePanels(snapshot: HudSnapshot): void {
     if (!this.refs) return;
-    const aurasKey = JSON.stringify([snapshot.buffs, snapshot.debuffs]);
+    // Build a compact key from buff letters+times — far cheaper than JSON.stringify
+    // which ran the full serializer every frame at 60 fps even when nothing changed.
+    const aurasKey =
+      snapshot.buffs.map((b) => `${b.letter}${b.time}`).join(',') +
+      '|' +
+      snapshot.debuffs.map((b) => `${b.letter}${b.time}`).join(',');
     if (aurasKey !== this.lastAurasKey) {
       this.lastAurasKey = aurasKey;
       this.renderAuras(snapshot.buffs, snapshot.debuffs);
