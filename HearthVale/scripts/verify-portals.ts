@@ -3,12 +3,13 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import type { MapDefinition, MapPortal, Vec2 } from '../src/data/world/types.js';
+import { MAP_GRID_SCALE } from '../src/data/world/mapScale.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const mapsPath = path.join(__dirname, '..', 'data', 'maps.json');
 
 /** Max distance (world units) between linked portal spawn and reverse gate position. */
-const SPAWN_PROXIMITY = 200;
+const SPAWN_PROXIMITY = Math.round(200 * MAP_GRID_SCALE);
 
 /**
  * Entrance-only portals (dungeon mouths, instance doors) — no reverse required on target map.

@@ -15,6 +15,21 @@
     "placeholder": true
   },
   {
+    "key": "map_hearthvale_town_ro",
+    "type": "map",
+    "placeholder": true
+  },
+  {
+    "key": "map_cloverfield_plains_ro",
+    "type": "map",
+    "placeholder": true
+  },
+  {
+    "key": "map_old_crystal_mine_ro_b1",
+    "type": "map",
+    "placeholder": true
+  },
+  {
     "key": "map_whisperwood_meadows",
     "type": "map",
     "placeholder": true
@@ -40,7 +55,22 @@
     "placeholder": true
   },
   {
+    "key": "map_emberglass_shelf",
+    "type": "map",
+    "placeholder": true
+  },
+  {
+    "key": "map_hollow_kiln",
+    "type": "map",
+    "placeholder": true
+  },
+  {
     "key": "map_moonwell_entrance",
+    "type": "map",
+    "placeholder": true
+  },
+  {
+    "key": "map_moonreed_fen",
     "type": "map",
     "placeholder": true
   },
@@ -50,23 +80,196 @@
     "placeholder": true
   },
   {
+    "key": "map_moonwell_heart",
+    "type": "map",
+    "placeholder": true
+  },
+  {
+    "key": "map_lanternspire_summit",
+    "type": "map",
+    "placeholder": true
+  },
+  {
+    "key": "map_afterlight_expanse",
+    "type": "map",
+    "placeholder": true
+  },
+  {
+    "key": "map_dawnshore_camp",
+    "type": "map",
+    "placeholder": true
+  },
+  {
+    "key": "map_glasswind_coast",
+    "type": "map",
+    "placeholder": true
+  },
+  {
+    "key": "map_tidebreak_causeway",
+    "type": "map",
+    "placeholder": true
+  },
+  {
+    "key": "map_stormglass_reliquary",
+    "type": "map",
+    "placeholder": true
+  },
+  {
+    "key": "map_beaconfall_cliffs",
+    "type": "map",
+    "placeholder": true
+  },
+  {
+    "key": "map_sunspire_observatory",
+    "type": "map",
+    "placeholder": true
+  },
+  {
+    "key": "map_aurora_highlands",
+    "type": "map",
+    "placeholder": true
+  },
+  {
+    "key": "map_zenith_archive",
+    "type": "map",
+    "placeholder": true
+  },
+  {
+    "key": "map_choirwood_canopy",
+    "type": "map",
+    "placeholder": true
+  },
+  {
+    "key": "map_crownroot_sanctum",
+    "type": "map",
+    "placeholder": true
+  },
+  {
+    "key": "map_runeveil_gardens",
+    "type": "map",
+    "placeholder": true
+  },
+  {
+    "key": "map_namesong_vault",
+    "type": "map",
+    "placeholder": true
+  },
+  {
+    "key": "map_waystar_moor",
+    "type": "map",
+    "placeholder": true
+  },
+  {
+    "key": "map_convergence_spire",
+    "type": "map",
+    "placeholder": true
+  },
+  {
     "key": "player_down_0",
     "type": "sprite",
-    "placeholder": true
+    "placeholder": false,
+    "path": "assets/sprites/player_down_0.png"
   },
   {
     "key": "player_down_1",
     "type": "sprite",
-    "placeholder": true
+    "placeholder": false,
+    "path": "assets/sprites/player_down_1.png"
   },
   {
     "key": "portal_0",
     "type": "sprite",
-    "placeholder": true
+    "placeholder": false,
+    "path": "assets/sprites/portal_0.png"
   },
   {
     "key": "portal_1",
     "type": "sprite",
-    "placeholder": true
+    "placeholder": false,
+    "path": "assets/sprites/portal_1.png"
+  },
+  {
+    "key": "clover_herb",
+    "type": "icon",
+    "placeholder": false,
+    "path": "assets/sprites/items/clover_herb.png"
+  },
+  {
+    "key": "spore_cap",
+    "type": "icon",
+    "placeholder": false,
+    "path": "assets/sprites/items/spore_cap.png"
+  },
+  {
+    "key": "crystal_shard",
+    "type": "icon",
+    "placeholder": false,
+    "path": "assets/sprites/items/crystal_shard.png"
+  },
+  {
+    "key": "gale_feather",
+    "type": "icon",
+    "placeholder": false,
+    "path": "assets/sprites/items/gale_feather.png"
+  },
+  {
+    "key": "moon_flake",
+    "type": "icon",
+    "placeholder": false,
+    "path": "assets/sprites/items/moon_flake.png"
+  },
+  {
+    "key": "jellybud",
+    "type": "sprite",
+    "placeholder": false,
+    "path": "assets/sprites/monsters/jellybud.png"
+  },
+  {
+    "key": "spriggle",
+    "type": "sprite",
+    "placeholder": false,
+    "path": "assets/sprites/monsters/spriggle.png"
+  },
+  {
+    "key": "puffshroom",
+    "type": "sprite",
+    "placeholder": false,
+    "path": "assets/sprites/monsters/puffshroom.png"
+  },
+  {
+    "key": "grass_base",
+    "type": "tile",
+    "placeholder": false,
+    "path": "assets/sprites/tiles/grass_base.png"
+  },
+  {
+    "key": "grass_clover",
+    "type": "tile",
+    "placeholder": false,
+    "path": "assets/sprites/tiles/grass_clover.png"
+  },
+  {
+    "key": "grass_flower",
+    "type": "tile",
+    "placeholder": false,
+    "path": "assets/sprites/tiles/grass_flower.png"
+  },
+  {
+    "key": "dirt_path",
+    "type": "tile",
+    "placeholder": false,
+    "path": "assets/sprites/tiles/dirt_path.png"
+  },
+  {
+    "key": "elder",
+    "type": "portrait",
+    "placeholder": false,
+    "path": "assets/sprites/portraits/elder.png"
+  },
+  {
+    "key": "merchant_silas",
+    "type": "portrait",
+    "placeholder": false,
+    "path": "assets/sprites/portraits/merchant_silas.png"
   }
 ]

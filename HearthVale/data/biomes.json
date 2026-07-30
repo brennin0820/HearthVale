@@ -54,9 +54,129 @@
     "accentColor": "#8fbc8f"
   },
   {
+    "id": "reed_fen",
+    "displayName": "Reed Fen",
+    "groundColor": "#3f6f68",
+    "accentColor": "#9fc8c6"
+  },
+  {
     "id": "ancient_ruins",
     "displayName": "Ancient Ruins",
     "groundColor": "#5a4a6b",
     "accentColor": "#7a6b8f"
+  },
+  {
+    "id": "moonwell_depths",
+    "displayName": "Moonwell Depths",
+    "groundColor": "#263f58",
+    "accentColor": "#85d7cf"
+  },
+  {
+    "id": "emberglass_shelf",
+    "displayName": "Emberglass Shelf",
+    "groundColor": "#4f5149",
+    "accentColor": "#e99b55"
+  },
+  {
+    "id": "hollow_kiln",
+    "displayName": "Hollow Kiln",
+    "groundColor": "#332829",
+    "accentColor": "#f07b42"
+  },
+  {
+    "id": "lanternspire_summit",
+    "displayName": "Lanternspire Summit",
+    "groundColor": "#273a42",
+    "accentColor": "#f1cf72"
+  },
+  {
+    "id": "afterlight_expanse",
+    "displayName": "Afterlight Expanse",
+    "groundColor": "#304c4e",
+    "accentColor": "#f0d27a"
+  },
+  {
+    "id": "dawnshore_camp",
+    "displayName": "Dawnshore Camp",
+    "groundColor": "#3c6561",
+    "accentColor": "#e8cb79"
+  },
+  {
+    "id": "glasswind_coast",
+    "displayName": "Glasswind Coast",
+    "groundColor": "#315b62",
+    "accentColor": "#8fd8d0"
+  },
+  {
+    "id": "tidebreak_causeway",
+    "displayName": "Tidebreak Causeway",
+    "groundColor": "#34565c",
+    "accentColor": "#99d8c9"
+  },
+  {
+    "id": "stormglass_reliquary",
+    "displayName": "Stormglass Reliquary",
+    "groundColor": "#283c4b",
+    "accentColor": "#9bded4"
+  },
+  {
+    "id": "beaconfall_cliffs",
+    "displayName": "Beaconfall Cliffs",
+    "groundColor": "#485c58",
+    "accentColor": "#e6cf7f"
+  },
+  {
+    "id": "sunspire_observatory",
+    "displayName": "Sunspire Observatory",
+    "groundColor": "#343f50",
+    "accentColor": "#efd889"
+  },
+  {
+    "id": "aurora_highlands",
+    "displayName": "Aurora Highlands",
+    "groundColor": "#486257",
+    "accentColor": "#b8dda0"
+  },
+  {
+    "id": "zenith_archive",
+    "displayName": "Zenith Archive",
+    "groundColor": "#394744",
+    "accentColor": "#dfc877"
+  },
+  {
+    "id": "choirwood_canopy",
+    "displayName": "Choirwood Canopy",
+    "groundColor": "#365c49",
+    "accentColor": "#d7ce7e"
+  },
+  {
+    "id": "crownroot_sanctum",
+    "displayName": "Crownroot Sanctum",
+    "groundColor": "#2f4338",
+    "accentColor": "#c7b96e"
+  },
+  {
+    "id": "runeveil_gardens",
+    "displayName": "Runeveil Gardens",
+    "groundColor": "#38564e",
+    "accentColor": "#d3a8b4"
+  },
+  {
+    "id": "namesong_vault",
+    "displayName": "Namesong Vault",
+    "groundColor": "#303f44",
+    "accentColor": "#9fd2c6"
+  },
+  {
+    "id": "waystar_moor",
+    "displayName": "Waystar Moor",
+    "groundColor": "#3f554f",
+    "accentColor": "#d2c46f"
+  },
+  {
+    "id": "convergence_spire",
+    "displayName": "Convergence Spire",
+    "groundColor": "#343541",
+    "accentColor": "#c3a5dd"
   }
 ]

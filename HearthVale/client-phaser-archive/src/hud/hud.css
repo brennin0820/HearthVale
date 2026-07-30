@@ -1,0 +1,798 @@
+#hud-root {
+  pointer-events: none;
+  --hv-hud-scale: 1;
+  --hv-hud-offset-x: 0px;
+  --hv-hud-offset-y: 0px;
+}
+
+@keyframes pulseSoft {
+  0%, 100% { opacity: .55; transform: translate(-50%, -50%) scale(1); }
+  50% { opacity: 1; transform: translate(-50%, -50%) scale(1.15); }
+}
+
+@keyframes pulseGlowPortrait {
+  0%, 100% { box-shadow: 0 0 8px currentColor; }
+  50% { box-shadow: 0 0 20px currentColor; }
+}
+
+@keyframes pulseGlowSlot {
+  0%, 100% { box-shadow: 0 0 6px currentColor; }
+  50% { box-shadow: 0 0 16px currentColor; }
+}
+
+.hv-hud {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 3440px;
+  height: 1440px;
+  /* translate() is listed BEFORE scale() so the centering offsets (computed in
+     real viewport pixels by syncScale) are applied in unscaled space; putting
+     scale() first would shrink the offsets to scale*offset and mis-center the
+     HUD whenever scale < 1. */
+  transform: translate(var(--hv-hud-offset-x), var(--hv-hud-offset-y)) scale(var(--hv-hud-scale));
+  transform-origin: top left;
+  pointer-events: none;
+  font-family: var(--t-fontBody);
+}
+
+/* Player panel — top-left */
+.hv-hud__player {
+  position: absolute;
+  left: 56px;
+  top: 56px;
+  width: 520px;
+  padding: 16px;
+  box-sizing: border-box;
+  background: var(--t-panelBg);
+  box-shadow: var(--t-panelRing);
+  backdrop-filter: var(--t-panelBackdrop);
+  border-radius: var(--t-panelRadius);
+  display: flex;
+  gap: 14px;
+}
+
+.hv-hud__portrait {
+  position: relative;
+  width: 104px;
+  height: 104px;
+  flex: none;
+  border-radius: var(--t-portraitRadius);
+  color: var(--t-accent);
+}
+
+.hv-hud--portrait-glow .hv-hud__portrait {
+  animation: pulseGlowPortrait 3s ease-in-out infinite;
+}
+
+.hv-hud__portrait-face {
+  position: relative;
+  width: 104px;
+  height: 104px;
+  border-radius: var(--t-portraitRadius);
+  background: var(--t-portraitFace);
+  box-shadow: 0 0 0 2px var(--t-accentSoft);
+  overflow: hidden;
+}
+
+.hv-hud__portrait-head {
+  position: absolute;
+  left: 30px;
+  top: 18px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--t-portraitHead);
+}
+
+.hv-hud__portrait-body {
+  position: absolute;
+  left: 22px;
+  bottom: 0;
+  width: 60px;
+  height: 36px;
+  background: var(--t-portraitBody);
+  border-radius: 30px 30px 0 0;
+}
+
+.hv-hud__portrait-level {
+  position: absolute;
+  right: -6px;
+  bottom: -6px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--t-panelBg);
+  box-shadow: 0 0 0 2px var(--t-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font: var(--t-dispWeight) 15px var(--t-fontDisplay);
+  color: var(--t-textPrimary);
+}
+
+.hv-hud__player-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.hv-hud__player-name {
+  font: var(--t-nameWeight) 25px var(--t-nameFont);
+  color: var(--t-textPrimary);
+  letter-spacing: var(--t-dispSpacing);
+  text-transform: var(--t-dispTransform);
+}
+
+.hv-hud__player-title {
+  font: 400 13px var(--t-fontBody);
+  color: var(--t-textMuted);
+  margin-bottom: 2px;
+}
+
+.hv-hud__hp-bar,
+.hv-hud__mp-bar,
+.hv-hud__sp-bar {
+  position: relative;
+  width: 100%;
+  border-radius: var(--t-barRadius);
+  box-shadow: var(--t-barBorder);
+  overflow: hidden;
+}
+
+.hv-hud__hp-bar { height: 20px; background: var(--t-hpTrack); }
+.hv-hud__hp-fill { width: 0; height: 100%; background: var(--t-hpFill); }
+.hv-hud__hp-label {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font: 600 11px ui-monospace, Menlo, monospace;
+  color: rgba(255, 255, 255, .9);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, .8);
+}
+
+.hv-hud__mp-bar { height: 14px; background: var(--t-mpTrack); }
+.hv-hud__mp-fill { width: 0; height: 100%; background: var(--t-mpFill); }
+
+.hv-hud__sp-bar { height: 10px; background: var(--t-spTrack); }
+.hv-hud__sp-fill { width: 0; height: 100%; background: var(--t-spFill); }
+
+/* Corner accents (rivets / diamond), reused on player panel + target frame */
+.hv-rivet {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: oklch(0.5 0.03 70);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .6);
+}
+.hv-rivet--tl { left: 6px; top: 6px; }
+.hv-rivet--tr { right: 6px; top: 6px; }
+.hv-rivet--bl { left: 6px; bottom: 6px; }
+.hv-rivet--br { right: 6px; bottom: 6px; }
+
+.hv-diamond {
+  position: absolute;
+  left: 50%;
+  top: -6px;
+  width: 12px;
+  height: 12px;
+  transform: translateX(-50%) rotate(45deg);
+}
+
+/* Buffs / debuffs row */
+.hv-hud__auras {
+  position: absolute;
+  left: 56px;
+  top: 224px;
+  width: 520px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.hv-hud__aura {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+
+.hv-hud__aura-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--t-panelBg);
+  backdrop-filter: var(--t-panelBackdrop);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font: var(--t-dispWeight) 15px var(--t-fontDisplay);
+  color: var(--t-textPrimary);
+}
+
+.hv-hud__aura-icon--buff { box-shadow: 0 0 0 2px var(--t-buffRing); }
+.hv-hud__aura-icon--debuff { box-shadow: 0 0 0 2px var(--t-debuffRing); }
+
+.hv-hud__aura-time {
+  font: 11px ui-monospace, Menlo, monospace;
+  color: var(--t-textMuted);
+}
+
+.hv-hud__aura-divider {
+  width: 1px;
+  align-self: stretch;
+  background: var(--t-accentSoft);
+  margin: 2px 6px;
+}
+
+/* Party frames */
+.hv-hud__party {
+  position: absolute;
+  left: 56px;
+  top: 300px;
+  width: 520px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.hv-hud__party-member {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  background: var(--t-panelBg);
+  box-shadow: var(--t-panelRing);
+  backdrop-filter: var(--t-panelBackdrop);
+  border-radius: var(--t-panelRadius);
+}
+
+.hv-hud__party-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--t-portraitBody);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font: var(--t-dispWeight) 14px var(--t-fontDisplay);
+  color: var(--t-textPrimary);
+  flex: none;
+}
+
+.hv-hud__party-info { flex: 1; min-width: 0; }
+
+.hv-hud__party-row {
+  display: flex;
+  justify-content: space-between;
+  font: var(--t-nameWeight) 14px var(--t-nameFont);
+  color: var(--t-textPrimary);
+  margin-bottom: 3px;
+}
+
+.hv-hud__party-role {
+  font: 400 11px var(--t-fontBody);
+  color: var(--t-textMuted);
+}
+
+.hv-hud__party-hp {
+  width: 100%;
+  height: 6px;
+  background: var(--t-hpTrack);
+  border-radius: 3px;
+  margin-bottom: 3px;
+  overflow: hidden;
+}
+.hv-hud__party-hp-fill { height: 100%; background: var(--t-hpSolid); }
+
+.hv-hud__party-mp {
+  width: 100%;
+  height: 4px;
+  background: var(--t-mpTrack);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.hv-hud__party-mp-fill { height: 100%; background: var(--t-mpSolid); }
+
+/* Combat / Chat log panel — bottom-left */
+.hv-hud__log {
+  position: absolute;
+  left: 56px;
+  bottom: 56px;
+  width: 520px;
+  height: 224px;
+  background: var(--t-panelBg);
+  box-shadow: var(--t-panelRing);
+  backdrop-filter: var(--t-panelBackdrop);
+  border-radius: var(--t-panelRadius);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.hv-hud__log-tabs {
+  display: flex;
+  gap: 18px;
+  padding: 10px 14px 8px;
+  border-bottom: 1px solid var(--t-accentSoft);
+}
+
+.hv-hud__log-tab {
+  font: var(--t-dispWeight) 13px var(--t-fontDisplay);
+  color: var(--t-textPrimary);
+}
+.hv-hud__log-tab--active { color: var(--t-accent); }
+
+.hv-hud__log-body {
+  padding: 10px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow: hidden;
+}
+
+.hv-hud__log-line {
+  font: 14px var(--t-fontBody);
+  color: var(--t-textPrimary);
+  line-height: 1.35;
+}
+.hv-hud__log-line em { color: var(--t-accent); font-style: normal; font-weight: 600; }
+
+.hv-hud__hint { color: #8cc07b; }
+.hv-hud__hint--travel { color: #9ac4ff; }
+
+/* Zone banner — top-center */
+.hv-hud__banner {
+  position: absolute;
+  left: 50%;
+  top: 56px;
+  transform: translateX(-50%);
+  min-width: 400px;
+  padding: 11px 26px;
+  box-sizing: border-box;
+  background: var(--t-panelBg);
+  box-shadow: var(--t-panelRing);
+  backdrop-filter: var(--t-panelBackdrop);
+  border-radius: var(--t-bannerRadius);
+  text-align: center;
+}
+
+.hv-hud__banner-title {
+  font: var(--t-nameWeight) 24px var(--t-nameFont);
+  color: var(--t-textPrimary);
+  letter-spacing: var(--t-dispSpacing);
+  text-transform: var(--t-dispTransform);
+}
+
+.hv-hud__banner-subtitle {
+  font: 400 13px var(--t-fontBody);
+  color: var(--t-textMuted);
+  margin-top: 1px;
+}
+
+/* Target frame — top-center, combat only (dev-preview via F5) */
+.hv-hud__target {
+  position: absolute;
+  left: 50%;
+  top: 138px;
+  transform: translateX(-50%);
+  width: 600px;
+  padding: 12px 20px;
+  box-sizing: border-box;
+  background: var(--t-panelBg);
+  box-shadow: var(--t-panelRing);
+  backdrop-filter: var(--t-panelBackdrop);
+  border-radius: var(--t-panelRadius);
+}
+
+.hv-hud__target-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 6px;
+}
+
+.hv-hud__target-name {
+  font: var(--t-nameWeight) 18px var(--t-nameFont);
+  color: var(--t-textPrimary);
+  letter-spacing: var(--t-dispSpacing);
+  text-transform: var(--t-dispTransform);
+}
+
+.hv-hud__target-level {
+  font: 13px ui-monospace, Menlo, monospace;
+  color: var(--t-textMuted);
+}
+
+.hv-hud__target-hp {
+  position: relative;
+  width: 100%;
+  height: 20px;
+  background: var(--t-hpTrack);
+  border-radius: var(--t-barRadius);
+  box-shadow: var(--t-barBorder);
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+.hv-hud__target-hp-fill { height: 100%; background: var(--t-hpFill); }
+
+.hv-hud__target-cast-row { display: flex; align-items: center; gap: 8px; }
+.hv-hud__target-cast-track {
+  flex: 1;
+  height: 11px;
+  background: var(--t-spTrack);
+  border-radius: var(--t-barRadius);
+  overflow: hidden;
+}
+.hv-hud__target-cast-fill { height: 100%; background: var(--t-accent); }
+.hv-hud__target-cast-label {
+  font: italic 400 12px var(--t-fontBody);
+  color: var(--t-textMuted);
+  white-space: nowrap;
+}
+
+/* Minimap — top-right */
+.hv-hud__minimap {
+  position: absolute;
+  right: 56px;
+  top: 56px;
+  width: 320px;
+  height: 320px;
+  background: var(--t-panelBg);
+  box-shadow: var(--t-panelRing);
+  backdrop-filter: var(--t-panelBackdrop);
+  border-radius: var(--t-minimapRadius);
+  overflow: hidden;
+}
+
+.hv-hud__minimap-dots {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(255, 255, 255, .13) 1px, transparent 1.5px);
+  background-size: 14px 14px;
+}
+
+.hv-hud__minimap-grid {
+  position: absolute;
+  inset: 0;
+}
+
+.hv-hud__poi {
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--t-accent);
+  transform: translate(-50%, -50%);
+}
+
+.hv-hud__minimap-compass {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-bottom: 10px solid var(--t-textPrimary);
+  transform: translate(-50%, -50%);
+  animation: pulseSoft 2.6s ease-in-out infinite;
+}
+
+.hv-hud__minimap-title {
+  position: absolute;
+  left: 12px;
+  top: 10px;
+  font: var(--t-dispWeight) 13px var(--t-fontDisplay);
+  color: var(--t-textPrimary);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, .8);
+}
+
+.hv-hud__minimap-coords {
+  position: absolute;
+  right: 12px;
+  top: 10px;
+  font: 12px ui-monospace, Menlo, monospace;
+  color: var(--t-textMuted);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, .8);
+}
+
+/* Currency — right column */
+.hv-hud__currency {
+  position: absolute;
+  right: 56px;
+  top: 390px;
+  width: 320px;
+  height: 50px;
+  background: var(--t-panelBg);
+  box-shadow: var(--t-panelRing);
+  backdrop-filter: var(--t-panelBackdrop);
+  border-radius: var(--t-panelRadius);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 0 10px;
+  box-sizing: border-box;
+}
+
+.hv-hud__currency-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.hv-hud__currency-coin {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #f0d27a, #a8791f);
+  flex: none;
+}
+
+.hv-hud__currency-item span {
+  font: 600 14px ui-monospace, Menlo, monospace;
+  color: var(--t-textPrimary);
+}
+
+/* Quests — right column */
+.hv-hud__quests {
+  position: absolute;
+  right: 56px;
+  top: 454px;
+  width: 320px;
+  height: 200px;
+  background: var(--t-panelBg);
+  box-shadow: var(--t-panelRing);
+  backdrop-filter: var(--t-panelBackdrop);
+  border-radius: var(--t-panelRadius);
+  padding: 12px 16px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.hv-hud__section-title {
+  font: var(--t-dispWeight) 15px var(--t-fontDisplay);
+  color: var(--t-accent);
+  margin-bottom: 8px;
+  letter-spacing: var(--t-dispSpacing);
+  text-transform: var(--t-dispTransform);
+}
+
+.hv-hud__quest-list {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.hv-hud__quest-item {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.hv-hud__quest-bullet {
+  width: 8px;
+  height: 8px;
+  background: var(--t-accent);
+  transform: rotate(45deg);
+  margin-top: 4px;
+  flex: none;
+}
+
+.hv-hud__quest-item span:last-child {
+  font: 13px var(--t-fontBody);
+  color: var(--t-textPrimary);
+  line-height: 1.35;
+}
+
+/* Bag panel — bottom-right */
+.hv-hud__bag {
+  position: absolute;
+  right: 56px;
+  bottom: 56px;
+  width: 580px;
+  height: 300px;
+  background: var(--t-panelBg);
+  box-shadow: var(--t-panelRing);
+  backdrop-filter: var(--t-panelBackdrop);
+  border-radius: var(--t-panelRadius);
+  padding: 14px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.hv-hud__bag-tabs { display: flex; gap: 16px; }
+
+.hv-hud__bag-tab {
+  font: var(--t-dispWeight) 13px var(--t-fontDisplay);
+  color: var(--t-textMuted);
+}
+
+.hv-hud__bag-tab--active {
+  color: var(--t-textPrimary);
+  border-bottom: 2px solid var(--t-accent);
+  padding-bottom: 2px;
+}
+
+.hv-hud__bag-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  width: 520px;
+}
+
+/* XP bar — bottom-center */
+.hv-hud__xp {
+  position: absolute;
+  left: 50%;
+  bottom: 152px;
+  transform: translateX(-50%);
+  width: 900px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.hv-hud__xp-level {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--t-panelBg);
+  box-shadow: 0 0 0 2px var(--t-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font: var(--t-dispWeight) 12px var(--t-fontDisplay);
+  color: var(--t-textPrimary);
+  flex: none;
+}
+
+.hv-hud__xp-track {
+  flex: 1;
+  height: 12px;
+  background: var(--t-hpTrack);
+  border-radius: var(--t-barRadius);
+  box-shadow: var(--t-barBorder);
+  overflow: hidden;
+}
+.hv-hud__xp-fill { height: 100%; background: var(--t-accent); }
+
+.hv-hud__xp-label {
+  font: 12px ui-monospace, Menlo, monospace;
+  color: var(--t-textMuted);
+  white-space: nowrap;
+}
+
+/* Hotbar — bottom-center */
+.hv-hud__hotbar {
+  position: absolute;
+  left: 50%;
+  bottom: 56px;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+}
+
+.hv-hud__stance {
+  position: absolute;
+  left: 56px;
+  bottom: 32px;
+  font: var(--t-dispWeight) 13px var(--t-fontDisplay);
+  color: var(--t-accent);
+  letter-spacing: var(--t-dispSpacing);
+  text-transform: var(--t-dispTransform);
+}
+
+/* Item slots (hotbar + bag), shared shape renderer */
+.hv-slot {
+  position: relative;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  transition: transform .15s ease;
+  /* Kept none while hotbar/bag are non-interactive mock panels: the HUD layer is
+     pointer-events:none so game clicks (incl. right-click-to-move) pass through
+     to the Phaser canvas. Re-enable to `auto` on slots once real inventory /
+     hotbar input systems exist. */
+  pointer-events: none;
+}
+.hv-slot:hover { transform: scale(1.06); }
+
+.hv-slot__qty {
+  position: absolute;
+  right: 3px;
+  bottom: 2px;
+  font: 600 12px/1 ui-monospace, Menlo, monospace;
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, .9);
+}
+
+.hv-slot__cd {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, .62);
+  border-radius: 0 0 5px 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.hv-slot__cd span { font: 700 13px/1 ui-monospace, Menlo, monospace; color: #fff; }
+
+.hv-slot__kb {
+  position: absolute;
+  left: 3px;
+  top: 2px;
+  font: 600 11px/1 ui-monospace, Menlo, monospace;
+  color: rgba(255, 255, 255, .75);
+}
+
+/* Item shapes */
+.hv-shape--blade { position: relative; width: 34px; height: 34px; }
+.hv-shape__blade-edge {
+  position: absolute; left: 50%; top: 1px; width: 5px; height: 22px;
+  background: linear-gradient(180deg, #f1f2f4, #9aa0a6);
+  transform: translateX(-50%); border-radius: 2px;
+}
+.hv-shape__blade-guard {
+  position: absolute; left: 50%; top: 20px; width: 18px; height: 4px;
+  transform: translateX(-50%); border-radius: 2px;
+}
+.hv-shape__blade-hilt {
+  position: absolute; left: 50%; top: 23px; width: 4px; height: 9px;
+  background: #5c4326; transform: translateX(-50%); border-radius: 1px;
+}
+
+.hv-shape--guard {
+  width: 26px; height: 30px;
+  clip-path: polygon(50% 0%, 100% 22%, 100% 62%, 50% 100%, 0% 62%, 0% 22%);
+  background: linear-gradient(180deg, #c3c9d1, #6b7280);
+  display: flex; align-items: center; justify-content: center;
+}
+.hv-shape__guard-gem { width: 8px; height: 8px; border-radius: 50%; }
+
+.hv-shape--gem { position: relative; width: 22px; height: 22px; }
+.hv-shape__gem-body { position: absolute; inset: 0; transform: rotate(45deg); border-radius: 3px; }
+.hv-shape__gem-shine {
+  position: absolute; left: 5px; top: 5px; width: 7px; height: 7px;
+  background: rgba(255, 255, 255, .55); transform: rotate(45deg); border-radius: 2px;
+}
+
+.hv-shape--scroll { position: relative; width: 28px; height: 22px; background: #d8c9a3; border-radius: 3px; }
+.hv-shape__scroll-line { position: absolute; left: 4px; width: 20px; height: 2px; background: #8a7752; }
+.hv-shape__scroll-line--1 { top: 6px; }
+.hv-shape__scroll-line--2 { top: 11px; }
+.hv-shape__scroll-line--3 { top: 16px; width: 13px; }
+
+.hv-shape--potion { position: relative; width: 20px; height: 28px; }
+.hv-shape__potion-cap {
+  position: absolute; left: 50%; top: 0; width: 10px; height: 5px;
+  background: #c9a876; transform: translateX(-50%); border-radius: 2px 2px 0 0;
+}
+.hv-shape__potion-body {
+  position: absolute; left: 50%; top: 5px; width: 20px; height: 23px;
+  transform: translateX(-50%); border-radius: 6px 6px 10px 10px; overflow: hidden;
+}
+.hv-shape__potion-shine {
+  position: absolute; left: 3px; top: 2px; width: 3px; height: 17px;
+  background: rgba(255, 255, 255, .35); border-radius: 2px;
+}
+
+.hv-shape--stance {
+  width: 28px; height: 28px; border-radius: 50%; border: 3px solid currentColor;
+  display: flex; align-items: center; justify-content: center;
+}
+.hv-shape__stance-dot { width: 7px; height: 7px; border-radius: 50%; }

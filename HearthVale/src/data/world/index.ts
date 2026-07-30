@@ -7,6 +7,8 @@ export type {
   MapNpcPlacement,
   MapPortal,
   Rect,
+  ResourceNodeDefinition,
+  ResourceNodeKind,
   RegionDefinition,
   SpawnTable,
   SpawnTableEntry,

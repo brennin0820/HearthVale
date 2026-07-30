@@ -13,3 +13,4 @@ export function levelFromXp(totalXp: number): number {
 }
 
 export const STARTER_REGION_LEVEL_CAP = 14;
+export const CURRENT_CAMPAIGN_LEVEL_CAP = 28;

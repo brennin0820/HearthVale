@@ -30,6 +30,19 @@ export const MapPortalSchema = z.object({
   targetSpawn: Vec2Schema,
   requiredLevel: z.number().int().optional(),
   requiredQuestId: z.string().optional(),
+  requiredQuestStartedId: z.string().optional(),
+});
+
+export const ResourceNodeSchema = z.object({
+  id: z.string().min(1),
+  displayName: z.string().min(1),
+  kind: z.enum(['herb', 'ore', 'fiber', 'relic']),
+  position: Vec2Schema,
+  itemId: z.string().min(1),
+  minCount: z.number().int().positive(),
+  maxCount: z.number().int().positive(),
+  respawnSeconds: z.number().positive(),
+  requiredLevel: z.number().int().min(1).optional(),
 });
 
 export const MapDefinitionSchema = z.object({
@@ -44,6 +57,7 @@ export const MapDefinitionSchema = z.object({
   musicKey: z.string().min(1),
   gridSize: z.object({ width: z.number().int().positive(), height: z.number().int().positive() }),
   spawnTables: z.array(z.any()),
+  resourceNodes: z.array(ResourceNodeSchema).optional(),
   npcs: z.array(z.any()),
   portals: z.array(MapPortalSchema),
   playerSpawn: Vec2Schema,
@@ -60,6 +74,19 @@ export const MapDefinitionSchema = z.object({
 
 export const MapsFileSchema = z.array(MapDefinitionSchema);
 
+export const MonsterAbilitySchema = z.object({
+  id: z.string().min(1),
+  displayName: z.string().min(1),
+  target: z.enum(['single', 'area']),
+  cooldown: z.number().positive(),
+  telegraphSeconds: z.number().min(0.25),
+  range: z.number().min(40),
+  powerMultiplier: z.number().positive(),
+  status: z.enum(['poison', 'gloom', 'drenched', 'sunblind', 'fractured', 'muted', 'severed']).optional(),
+  statusAmount: z.number().positive().optional(),
+  statusDuration: z.number().positive().optional(),
+});
+
 export const MonsterSchema = z.object({
   id: z.string().min(1),
   displayName: z.string().min(1),
@@ -69,4 +96,5 @@ export const MonsterSchema = z.object({
   def: z.number().int().min(0),
   size: z.enum(['small', 'medium', 'large']),
   element: z.string().min(1),
+  abilities: z.array(MonsterAbilitySchema).optional(),
 });

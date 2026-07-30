@@ -30,7 +30,10 @@ export const DROP_TABLES: DropTableDefinition[] = [
   {
     id: 'drops_sporeling',
     monsterId: 'sporeling',
-    entries: [{ itemId: 'spore_cap', weight: 65, minCount: 1, maxCount: 2 }],
+    entries: [
+      { itemId: 'spore_cap', weight: 45, minCount: 1, maxCount: 2 },
+      { itemId: 'glowcap_dust', weight: 40, minCount: 1, maxCount: 2 },
+    ],
   },
   {
     id: 'drops_leafsprite',
@@ -40,7 +43,10 @@ export const DROP_TABLES: DropTableDefinition[] = [
   {
     id: 'drops_barkling',
     monsterId: 'barkling',
-    entries: [{ itemId: 'clover_herb', weight: 55, minCount: 1, maxCount: 2 }],
+    entries: [
+      { itemId: 'barkchip', weight: 65, minCount: 1, maxCount: 2 },
+      { itemId: 'clover_herb', weight: 20, minCount: 1, maxCount: 1 },
+    ],
   },
   {
     id: 'drops_roadjack',
@@ -60,12 +66,18 @@ export const DROP_TABLES: DropTableDefinition[] = [
   {
     id: 'drops_crystal_golem',
     monsterId: 'crystal_golem',
-    entries: [{ itemId: 'crystal_shard', weight: 80, minCount: 1, maxCount: 3 }],
+    entries: [
+      { itemId: 'crystal_shard', weight: 70, minCount: 1, maxCount: 3 },
+      { itemId: 'iron_nugget', weight: 25, minCount: 1, maxCount: 2 },
+    ],
   },
   {
     id: 'drops_vein_wraith',
     monsterId: 'vein_wraith',
-    entries: [{ itemId: 'crystal_shard', weight: 50, minCount: 1, maxCount: 2 }],
+    entries: [
+      { itemId: 'wraith_ash', weight: 45, minCount: 1, maxCount: 2 },
+      { itemId: 'crystal_shard', weight: 40, minCount: 1, maxCount: 2 },
+    ],
   },
   {
     id: 'drops_moonmoth',
@@ -80,7 +92,432 @@ export const DROP_TABLES: DropTableDefinition[] = [
   {
     id: 'drops_rune_sentinel',
     monsterId: 'rune_sentinel',
-    entries: [{ itemId: 'crystal_shard', weight: 55, minCount: 1, maxCount: 2 }],
+    entries: [
+      { itemId: 'rune_fragment', weight: 55, minCount: 1, maxCount: 2 },
+      { itemId: 'crystal_shard', weight: 35, minCount: 1, maxCount: 2 },
+    ],
+  },
+  {
+    id: 'drops_reedwhisper',
+    monsterId: 'reedwhisper',
+    entries: [
+      { itemId: 'reed_silk', weight: 65, minCount: 1, maxCount: 2 },
+      { itemId: 'moonwater_phial', weight: 12, minCount: 1, maxCount: 1 },
+    ],
+  },
+  {
+    id: 'drops_fen_wisp',
+    monsterId: 'fen_wisp',
+    entries: [
+      { itemId: 'reed_silk', weight: 45, minCount: 1, maxCount: 2 },
+      { itemId: 'tide_pearl', weight: 18, minCount: 1, maxCount: 1 },
+    ],
+  },
+  {
+    id: 'drops_glimmercroc',
+    monsterId: 'glimmercroc',
+    entries: [
+      { itemId: 'tide_pearl', weight: 35, minCount: 1, maxCount: 2 },
+      { itemId: 'fen_lantern_charm', weight: 8, minCount: 1, maxCount: 1 },
+    ],
+  },
+  {
+    id: 'drops_wellbound_echo',
+    monsterId: 'wellbound_echo',
+    entries: [
+      { itemId: 'wellglass_fragment', weight: 60, minCount: 1, maxCount: 2 },
+      { itemId: 'heartwater_draught', weight: 14, minCount: 1, maxCount: 1 },
+    ],
+  },
+  {
+    id: 'drops_tidemoon_matriarch',
+    monsterId: 'tidemoon_matriarch',
+    entries: [
+      { itemId: 'wellglass_fragment', weight: 70, minCount: 2, maxCount: 4 },
+      { itemId: 'heartwater_draught', weight: 25, minCount: 1, maxCount: 2 },
+      { itemId: 'fen_lantern_charm', weight: 5, minCount: 1, maxCount: 1 },
+    ],
+  },
+  {
+    id: 'drops_cinder_mote',
+    monsterId: 'cinder_mote',
+    entries: [
+      { itemId: 'kiln_ash', weight: 50, minCount: 1, maxCount: 2 },
+      { itemId: 'emberglass_chip', weight: 35, minCount: 1, maxCount: 2 },
+    ],
+  },
+  {
+    id: 'drops_prism_scarab',
+    monsterId: 'prism_scarab',
+    entries: [
+      { itemId: 'prism_shell', weight: 50, minCount: 1, maxCount: 2 },
+      { itemId: 'emberglass_chip', weight: 35, minCount: 1, maxCount: 2 },
+    ],
+  },
+  {
+    id: 'drops_sinterhorn',
+    monsterId: 'sinterhorn',
+    entries: [
+      { itemId: 'emberglass_chip', weight: 55, minCount: 1, maxCount: 3 },
+      { itemId: 'prism_shell', weight: 25, minCount: 1, maxCount: 1 },
+      { itemId: 'kilnforged_aegis', weight: 4, minCount: 1, maxCount: 1 },
+    ],
+  },
+  {
+    id: 'drops_kilnheart_colossus',
+    monsterId: 'kilnheart_colossus',
+    entries: [
+      { itemId: 'kilnheart_core', weight: 100, minCount: 1, maxCount: 1 },
+    ],
+  },
+  {
+    id: 'drops_aurora_mote',
+    monsterId: 'aurora_mote',
+    entries: [
+      { itemId: 'aurora_thread', weight: 72, minCount: 1, maxCount: 2 },
+      { itemId: 'moon_flake', weight: 22, minCount: 1, maxCount: 1 },
+    ],
+  },
+  {
+    id: 'drops_gloam_warden',
+    monsterId: 'gloam_warden',
+    entries: [
+      { itemId: 'gloam_shard', weight: 68, minCount: 1, maxCount: 2 },
+      { itemId: 'dawnpetal_elixir', weight: 8, minCount: 1, maxCount: 1 },
+    ],
+  },
+  {
+    id: 'drops_starved_crown',
+    monsterId: 'starved_crown',
+    entries: [
+      { itemId: 'star_crown_fragment', weight: 100, minCount: 1, maxCount: 1 },
+    ],
+  },
+  {
+    id: 'drops_sunshard_mote',
+    monsterId: 'sunshard_mote',
+    entries: [
+      { itemId: 'sunshard_filament', weight: 74, minCount: 1, maxCount: 2 },
+      { itemId: 'afterlight_tonic', weight: 7, minCount: 1, maxCount: 1 },
+    ],
+  },
+  {
+    id: 'drops_voidglass_revenant',
+    monsterId: 'voidglass_revenant',
+    entries: [
+      { itemId: 'voidglass_splinter', weight: 68, minCount: 1, maxCount: 2 },
+      { itemId: 'gloam_shard', weight: 22, minCount: 1, maxCount: 1 },
+    ],
+  },
+  {
+    id: 'drops_dawnscale_sentinel',
+    monsterId: 'dawnscale_sentinel',
+    entries: [
+      { itemId: 'sunshard_filament', weight: 48, minCount: 1, maxCount: 2 },
+      { itemId: 'voidglass_splinter', weight: 44, minCount: 1, maxCount: 2 },
+      { itemId: 'dawnstar_circlet', weight: 3, minCount: 1, maxCount: 1 },
+    ],
+  },
+  {
+    id: 'drops_eclipse_herald',
+    monsterId: 'eclipse_herald',
+    entries: [
+      { itemId: 'eclipse_sigil', weight: 100, minCount: 1, maxCount: 1 },
+      { itemId: 'afterlight_tonic', weight: 28, minCount: 1, maxCount: 2 },
+    ],
+  },
+  {
+    id: 'drops_tideglass_mote',
+    monsterId: 'tideglass_mote',
+    entries: [
+      { itemId: 'saltglass_shard', weight: 68, minCount: 1, maxCount: 2 },
+      { itemId: 'sunwake_kelp', weight: 18, minCount: 1, maxCount: 1 },
+    ],
+  },
+  {
+    id: 'drops_saltbound_husk',
+    monsterId: 'saltbound_husk',
+    entries: [
+      { itemId: 'sunwake_kelp', weight: 58, minCount: 1, maxCount: 2 },
+      { itemId: 'saltglass_shard', weight: 34, minCount: 1, maxCount: 2 },
+    ],
+  },
+  {
+    id: 'drops_beacon_wraith',
+    monsterId: 'beacon_wraith',
+    entries: [
+      { itemId: 'beacon_ash', weight: 72, minCount: 1, maxCount: 2 },
+      { itemId: 'brineward_tonic', weight: 8, minCount: 1, maxCount: 1 },
+    ],
+  },
+  {
+    id: 'drops_drowned_meridian',
+    monsterId: 'drowned_meridian',
+    entries: [
+      { itemId: 'glasswind_compass', weight: 100, minCount: 1, maxCount: 1 },
+      { itemId: 'shoreline_stew', weight: 28, minCount: 1, maxCount: 2 },
+    ],
+  },
+  {
+    id: 'drops_brinewing_ray',
+    monsterId: 'brinewing_ray',
+    entries: [
+      { itemId: 'charged_pearl', weight: 48, minCount: 1, maxCount: 1 },
+      { itemId: 'stormreed_fiber', weight: 42, minCount: 1, maxCount: 2 },
+    ],
+  },
+  {
+    id: 'drops_surgeclaw',
+    monsterId: 'surgeclaw',
+    entries: [
+      { itemId: 'tideiron_scale', weight: 64, minCount: 1, maxCount: 2 },
+      { itemId: 'charged_pearl', weight: 22, minCount: 1, maxCount: 1 },
+    ],
+  },
+  {
+    id: 'drops_galehorn_prowler',
+    monsterId: 'galehorn_prowler',
+    entries: [
+      { itemId: 'stormreed_fiber', weight: 58, minCount: 1, maxCount: 2 },
+      { itemId: 'tempest_cordial', weight: 9, minCount: 1, maxCount: 1 },
+    ],
+  },
+  {
+    id: 'drops_stormglass_custodian',
+    monsterId: 'stormglass_custodian',
+    entries: [
+      { itemId: 'stormglass_fragment', weight: 72, minCount: 1, maxCount: 2 },
+      { itemId: 'stormclear_draught', weight: 12, minCount: 1, maxCount: 1 },
+    ],
+  },
+  {
+    id: 'drops_tempest_remnant',
+    monsterId: 'tempest_remnant',
+    entries: [
+      { itemId: 'tempest_heart', weight: 100, minCount: 1, maxCount: 1 },
+      { itemId: 'stormglass_fragment', weight: 55, minCount: 2, maxCount: 4 },
+      { itemId: 'tempest_cordial', weight: 30, minCount: 1, maxCount: 2 },
+    ],
+  },
+  {
+    id: 'drops_sunveil_sprite',
+    monsterId: 'sunveil_sprite',
+    entries: [
+      { itemId: 'sunveil_petal', weight: 72, minCount: 1, maxCount: 2 },
+      { itemId: 'clarity_tonic', weight: 8, minCount: 1, maxCount: 1 },
+    ],
+  },
+  {
+    id: 'drops_zephyrkin_screecher',
+    monsterId: 'zephyrkin_screecher',
+    entries: [
+      { itemId: 'zephyr_pinion', weight: 68, minCount: 1, maxCount: 2 },
+      { itemId: 'sunward_philter', weight: 7, minCount: 1, maxCount: 1 },
+    ],
+  },
+  {
+    id: 'drops_cliffglass_ram',
+    monsterId: 'cliffglass_ram',
+    entries: [
+      { itemId: 'skyglass_ore', weight: 68, minCount: 1, maxCount: 2 },
+      { itemId: 'cliffwalker_boots', weight: 3, minCount: 1, maxCount: 1 },
+    ],
+  },
+  {
+    id: 'drops_lensbound_sentry',
+    monsterId: 'lensbound_sentry',
+    entries: [
+      { itemId: 'auric_cog', weight: 65, minCount: 1, maxCount: 2 },
+      { itemId: 'lens_prism', weight: 22, minCount: 1, maxCount: 1 },
+    ],
+  },
+  {
+    id: 'drops_starfall_choir',
+    monsterId: 'starfall_choir',
+    entries: [
+      { itemId: 'starfall_dust', weight: 70, minCount: 1, maxCount: 2 },
+      { itemId: 'starfall_elixir', weight: 7, minCount: 1, maxCount: 1 },
+    ],
+  },
+  {
+    id: 'drops_celestial_orrery',
+    monsterId: 'celestial_orrery',
+    entries: [
+      { itemId: 'aurora_lens_core', weight: 100, minCount: 1, maxCount: 1 },
+      { itemId: 'lens_prism', weight: 55, minCount: 2, maxCount: 3 },
+      { itemId: 'starfall_elixir', weight: 30, minCount: 1, maxCount: 2 },
+    ],
+  },
+  {
+    id: 'drops_prismwing_moth',
+    monsterId: 'prismwing_moth',
+    entries: [
+      { itemId: 'aurora_silk', weight: 72, minCount: 1, maxCount: 2 },
+      { itemId: 'dawnsage_leaf', weight: 20, minCount: 1, maxCount: 1 },
+      { itemId: 'mending_salve', weight: 7, minCount: 1, maxCount: 1 },
+    ],
+  },
+  {
+    id: 'drops_sunforge_boar',
+    monsterId: 'sunforge_boar',
+    entries: [
+      { itemId: 'sunmetal_plate', weight: 70, minCount: 1, maxCount: 2 },
+      { itemId: 'sunmetal_greaves', weight: 3, minCount: 1, maxCount: 1 },
+    ],
+  },
+  {
+    id: 'drops_horizon_raptor',
+    monsterId: 'horizon_raptor',
+    entries: [
+      { itemId: 'horizon_talon', weight: 68, minCount: 1, maxCount: 2 },
+      { itemId: 'horizon_draught', weight: 8, minCount: 1, maxCount: 1 },
+    ],
+  },
+  {
+    id: 'drops_index_wraith',
+    monsterId: 'index_wraith',
+    entries: [
+      { itemId: 'archive_ink', weight: 68, minCount: 1, maxCount: 2 },
+      { itemId: 'memory_leaf', weight: 20, minCount: 1, maxCount: 1 },
+    ],
+  },
+  {
+    id: 'drops_gilded_automaton',
+    monsterId: 'gilded_automaton',
+    entries: [
+      { itemId: 'sunmetal_plate', weight: 62, minCount: 1, maxCount: 2 },
+      { itemId: 'zenith_prism', weight: 24, minCount: 1, maxCount: 1 },
+    ],
+  },
+  {
+    id: 'drops_keeper_of_zenith',
+    monsterId: 'keeper_of_zenith',
+    entries: [
+      { itemId: 'zenith_codex', weight: 100, minCount: 1, maxCount: 1 },
+      { itemId: 'zenith_prism', weight: 60, minCount: 2, maxCount: 3 },
+      { itemId: 'zenith_restorative', weight: 30, minCount: 1, maxCount: 2 },
+    ],
+  },
+  {
+    id: 'drops_chimebeetle',
+    monsterId: 'chimebeetle',
+    entries: [
+      { itemId: 'chime_shell', weight: 70, minCount: 1, maxCount: 2 },
+      { itemId: 'echo_moss', weight: 22, minCount: 1, maxCount: 1 },
+    ],
+  },
+  {
+    id: 'drops_canticle_stag',
+    monsterId: 'canticle_stag',
+    entries: [
+      { itemId: 'canticle_antler', weight: 62, minCount: 1, maxCount: 2 },
+      { itemId: 'resonant_bark', weight: 28, minCount: 1, maxCount: 1 },
+    ],
+  },
+  {
+    id: 'drops_mossbound_cantor',
+    monsterId: 'mossbound_cantor',
+    entries: [
+      { itemId: 'echo_moss', weight: 68, minCount: 1, maxCount: 2 },
+      { itemId: 'clearvoice_tisane', weight: 9, minCount: 1, maxCount: 1 },
+    ],
+  },
+  {
+    id: 'drops_scriptroot_lurker',
+    monsterId: 'scriptroot_lurker',
+    entries: [
+      { itemId: 'resonant_bark', weight: 64, minCount: 1, maxCount: 2 },
+      { itemId: 'hymn_leaf', weight: 24, minCount: 1, maxCount: 1 },
+    ],
+  },
+  {
+    id: 'drops_bellglass_myconid',
+    monsterId: 'bellglass_myconid',
+    entries: [
+      { itemId: 'bellglass_spore', weight: 70, minCount: 1, maxCount: 2 },
+      { itemId: 'crownroot_cordial', weight: 7, minCount: 1, maxCount: 1 },
+    ],
+  },
+  {
+    id: 'drops_crownroot_hierophant',
+    monsterId: 'crownroot_hierophant',
+    entries: [
+      { itemId: 'concordance_seed', weight: 100, minCount: 1, maxCount: 1 },
+      { itemId: 'crownroot_resin', weight: 65, minCount: 2, maxCount: 3 },
+      { itemId: 'crownroot_cordial', weight: 32, minCount: 1, maxCount: 2 },
+    ],
+  },
+  {
+    id: 'drops_glyphhare', monsterId: 'glyphhare', entries: [
+      { itemId: 'glyphhide', weight: 72, minCount: 1, maxCount: 2 },
+      { itemId: 'galescript_rune', weight: 12, minCount: 1, maxCount: 1 },
+    ],
+  },
+  {
+    id: 'drops_lanternback_elk', monsterId: 'lanternback_elk', entries: [
+      { itemId: 'lantern_antler', weight: 68, minCount: 1, maxCount: 2 },
+      { itemId: 'heartroot_rune', weight: 12, minCount: 1, maxCount: 1 },
+    ],
+  },
+  {
+    id: 'drops_wayglass_watcher', monsterId: 'wayglass_watcher', entries: [
+      { itemId: 'wayglass_shard', weight: 66, minCount: 1, maxCount: 2 },
+      { itemId: 'bastion_rune', weight: 14, minCount: 1, maxCount: 1 },
+    ],
+  },
+  {
+    id: 'drops_epitaph_sentinel', monsterId: 'epitaph_sentinel', entries: [
+      { itemId: 'epitaph_dust', weight: 70, minCount: 1, maxCount: 2 },
+      { itemId: 'embermark_rune', weight: 12, minCount: 1, maxCount: 1 },
+    ],
+  },
+  {
+    id: 'drops_pale_scriptling', monsterId: 'pale_scriptling', entries: [
+      { itemId: 'namekeeper_wax', weight: 65, minCount: 1, maxCount: 2 },
+      { itemId: 'hollowstar_ore', weight: 18, minCount: 1, maxCount: 1 },
+    ],
+  },
+  {
+    id: 'drops_archivore', monsterId: 'archivore', entries: [
+      { itemId: 'namesong_seal', weight: 100, minCount: 1, maxCount: 1 },
+    ],
+  },
+  {
+    id: 'drops_waystar_grazer', monsterId: 'waystar_grazer', entries: [
+      { itemId: 'comet_hide', weight: 72, minCount: 1, maxCount: 2 },
+      { itemId: 'startrail_stew', weight: 9, minCount: 1, maxCount: 1 },
+    ],
+  },
+  {
+    id: 'drops_compass_scarab', monsterId: 'compass_scarab', entries: [
+      { itemId: 'compass_shell', weight: 70, minCount: 1, maxCount: 2 },
+      { itemId: 'waystar_rune', weight: 10, minCount: 1, maxCount: 1 },
+    ],
+  },
+  {
+    id: 'drops_pathless_wisp', monsterId: 'pathless_wisp', entries: [
+      { itemId: 'moorlight_essence', weight: 68, minCount: 1, maxCount: 2 },
+      { itemId: 'waystar_pollen', weight: 24, minCount: 1, maxCount: 1 },
+    ],
+  },
+  {
+    id: 'drops_vowsteel_knight', monsterId: 'vowsteel_knight', entries: [
+      { itemId: 'vowsteel_fragment', weight: 72, minCount: 1, maxCount: 2 },
+      { itemId: 'convergence_rune', weight: 10, minCount: 1, maxCount: 1 },
+    ],
+  },
+  {
+    id: 'drops_splitstar_echo', monsterId: 'splitstar_echo', entries: [
+      { itemId: 'splitstar_filament', weight: 68, minCount: 1, maxCount: 2 },
+      { itemId: 'convergent_glass', weight: 28, minCount: 1, maxCount: 1 },
+    ],
+  },
+  {
+    id: 'drops_manyroad_crown', monsterId: 'manyroad_crown', entries: [
+      { itemId: 'manyroad_keystone', weight: 100, minCount: 1, maxCount: 1 },
+      { itemId: 'splitstar_filament', weight: 72, minCount: 2, maxCount: 3 },
+      { itemId: 'convergent_glass', weight: 36, minCount: 1, maxCount: 2 },
+    ],
   },
 ];
 

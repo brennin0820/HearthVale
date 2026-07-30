@@ -34,6 +34,7 @@ export const ELEMENT_MODIFIERS: Record<string, Record<string, number>> = {
   shadow: { lunar: 1.25, arcane: 0.9, neutral: 1 },
   lunar: { arcane: 1.15, shadow: 0.85, neutral: 1 },
   arcane: { crystal: 1.1, nature: 1, neutral: 1 },
+  fire: { fungal: 1.2, crystal: 1.35, water: 0.75, fire: 0.85, neutral: 1 },
   wind: { nature: 1.1, neutral: 1 },
   neutral: {},
 };

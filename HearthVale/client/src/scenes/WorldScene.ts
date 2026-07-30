@@ -61,6 +61,7 @@ function createStartingPlayer(): HudPlayerSnapshot {
 export interface WorldSceneData {
   mapId: string;
   spawn: Vec2;
+  playerState?: HudPlayerSnapshot;
 }
 
 const PLAYER_COLLISION_SAMPLES: Vec2[] = [
@@ -158,6 +159,8 @@ export class WorldScene extends Phaser.Scene {
   private nearestNpc: NpcInstance | null = null;
   private interactPrompt: Phaser.GameObjects.Text | null = null;
   private dialogueBubble: Phaser.GameObjects.Container | null = null;
+  private isDialogueOpen = false;
+  private portalBlockHint = '';
   private dialogueTimer = 0;
   private monsterCatalog: Map<string, MonsterCatalogEntry> = new Map();
   private combat!: CombatController;
@@ -165,6 +168,7 @@ export class WorldScene extends Phaser.Scene {
   private skillKeys: Phaser.Input.Keyboard.Key[] = [];
   private skillLoadout: string[] = [];
   private playerBuffs: PlayerBuff[] = [];
+  private targetKey!: Phaser.Input.Keyboard.Key;
   private inCombat = false;
   private playerInvuln = 0;
   private liveCombatTarget: CombatTargetInfo | null = null;
@@ -182,6 +186,7 @@ export class WorldScene extends Phaser.Scene {
     // fresh map starts with clean NPC/interaction state.
     this.npcs = [];
     this.nearestNpc = null;
+    this.playerState = this.hydratePlayerState(data.playerState);
     this.interactPrompt = null;
     this.dialogueBubble = null;
     this.dialogueTimer = 0;
@@ -189,6 +194,7 @@ export class WorldScene extends Phaser.Scene {
     this.inCombat = false;
     this.playerInvuln = 0;
     this.playerBuffs = [];
+    this.portalBlockHint = '';
   }
 
   async create(data: WorldSceneData): Promise<void> {
@@ -249,6 +255,7 @@ export class WorldScene extends Phaser.Scene {
         Phaser.Input.Keyboard.KeyCodes.THREE,
         Phaser.Input.Keyboard.KeyCodes.FOUR,
       ].map((code) => this.input.keyboard!.addKey(code));
+      this.targetKey = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.TAB, true);
       this.input.on('pointerdown', this.handlePointerAttack, this);
       this.events.once(Phaser.Scenes.Events.SHUTDOWN, this.onShutdown, this);
 
@@ -259,9 +266,9 @@ export class WorldScene extends Phaser.Scene {
       this.devOverlay.mount(mapDef);
       audioService.playMapMusic(mapDef.musicKey);
       this.inSafeZone = this.isInSafeZone({ x: this.player.x, y: this.player.y });
-      this.updatePlayerVitals(0, false);
-      this.syncHud({ x: this.player.x, y: this.player.y });
-      this.ready = true;
+    this.updatePlayerVitals(0, false);
+    this.syncHud({ x: this.player.x, y: this.player.y });
+    this.ready = true;
     } catch (error) {
       console.error('Failed to load map art', error);
       this.showFatalError(`Failed to load map art for ${this.mapId}`);
@@ -288,13 +295,16 @@ export class WorldScene extends Phaser.Scene {
     this.updatePlayerVitals(delta, actuallyMoved);
     this.updatePlayerBuffs(delta);
     this.combat.update(delta);
-    if (Phaser.Input.Keyboard.JustDown(this.attackKey)) {
+    if (Phaser.Input.Keyboard.JustDown(this.attackKey) && !this.isDialogueOpen) {
       this.combat.playerAttack();
     }
     for (let i = 0; i < this.skillKeys.length; i += 1) {
       if (Phaser.Input.Keyboard.JustDown(this.skillKeys[i])) {
         this.tryUseSkill(i);
       }
+    }
+    if (Phaser.Input.Keyboard.JustDown(this.targetKey) && !this.isDialogueOpen) {
+      this.combat.cycleTarget({ x: this.player.x, y: this.player.y });
     }
     if (this.playerInvuln > 0) {
       this.playerState.stance = 'Recovering';
@@ -307,6 +317,12 @@ export class WorldScene extends Phaser.Scene {
   }
 
   private handleMovement(delta: number): boolean {
+    if (this.isDialogueOpen) {
+      this.autoPath = [];
+      this.hideAutoPathMarker();
+      return false;
+    }
+
     const intent = this.getMovementIntent();
     if (intent.vx === 0 && intent.vy === 0) {
       return false;
@@ -335,7 +351,7 @@ export class WorldScene extends Phaser.Scene {
   }
 
   private handlePointerDown(pointer: Phaser.Input.Pointer): void {
-    if (!this.ready || !this.player) return;
+    if (!this.ready || !this.player || this.isDialogueOpen) return;
     if (!(pointer.leftButtonDown() || pointer.rightButtonDown())) return;
 
     const target = this.cameras.main.getWorldPoint(pointer.x, pointer.y);
@@ -645,9 +661,23 @@ export class WorldScene extends Phaser.Scene {
       }
     }
 
-    if (this.nearestPortal && this.portalCooldown <= 0) {
-      this.transitionToPortal(this.nearestPortal);
+    if (!this.nearestPortal || this.portalCooldown > 0) {
+      this.portalBlockHint = '';
+      return;
     }
+
+    const blockedReason = this.portalBlockReason(this.nearestPortal);
+    if (blockedReason) {
+      const hint = `${this.nearestPortal.id}|${this.nearestPortal.label}: ${blockedReason}`;
+      if (hint !== this.portalBlockHint) {
+        hudOverlay.logNpcLine('Portal', `${this.nearestPortal.label}: ${blockedReason}`);
+        this.portalBlockHint = hint;
+      }
+      return;
+    }
+
+    this.portalBlockHint = '';
+    this.transitionToPortal(this.nearestPortal);
   }
 
   private transitionToPortal(portal: MapPortal): void {
@@ -657,13 +687,68 @@ export class WorldScene extends Phaser.Scene {
       return;
     }
 
+    const blockedReason = this.portalBlockReason(portal);
+    if (blockedReason) {
+      const hint = `${portal.id}|${portal.label}: ${blockedReason}`;
+      if (hint !== this.portalBlockHint) {
+        hudOverlay.logNpcLine('Portal', `${portal.label}: ${blockedReason}`);
+        this.portalBlockHint = hint;
+      }
+      return;
+    }
+
     this.portalCooldown = 800;
     this.ready = false;
     audioService.playSfx('sfx_portal');
     this.scene.restart({
       mapId: portal.targetMapId,
       spawn: { ...portal.targetSpawn },
+      playerState: { ...this.playerState },
     });
+  }
+
+  private portalBlockReason(portal: MapPortal): string | null {
+    if (portal.requiredLevel && this.playerState.level < portal.requiredLevel) {
+      return `Requires Lv ${portal.requiredLevel}`;
+    }
+    if (portal.requiredQuestId) {
+      return `Requires quest ${portal.requiredQuestId}`;
+    }
+    return null;
+  }
+
+  private hydratePlayerState(snapshot: HudPlayerSnapshot | undefined): HudPlayerSnapshot {
+    if (!snapshot) {
+      return createStartingPlayer();
+    }
+
+    const level = Number.isFinite(snapshot.level) && snapshot.level >= 1 ? Math.floor(snapshot.level) : 1;
+    const safeLevel = Math.min(Math.max(1, level), STARTER_REGION_LEVEL_CAP);
+    const { hpMax, mpMax } = playerVitals(safeLevel);
+    const spMax = Number.isFinite(snapshot.spMax) && snapshot.spMax > 0 ? snapshot.spMax : 100;
+
+    return {
+      name: snapshot.name || 'Hero',
+      level: safeLevel,
+      hpCur: this.clampStat(snapshot.hpCur, hpMax),
+      hpMax,
+      mpCur: this.clampStat(snapshot.mpCur, mpMax),
+      mpMax,
+      spCur: this.clampStat(snapshot.spCur, spMax),
+      spMax,
+      xpCur: Number.isFinite(snapshot.xpCur) ? Math.max(0, Math.floor(snapshot.xpCur)) : 0,
+      xpNext: Number.isFinite(snapshot.xpNext) && snapshot.xpNext > 0
+        ? Math.max(1, Math.floor(snapshot.xpNext))
+        : xpToNextLevel(safeLevel),
+      stance: snapshot.stance || 'Ready',
+    };
+  }
+
+  private clampStat(current: number, max: number): number {
+    if (!Number.isFinite(current) || !Number.isFinite(max) || max <= 0) {
+      return 0;
+    }
+    return Math.max(0, Math.min(max, Math.floor(current)));
   }
 
   private drawMapBackground(map: MapDefinition): void {
@@ -1082,12 +1167,13 @@ export class WorldScene extends Phaser.Scene {
   }
 
   private handlePointerAttack(pointer: Phaser.Input.Pointer): void {
-    if (!this.ready || !this.combat) return;
+    if (!this.ready || !this.combat || this.isDialogueOpen) return;
     const world = this.cameras.main.getWorldPoint(pointer.x, pointer.y);
     this.combat.attackAtPoint(world.x, world.y);
   }
 
   private onShutdown(): void {
+    this.closeDialogueBubble();
     this.input.off('pointerdown', this.handlePointerAttack, this);
     this.combat?.destroy();
     this.inCombat = false;
@@ -1413,8 +1499,7 @@ export class WorldScene extends Phaser.Scene {
     if (this.dialogueBubble) {
       this.dialogueTimer -= delta;
       if (this.dialogueTimer <= 0) {
-        this.dialogueBubble.destroy();
-        this.dialogueBubble = null;
+        this.closeDialogueBubble();
       }
     }
   }
@@ -1467,6 +1552,11 @@ export class WorldScene extends Phaser.Scene {
   }
 
   private talkToNpc(npc: NpcInstance): void {
+    if (this.isDialogueOpen) {
+      this.closeDialogueBubble();
+      return;
+    }
+
     const line = npc.dialogue.length
       ? npc.dialogue[npc.dialogueIndex % npc.dialogue.length]
       : '…';
@@ -1476,6 +1566,9 @@ export class WorldScene extends Phaser.Scene {
   }
 
   private showDialogueBubble(npc: NpcInstance, line: string): void {
+    this.closeDialogueBubble();
+    this.autoPath = [];
+    this.hideAutoPathMarker();
     this.dialogueBubble?.destroy();
 
     const padX = 10;
@@ -1522,6 +1615,18 @@ export class WorldScene extends Phaser.Scene {
 
     this.dialogueBubble = container;
     this.dialogueTimer = NPC_DIALOGUE_MS;
+    this.isDialogueOpen = true;
+    this.interactPrompt?.setVisible(false);
+  }
+
+  private closeDialogueBubble(): void {
+    if (!this.dialogueBubble) {
+      this.isDialogueOpen = false;
+      return;
+    }
+    this.dialogueBubble.destroy();
+    this.dialogueBubble = null;
+    this.isDialogueOpen = false;
   }
 
   private showFatalError(message: string): void {

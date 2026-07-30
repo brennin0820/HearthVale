@@ -52,6 +52,21 @@ export interface MapPortal {
   targetSpawn: Vec2;
   requiredLevel?: number;
   requiredQuestId?: string;
+  requiredQuestStartedId?: string;
+}
+
+export type ResourceNodeKind = 'herb' | 'ore' | 'fiber' | 'relic';
+
+export interface ResourceNodeDefinition {
+  id: string;
+  displayName: string;
+  kind: ResourceNodeKind;
+  position: Vec2;
+  itemId: string;
+  minCount: number;
+  maxCount: number;
+  respawnSeconds: number;
+  requiredLevel?: number;
 }
 
 export interface MapDefinition {
@@ -66,6 +81,7 @@ export interface MapDefinition {
   musicKey: string;
   gridSize: GridSize;
   spawnTables: SpawnTable[];
+  resourceNodes?: ResourceNodeDefinition[];
   npcs: MapNpcPlacement[];
   portals: MapPortal[];
   playerSpawn: Vec2;

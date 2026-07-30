@@ -2,7 +2,7 @@
   {
     "id": "hearthlight_vale",
     "displayName": "Hearthlight Vale",
-    "capitalMapId": "hearthvale_town",
+    "capitalMapId": "hearthvale_town_ro",
     "levelRange": {
       "min": 1,
       "max": 14
@@ -17,10 +17,10 @@
       {
         "id": "warp_cloverfield",
         "label": "Cloverfield Plains",
-        "targetMapId": "cloverfield_plains",
+        "targetMapId": "cloverfield_plains_ro",
         "targetSpawn": {
-          "x": -610,
-          "y": 170
+          "x": -1136,
+          "y": -224
         },
         "cost": 0
       },
@@ -70,6 +70,18 @@
         "requiredLevel": 6
       },
       {
+        "id": "warp_emberglass",
+        "label": "Emberglass Shelf",
+        "targetMapId": "emberglass_shelf",
+        "targetSpawn": {
+          "x": -976,
+          "y": 16
+        },
+        "cost": 300,
+        "requiredLevel": 11,
+        "unlockQuestId": "quest_emberglass_survey"
+      },
+      {
         "id": "warp_moonwell",
         "label": "Moonwell Entrance",
         "targetMapId": "moonwell_entrance",
@@ -80,6 +92,190 @@
         "cost": 320,
         "requiredLevel": 10,
         "unlockQuestId": "quest_moonwell_sigil"
+      },
+      {
+        "id": "warp_afterlight",
+        "label": "Afterlight Expanse",
+        "targetMapId": "afterlight_expanse",
+        "targetSpawn": {
+          "x": -1024,
+          "y": 32
+        },
+        "cost": 420,
+        "requiredLevel": 14,
+        "unlockQuestId": "quest_lanternspire_accord"
+      }
+    ]
+  },
+  {
+    "id": "dawnshore_reach",
+    "displayName": "Dawnshore Reach",
+    "capitalMapId": "dawnshore_camp",
+    "levelRange": {
+      "min": 15,
+      "max": 28
+    },
+    "worldMapBounds": {
+      "x": 40,
+      "y": 20,
+      "width": 1740,
+      "height": 800
+    },
+    "warpTable": [
+      {
+        "id": "warp_dawnshore_camp",
+        "label": "Dawnshore Camp",
+        "targetMapId": "dawnshore_camp",
+        "targetSpawn": {
+          "x": -736,
+          "y": -32
+        },
+        "cost": 0,
+        "requiredLevel": 15
+      },
+      {
+        "id": "warp_glasswind",
+        "label": "Glasswind Coast",
+        "targetMapId": "glasswind_coast",
+        "targetSpawn": {
+          "x": -1024,
+          "y": 32
+        },
+        "cost": 240,
+        "requiredLevel": 15,
+        "unlockQuestId": "quest_glasswind_beacon"
+      },
+      {
+        "id": "warp_tidebreak",
+        "label": "Tidebreak Causeway",
+        "targetMapId": "tidebreak_causeway",
+        "targetSpawn": {
+          "x": -1072,
+          "y": 16
+        },
+        "cost": 320,
+        "requiredLevel": 16,
+        "unlockQuestId": "quest_tidebreak_road"
+      },
+      {
+        "id": "warp_stormglass",
+        "label": "Stormglass Reliquary",
+        "targetMapId": "stormglass_reliquary",
+        "targetSpawn": {
+          "x": -880,
+          "y": 32
+        },
+        "cost": 440,
+        "requiredLevel": 17,
+        "unlockQuestId": "quest_stormglass_reliquary"
+      },
+      {
+        "id": "warp_beaconfall",
+        "label": "Beaconfall Cliffs",
+        "targetMapId": "beaconfall_cliffs",
+        "targetSpawn": {
+          "x": -1072,
+          "y": 32
+        },
+        "cost": 560,
+        "requiredLevel": 18,
+        "unlockQuestId": "quest_beaconfall_ascent"
+      },
+      {
+        "id": "warp_sunspire",
+        "label": "Sunspire Observatory",
+        "targetMapId": "sunspire_observatory",
+        "targetSpawn": {
+          "x": -928,
+          "y": 16
+        },
+        "cost": 680,
+        "requiredLevel": 19,
+        "unlockQuestId": "quest_sunspire_lens"
+      },
+      {
+        "id": "warp_zenith",
+        "label": "Zenith Archive",
+        "targetMapId": "zenith_archive",
+        "targetSpawn": {
+          "x": -928,
+          "y": 32
+        },
+        "cost": 840,
+        "requiredLevel": 21,
+        "unlockQuestId": "quest_zenith_archive"
+      },
+      {
+        "id": "warp_choirwood",
+        "label": "Choirwood Canopy",
+        "targetMapId": "choirwood_canopy",
+        "targetSpawn": {
+          "x": -1072,
+          "y": 16
+        },
+        "cost": 960,
+        "requiredLevel": 22,
+        "unlockQuestId": "quest_choirwood_resonance"
+      },
+      {
+        "id": "warp_crownroot",
+        "label": "Crownroot Sanctum",
+        "targetMapId": "crownroot_sanctum",
+        "targetSpawn": {
+          "x": -928,
+          "y": 32
+        },
+        "cost": 1120,
+        "requiredLevel": 23,
+        "unlockQuestId": "quest_crownroot_concordance"
+      },
+      {
+        "id": "warp_runeveil",
+        "label": "Runeveil Gardens",
+        "targetMapId": "runeveil_gardens",
+        "targetSpawn": {
+          "x": -720,
+          "y": 16
+        },
+        "cost": 1280,
+        "requiredLevel": 24,
+        "unlockQuestId": "quest_runeveil_marks"
+      },
+      {
+        "id": "warp_namesong",
+        "label": "Namesong Vault",
+        "targetMapId": "namesong_vault",
+        "targetSpawn": {
+          "x": -624,
+          "y": 16
+        },
+        "cost": 1480,
+        "requiredLevel": 25,
+        "unlockQuestId": "quest_namesong_vault"
+      },
+      {
+        "id": "warp_waystar",
+        "label": "Waystar Moor",
+        "targetMapId": "waystar_moor",
+        "targetSpawn": {
+          "x": -1072,
+          "y": 16
+        },
+        "cost": 1680,
+        "requiredLevel": 26,
+        "unlockQuestId": "quest_waystar_crossing"
+      },
+      {
+        "id": "warp_convergence",
+        "label": "Convergence Spire",
+        "targetMapId": "convergence_spire",
+        "targetSpawn": {
+          "x": -928,
+          "y": 32
+        },
+        "cost": 1880,
+        "requiredLevel": 27,
+        "unlockQuestId": "quest_convergence_rite"
       }
     ]
   }

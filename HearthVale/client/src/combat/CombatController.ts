@@ -146,7 +146,7 @@ export class CombatController {
     }
     if (!victim) return;
 
-    this.target = victim;
+    this.setTarget(victim);
     this.playerAttackCooldown = PLAYER_ATTACK_COOLDOWN;
 
     const stats = this.bridge.getPlayerStats();
@@ -167,7 +167,7 @@ export class CombatController {
       this.floatingText(victim.x, victim.y - 8, `${def.displayName} defeated`, '#9fe0a0');
       this.bridge.onMonsterDefeated(def);
       if (this.target === victim) {
-        this.target = null;
+        this.setTarget(null);
       }
     }
   }
@@ -176,7 +176,7 @@ export class CombatController {
   attackAtPoint(worldX: number, worldY: number): void {
     const picked = this.nearestAlive({ x: worldX, y: worldY }, 28);
     if (picked) {
-      this.target = picked;
+      this.setTarget(picked);
       const playerPos = this.bridge.getPlayerPosition();
       if (this.distanceTo(picked, playerPos) > PLAYER_MELEE_RANGE) {
         // Selected but out of melee range — don't let playerAttack's fallback
@@ -279,13 +279,37 @@ export class CombatController {
     return this.nearestAlive(playerPos, TARGET_RADIUS);
   }
 
+  /** Tab-targeting for deterministic target cycling while in combat range. */
+  cycleTarget(playerPos: Vec2): void {
+    const candidates = this.monsters
+      .filter((monster) => monster.isAlive && this.distanceTo(monster, playerPos) <= TARGET_RADIUS)
+      .sort((a, b) => this.distanceTo(a, playerPos) - this.distanceTo(b, playerPos));
+
+    if (!candidates.length) {
+      this.setTarget(null);
+      return;
+    }
+
+    if (!this.target || !this.target.isAlive || this.distanceTo(this.target, playerPos) > TARGET_RADIUS) {
+      this.setTarget(candidates[0]);
+      return;
+    }
+
+    const index = candidates.indexOf(this.target);
+    if (index < 0) {
+      this.setTarget(candidates[0]);
+      return;
+    }
+
+    this.setTarget(candidates[(index + 1) % candidates.length]);
+  }
+
   destroy(): void {
     for (const monster of this.monsters) {
       monster.destroy();
     }
     this.monsters.length = 0;
-    this.target = null;
-    this.bridge.onTargetChanged(null);
+    this.setTarget(null);
   }
 
   private monsterAttack(monster: Monster): void {
@@ -306,9 +330,21 @@ export class CombatController {
 
   private refreshTarget(playerPos: Vec2): void {
     if (!this.target || !this.target.isAlive || this.distanceTo(this.target, playerPos) > TARGET_RADIUS) {
-      this.target = this.nearestAlive(playerPos, TARGET_RADIUS);
+      this.setTarget(this.nearestAlive(playerPos, TARGET_RADIUS));
+      return;
     }
+    this.publishTarget();
+  }
 
+  private setTarget(target: Monster | null): void {
+    if (this.target === target) {
+      return;
+    }
+    this.target = target;
+    this.publishTarget();
+  }
+
+  private publishTarget(): void {
     const key = this.target
       ? `${this.target.def.id}:${Math.round(this.target.x)}:${Math.round(this.target.y)}:${this.target.hpCur}`
       : '';

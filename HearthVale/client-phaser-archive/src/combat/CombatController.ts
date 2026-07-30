@@ -1,0 +1,296 @@
+import Phaser from 'phaser';
+import { audioService } from '../services/AudioService.js';
+import type { MonsterCatalogEntry } from '../services/worldData.js';
+import type { SpawnTable, Vec2 } from '../types/world.js';
+import { calcPhysicalDamage, rollHit, type CombatStats } from './formulas.js';
+import { Monster } from './Monster.js';
+
+export interface CombatTargetInfo {
+  name: string;
+  level: number;
+  hpCur: number;
+  hpMax: number;
+  element: string;
+}
+
+/** Bridge back to WorldScene — the controller stays ignorant of HUD/vitals. */
+export interface CombatBridge {
+  getPlayerPosition(): Vec2;
+  getPlayerStats(): CombatStats;
+  isPlayerAlive(): boolean;
+  clampToBounds(x: number, y: number): Vec2;
+  /** A monster landed a hit for `amount` damage. */
+  onPlayerDamaged(amount: number, attackerName: string): void;
+  /** A monster was defeated — award XP / loot upstream. */
+  onMonsterDefeated(monster: MonsterCatalogEntry): void;
+  /** Current combat target changed (identity or HP) — refresh the HUD frame. */
+  onTargetChanged(target: CombatTargetInfo | null): void;
+}
+
+export interface CombatDepths {
+  monster: number;
+  label: number;
+  floatingText: number;
+}
+
+const PLAYER_MELEE_RANGE = 40;
+const MONSTER_MELEE_RANGE = 30;
+const AGGRO_RADIUS = 160;
+const LEASH_RADIUS = 340;
+const TARGET_RADIUS = 220;
+const PLAYER_ATTACK_COOLDOWN = 550;
+const MONSTER_ATTACK_COOLDOWN = 1200;
+const MONSTER_SPEED = 72;
+
+export class CombatController {
+  private readonly monsters: Monster[] = [];
+  private playerAttackCooldown = 0;
+  private target: Monster | null = null;
+  private lastTargetKey = '';
+
+  constructor(
+    private readonly scene: Phaser.Scene,
+    private readonly layer: Phaser.GameObjects.Container,
+    private readonly bridge: CombatBridge,
+    private readonly depths: CombatDepths,
+  ) {}
+
+  /** Instantiate live monsters from a map's spawn tables. */
+  spawnFromTables(spawnTables: SpawnTable[], monsterCatalog: Map<string, MonsterCatalogEntry>): void {
+    let index = 0;
+    for (const table of spawnTables) {
+      const bounds = table.bounds;
+      const centerX = bounds.x + bounds.width / 2;
+      const centerY = bounds.y + bounds.height / 2;
+      for (const entry of table.entries) {
+        const def = monsterCatalog.get(entry.monsterId);
+        if (!def) continue;
+        const count = Math.min(table.maxConcurrent || 3, Math.max(1, Math.ceil(entry.weight / 25)));
+        for (let i = 0; i < count; i += 1) {
+          const offsetX = ((index * 47) % bounds.width) - bounds.width / 2;
+          const offsetY = ((index * 31) % bounds.height) - bounds.height / 2;
+          const home = this.bridge.clampToBounds(centerX + offsetX * 0.6, centerY + offsetY * 0.6);
+          this.monsters.push(
+            new Monster(this.scene, this.layer, def, home, table.respawnSeconds, this.depths),
+          );
+          index += 1;
+        }
+      }
+    }
+  }
+
+  get hasMonsters(): boolean {
+    return this.monsters.length > 0;
+  }
+
+  update(delta: number): void {
+    if (this.playerAttackCooldown > 0) {
+      this.playerAttackCooldown = Math.max(0, this.playerAttackCooldown - delta);
+    }
+
+    const playerPos = this.bridge.getPlayerPosition();
+    const playerAlive = this.bridge.isPlayerAlive();
+    const step = (MONSTER_SPEED * delta) / 1000;
+
+    for (const monster of this.monsters) {
+      if (monster.tickRespawn(delta)) continue;
+      if (!monster.isAlive) continue;
+
+      if (monster.attackCooldown > 0) {
+        monster.attackCooldown = Math.max(0, monster.attackCooldown - delta);
+      }
+
+      const distToPlayer = Phaser.Math.Distance.Between(monster.x, monster.y, playerPos.x, playerPos.y);
+      const distToHome = Phaser.Math.Distance.Between(monster.x, monster.y, monster.home.x, monster.home.y);
+
+      if (playerAlive && distToPlayer <= AGGRO_RADIUS && distToHome <= LEASH_RADIUS) {
+        if (distToPlayer > MONSTER_MELEE_RANGE) {
+          monster.moveToward(playerPos.x, playerPos.y, step, (x, y) => this.bridge.clampToBounds(x, y));
+        } else if (monster.attackCooldown <= 0) {
+          this.monsterAttack(monster);
+        }
+      } else if (distToHome > MONSTER_MELEE_RANGE) {
+        monster.moveToward(monster.home.x, monster.home.y, step, (x, y) => this.bridge.clampToBounds(x, y));
+      }
+    }
+
+    this.refreshTarget(playerPos);
+  }
+
+  /** Player initiates a melee attack (Space / click). */
+  playerAttack(): void {
+    if (this.playerAttackCooldown > 0 || !this.bridge.isPlayerAlive()) return;
+
+    const playerPos = this.bridge.getPlayerPosition();
+    let victim = this.target;
+    if (!victim || !victim.isAlive || this.distanceTo(victim, playerPos) > PLAYER_MELEE_RANGE) {
+      victim = this.nearestAlive(playerPos, PLAYER_MELEE_RANGE);
+    }
+    if (!victim) return;
+
+    this.setTarget(victim);
+    this.playerAttackCooldown = PLAYER_ATTACK_COOLDOWN;
+
+    const stats = this.bridge.getPlayerStats();
+    const defenderStats = victim.combatStats();
+    if (!rollHit(stats, defenderStats)) {
+      this.floatingText(victim.x, victim.y, 'miss', '#cfd0d8');
+      return;
+    }
+
+    const damage = calcPhysicalDamage(stats, defenderStats);
+    const fatal = victim.takeDamage(damage);
+    audioService.playSfx('sfx_combat_hit');
+    this.floatingText(victim.x, victim.y, String(damage), '#ffe08a');
+
+    if (fatal) {
+      const def = victim.def;
+      victim.die();
+      this.floatingText(victim.x, victim.y - 8, `${def.displayName} defeated`, '#9fe0a0');
+      this.bridge.onMonsterDefeated(def);
+      if (this.target === victim) {
+        this.setTarget(null);
+      }
+    }
+  }
+
+  /** Click-to-target: select and attack the monster nearest a world point. */
+  attackAtPoint(worldX: number, worldY: number): void {
+    const picked = this.nearestAlive({ x: worldX, y: worldY }, 28);
+    if (picked) {
+      this.setTarget(picked);
+      const playerPos = this.bridge.getPlayerPosition();
+      if (this.distanceTo(picked, playerPos) > PLAYER_MELEE_RANGE) {
+        // Selected but out of melee range — don't let playerAttack's fallback
+        // silently substitute a different, unrelated nearby victim.
+        return;
+      }
+    }
+    this.playerAttack();
+  }
+
+  /** Tab-targeting for deterministic target cycling while in combat range. */
+  cycleTarget(playerPos: Vec2): void {
+    const candidates = this.monsters
+      .filter((monster) => monster.isAlive && this.distanceTo(monster, playerPos) <= TARGET_RADIUS)
+      .sort((a, b) => this.distanceTo(a, playerPos) - this.distanceTo(b, playerPos));
+
+    if (!candidates.length) {
+      this.setTarget(null);
+      return;
+    }
+
+    if (!this.target || !this.target.isAlive || this.distanceTo(this.target, playerPos) > TARGET_RADIUS) {
+      this.setTarget(candidates[0]);
+      return;
+    }
+
+    const index = candidates.indexOf(this.target);
+    if (index < 0) {
+      this.setTarget(candidates[0]);
+      return;
+    }
+
+    this.setTarget(candidates[(index + 1) % candidates.length]);
+  }
+
+  destroy(): void {
+    for (const monster of this.monsters) {
+      monster.destroy();
+    }
+    this.monsters.length = 0;
+    this.setTarget(null);
+  }
+
+  private monsterAttack(monster: Monster): void {
+    monster.attackCooldown = MONSTER_ATTACK_COOLDOWN;
+    const attackerStats = monster.combatStats();
+    const playerStats = this.bridge.getPlayerStats();
+    if (!rollHit(attackerStats, playerStats)) {
+      const pos = this.bridge.getPlayerPosition();
+      this.floatingText(pos.x, pos.y - 20, 'miss', '#cfd0d8');
+      return;
+    }
+    const damage = calcPhysicalDamage(attackerStats, playerStats);
+    this.bridge.onPlayerDamaged(damage, monster.def.displayName);
+    audioService.playSfx('sfx_combat_hit');
+    const pos = this.bridge.getPlayerPosition();
+    this.floatingText(pos.x, pos.y - 20, String(damage), '#ff7a6a');
+  }
+
+  private refreshTarget(playerPos: Vec2): void {
+    if (!this.target || !this.target.isAlive || this.distanceTo(this.target, playerPos) > TARGET_RADIUS) {
+      this.setTarget(this.nearestAlive(playerPos, TARGET_RADIUS));
+      return;
+    }
+    this.publishTarget();
+  }
+
+  private setTarget(target: Monster | null): void {
+    if (this.target === target) {
+      return;
+    }
+    this.target = target;
+    this.publishTarget();
+  }
+
+  private publishTarget(): void {
+    const key = this.target
+      ? `${this.target.def.id}:${Math.round(this.target.x)}:${Math.round(this.target.y)}:${this.target.hpCur}`
+      : '';
+    if (key === this.lastTargetKey) return;
+    this.lastTargetKey = key;
+
+    if (!this.target) {
+      this.bridge.onTargetChanged(null);
+      return;
+    }
+    this.bridge.onTargetChanged({
+      name: this.target.def.displayName,
+      level: this.target.level,
+      hpCur: this.target.hpCur,
+      hpMax: this.target.hpMax,
+      element: this.target.def.element,
+    });
+  }
+
+  private nearestAlive(from: Vec2, maxDist: number): Monster | null {
+    let best: Monster | null = null;
+    let bestDist = maxDist;
+    for (const monster of this.monsters) {
+      if (!monster.isAlive) continue;
+      const dist = this.distanceTo(monster, from);
+      if (dist <= bestDist) {
+        bestDist = dist;
+        best = monster;
+      }
+    }
+    return best;
+  }
+
+  private distanceTo(monster: Monster, point: Vec2): number {
+    return Phaser.Math.Distance.Between(monster.x, monster.y, point.x, point.y);
+  }
+
+  private floatingText(x: number, y: number, text: string, color: string): void {
+    const label = this.scene.add
+      .text(x, y - 14, text, {
+        fontFamily: 'sans-serif',
+        fontSize: '13px',
+        color,
+        stroke: '#1a1520',
+        strokeThickness: 3,
+      })
+      .setOrigin(0.5, 1);
+    label.setDepth(this.depths.floatingText);
+    this.layer.add(label);
+    this.scene.tweens.add({
+      targets: label,
+      y: y - 40,
+      alpha: 0,
+      duration: 720,
+      ease: 'Cubic.easeOut',
+      onComplete: () => label.destroy(),
+    });
+  }
+}

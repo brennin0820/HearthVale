@@ -10,6 +10,7 @@ function inGrid(map: MapDefinition, pos: Vec2): boolean {
 }
 
 const maps = await loadMapsJson();
+const mapsById = new Map(maps.map((map) => [map.id, map]));
 const errors: string[] = [];
 const warnings: string[] = [];
 
@@ -22,14 +23,21 @@ for (const map of maps) {
     if (!inGrid(map, portal.position)) {
       warnings.push(`[bounds] ${map.id} portal "${portal.id}" position outside grid (may be intentional)`);
     }
-    if (!inGrid(map, portal.targetSpawn)) {
-      warnings.push(`[bounds] ${map.id} portal "${portal.id}" targetSpawn outside grid on source map coords`);
+    const targetMap = mapsById.get(portal.targetMapId);
+    if (targetMap && !inGrid(targetMap, portal.targetSpawn)) {
+      errors.push(`[bounds] ${map.id} portal "${portal.id}" targetSpawn outside ${targetMap.id}`);
     }
   }
 
   for (const npc of map.npcs) {
     if (!inGrid(map, npc.position)) {
       errors.push(`[bounds] ${map.id} npc "${npc.npcId}" outside grid`);
+    }
+  }
+
+  for (const node of map.resourceNodes ?? []) {
+    if (!inGrid(map, node.position)) {
+      errors.push(`[bounds] ${map.id} resource "${node.id}" outside grid`);
     }
   }
 

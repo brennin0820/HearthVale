@@ -1,8 +1,15 @@
-import { JOB_CLASSES, JOB_CLASS_BY_ID } from '../src/data/catalog/index.js';
-import { STARTER_REGION_LEVEL_CAP } from '../src/data/progression/xpCurve.js';
+import { JOB_CLASSES, JOB_CLASS_BY_ID, QUESTS, SKILL_BY_ID } from '../src/data/catalog/index.js';
+import { CURRENT_CAMPAIGN_LEVEL_CAP, STARTER_REGION_LEVEL_CAP } from '../src/data/progression/xpCurve.js';
 
 const errors: string[] = [];
 const seen = new Set<string>();
+const masteryIds = new Set<string>();
+const evolutionIds = new Set<string>();
+const knownQuests = new Set(QUESTS.map((quest) => quest.id));
+const masteryBonusKeys = new Set([
+  'hp', 'mp', 'atk', 'def', 'spd', 'crit', 'powerPercent', 'healingPercent',
+  'evasion', 'buyPrice', 'dropRate', 'stackMax',
+]);
 
 const baseClasses = JOB_CLASSES.filter((job) => job.tier === 0);
 if (baseClasses.length !== 1) {
@@ -47,6 +54,58 @@ for (const job of JOB_CLASSES) {
   if (new Set(job.startingSkills).size !== job.startingSkills.length) {
     errors.push(`[jobs] ${job.id}: duplicate startingSkills`);
   }
+
+  const masteries = job.masteries ?? [];
+  if (job.tier === 0 && masteries.length > 0) {
+    errors.push(`[jobs] ${job.id}: tier-0 base class must not define masteries`);
+  }
+  if (job.tier > 0 && masteries.length !== 2) {
+    errors.push(`[jobs] ${job.id}: expected exactly two masteries, found ${masteries.length}`);
+  }
+  for (const mastery of masteries) {
+    if (masteryIds.has(mastery.id)) errors.push(`[jobs] duplicate mastery id "${mastery.id}"`);
+    masteryIds.add(mastery.id);
+    if (mastery.requiredLevel < job.requiredLevel || mastery.requiredLevel > CURRENT_CAMPAIGN_LEVEL_CAP) {
+      errors.push(`[jobs] ${job.id}/${mastery.id}: requiredLevel ${mastery.requiredLevel} outside ${job.requiredLevel}..${CURRENT_CAMPAIGN_LEVEL_CAP}`);
+    }
+    const bonuses = Object.entries(mastery.bonuses);
+    if (bonuses.length === 0) errors.push(`[jobs] ${job.id}/${mastery.id}: no bonuses`);
+    for (const [key, value] of bonuses) {
+      if (!masteryBonusKeys.has(key)) errors.push(`[jobs] ${job.id}/${mastery.id}: unsupported bonus "${key}"`);
+      if (!Number.isFinite(value) || value === 0 || value < (key === 'buyPrice' ? -25 : 0) || value > 100) {
+        errors.push(`[jobs] ${job.id}/${mastery.id}: invalid ${key} bonus ${value}`);
+      }
+    }
+  }
+
+  const evolutions = job.evolutions ?? [];
+  if (job.tier === 0 && evolutions.length > 0) {
+    errors.push(`[jobs] ${job.id}: tier-0 base class must not define evolutions`);
+  }
+  if (job.tier > 0 && evolutions.length !== 2) {
+    errors.push(`[jobs] ${job.id}: expected exactly two evolutions, found ${evolutions.length}`);
+  }
+  for (const evolution of evolutions) {
+    if (evolutionIds.has(evolution.id)) errors.push(`[jobs] duplicate evolution id "${evolution.id}"`);
+    evolutionIds.add(evolution.id);
+    if (evolution.requiredLevel < job.requiredLevel || evolution.requiredLevel > CURRENT_CAMPAIGN_LEVEL_CAP) {
+      errors.push(`[jobs] ${job.id}/${evolution.id}: requiredLevel ${evolution.requiredLevel} outside ${job.requiredLevel}..${CURRENT_CAMPAIGN_LEVEL_CAP}`);
+    }
+    if (!knownQuests.has(evolution.unlockQuestId)) {
+      errors.push(`[jobs] ${job.id}/${evolution.id}: unknown unlock quest "${evolution.unlockQuestId}"`);
+    }
+    if (!SKILL_BY_ID.has(evolution.skillId)) {
+      errors.push(`[jobs] ${job.id}/${evolution.id}: unknown evolution skill "${evolution.skillId}"`);
+    }
+    const bonuses = Object.entries(evolution.bonuses);
+    if (bonuses.length === 0) errors.push(`[jobs] ${job.id}/${evolution.id}: no bonuses`);
+    for (const [key, value] of bonuses) {
+      if (!masteryBonusKeys.has(key)) errors.push(`[jobs] ${job.id}/${evolution.id}: unsupported bonus "${key}"`);
+      if (!Number.isFinite(value) || value === 0 || value < (key === 'buyPrice' ? -25 : 0) || value > 100) {
+        errors.push(`[jobs] ${job.id}/${evolution.id}: invalid ${key} bonus ${value}`);
+      }
+    }
+  }
 }
 
 if (errors.length > 0) {
@@ -58,5 +117,5 @@ if (errors.length > 0) {
 console.log(
   `Job verification passed (${JOB_CLASSES.length} classes, ${baseClasses.length} base + ${
     JOB_CLASSES.length - baseClasses.length
-  } advanced).`,
+  } advanced, ${masteryIds.size} masteries, ${evolutionIds.size} evolutions).`,
 );

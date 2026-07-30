@@ -61,10 +61,9 @@ export function getAllMaps(): MapDefinition[] {
 
 /** Phase B starter loop — used for HUD hints. */
 export const STARTER_LOOP_MAP_IDS = [
-  'hearthvale_town',
-  'cloverfield_plains',
-  'mushroom_hollow',
-  'old_crystal_mine',
+  'hearthvale_town_ro',
+  'cloverfield_plains_ro',
+  'old_crystal_mine_ro_b1',
 ] as const;
 
 export type StarterLoopMapId = (typeof STARTER_LOOP_MAP_IDS)[number];

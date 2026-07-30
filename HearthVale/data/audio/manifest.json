@@ -64,6 +64,114 @@
       "stub": true,
       "loop": true,
       "volume": 0.4
+    },
+    {
+      "key": "music_emberglass",
+      "stub": true,
+      "loop": true,
+      "volume": 0.4
+    },
+    {
+      "key": "music_hollow_kiln",
+      "stub": true,
+      "loop": true,
+      "volume": 0.42
+    },
+    {
+      "key": "music_lanternspire",
+      "stub": true,
+      "loop": true,
+      "volume": 0.44
+    },
+    {
+      "key": "music_afterlight",
+      "stub": true,
+      "loop": true,
+      "volume": 0.44
+    },
+    {
+      "key": "music_dawnshore_camp",
+      "stub": true,
+      "loop": true,
+      "volume": 0.42
+    },
+    {
+      "key": "music_glasswind_coast",
+      "stub": true,
+      "loop": true,
+      "volume": 0.44
+    },
+    {
+      "key": "music_tidebreak_causeway",
+      "stub": true,
+      "loop": true,
+      "volume": 0.44
+    },
+    {
+      "key": "music_stormglass_reliquary",
+      "stub": true,
+      "loop": true,
+      "volume": 0.46
+    },
+    {
+      "key": "music_beaconfall_cliffs",
+      "stub": true,
+      "loop": true,
+      "volume": 0.44
+    },
+    {
+      "key": "music_sunspire_observatory",
+      "stub": true,
+      "loop": true,
+      "volume": 0.47
+    },
+    {
+      "key": "music_aurora_highlands",
+      "stub": true,
+      "loop": true,
+      "volume": 0.44
+    },
+    {
+      "key": "music_zenith_archive",
+      "stub": true,
+      "loop": true,
+      "volume": 0.47
+    },
+    {
+      "key": "music_choirwood_canopy",
+      "stub": true,
+      "loop": true,
+      "volume": 0.45
+    },
+    {
+      "key": "music_crownroot_sanctum",
+      "stub": true,
+      "loop": true,
+      "volume": 0.48
+    },
+    {
+      "key": "music_runeveil_gardens",
+      "stub": true,
+      "loop": true,
+      "volume": 0.45
+    },
+    {
+      "key": "music_namesong_vault",
+      "stub": true,
+      "loop": true,
+      "volume": 0.49
+    },
+    {
+      "key": "music_waystar_moor",
+      "stub": true,
+      "loop": true,
+      "volume": 0.46
+    },
+    {
+      "key": "music_convergence_spire",
+      "stub": true,
+      "loop": true,
+      "volume": 0.5
     }
   ],
   "sfx": [

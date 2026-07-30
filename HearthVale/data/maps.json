@@ -8,16 +8,16 @@
       "min": 1,
       "max": 99
     },
-    "showOnWorldMap": true,
+    "showOnWorldMap": false,
     "worldMapPosition": {
-      "x": 120,
+      "x": 80,
       "y": 180
     },
     "biome": "temperate_town",
     "musicKey": "music_hearthvale_town",
     "gridSize": {
-      "width": 48,
-      "height": 36
+      "width": 72,
+      "height": 54
     },
     "spawnTables": [],
     "npcs": [
@@ -25,22 +25,22 @@
         "npcId": "elder",
         "position": {
           "x": 16,
-          "y": -48
+          "y": -80
         },
         "facing": "south"
       },
       {
         "npcId": "merchant_silas",
         "position": {
-          "x": 304,
-          "y": -80
+          "x": 464,
+          "y": -112
         },
         "facing": "west"
       },
       {
         "npcId": "hearth_courier",
         "position": {
-          "x": 528,
+          "x": 784,
           "y": 16
         },
         "facing": "west"
@@ -48,56 +48,56 @@
       {
         "npcId": "innkeeper_mara",
         "position": {
-          "x": -368,
-          "y": -144
+          "x": -560,
+          "y": -208
         },
         "facing": "south"
       },
       {
         "npcId": "trainer_bram",
         "position": {
-          "x": 176,
-          "y": 368
+          "x": 272,
+          "y": 560
         },
         "facing": "east"
       },
       {
         "npcId": "guard_captain_dell",
         "position": {
-          "x": 624,
-          "y": 48
+          "x": 944,
+          "y": 80
         },
         "facing": "west"
       },
       {
         "npcId": "baker_odella",
         "position": {
-          "x": -336,
-          "y": -304
+          "x": -496,
+          "y": -464
         },
         "facing": "south"
       },
       {
         "npcId": "bard_finn",
         "position": {
-          "x": -112,
-          "y": -144
+          "x": -176,
+          "y": -208
         },
         "facing": "east"
       },
       {
         "npcId": "child_nettle",
         "position": {
-          "x": 80,
-          "y": 48
+          "x": 112,
+          "y": 80
         },
         "facing": "north"
       },
       {
         "npcId": "priestess_wren",
         "position": {
-          "x": -208,
-          "y": 112
+          "x": -304,
+          "y": 176
         },
         "facing": "south"
       }
@@ -107,25 +107,25 @@
         "id": "east_gate",
         "label": "Cloverfield Plains",
         "position": {
-          "x": 720,
+          "x": 1072,
           "y": 16
         },
         "targetMapId": "cloverfield_plains",
         "targetSpawn": {
-          "x": -610,
-          "y": 170
+          "x": -915,
+          "y": 255
         }
       }
     ],
     "playerSpawn": {
       "x": 16,
-      "y": 112
+      "y": 176
     },
     "safeZone": {
-      "x": -704,
-      "y": -512,
-      "width": 1408,
-      "height": 1024
+      "x": -1056,
+      "y": -768,
+      "width": 2112,
+      "height": 1536
     },
     "assetKey": "map_hearthvale_town"
   },
@@ -138,25 +138,25 @@
       "min": 1,
       "max": 4
     },
-    "showOnWorldMap": true,
+    "showOnWorldMap": false,
     "worldMapPosition": {
-      "x": 280,
+      "x": 300,
       "y": 180
     },
     "biome": "clover_grassland",
     "musicKey": "music_cloverfield",
     "gridSize": {
-      "width": 64,
-      "height": 40
+      "width": 96,
+      "height": 60
     },
     "spawnTables": [
       {
         "id": "cloverfield_main",
         "bounds": {
-          "x": -400,
-          "y": 80,
-          "width": 800,
-          "height": 360
+          "x": -600,
+          "y": 120,
+          "width": 1200,
+          "height": 540
         },
         "maxConcurrent": 12,
         "respawnSeconds": 8,
@@ -180,16 +180,16 @@
       {
         "npcId": "herbalist_lyra",
         "position": {
-          "x": -120,
-          "y": 200
+          "x": -180,
+          "y": 300
         },
         "facing": "south"
       },
       {
         "npcId": "scout_pip",
         "position": {
-          "x": 200,
-          "y": 140
+          "x": 300,
+          "y": 210
         },
         "facing": "west"
       }
@@ -199,71 +199,32 @@
         "id": "west_gate",
         "label": "Hearthvale Town",
         "position": {
-          "x": -680,
-          "y": 150
+          "x": -1020,
+          "y": 225
         },
         "targetMapId": "hearthvale_town",
         "targetSpawn": {
-          "x": 592,
+          "x": 880,
           "y": 16
-        }
-      },
-      {
-        "id": "hollow_trail",
-        "label": "Mushroom Hollow",
-        "position": {
-          "x": 420,
-          "y": 280
-        },
-        "targetMapId": "mushroom_hollow",
-        "targetSpawn": {
-          "x": -500,
-          "y": 180
         }
       },
       {
         "id": "mine_mouth",
         "label": "Old Crystal Mine",
         "position": {
-          "x": 180,
-          "y": 60
+          "x": 270,
+          "y": 90
         },
         "targetMapId": "old_crystal_mine",
         "targetSpawn": {
-          "x": -540,
-          "y": 155
-        }
-      },
-      {
-        "id": "northern_trail",
-        "label": "Crystal Mine Approach",
-        "position": {
-          "x": -40,
-          "y": -20
-        },
-        "targetMapId": "crystal_mine_approach",
-        "targetSpawn": {
-          "x": 520,
-          "y": 280
-        }
-      },
-      {
-        "id": "whisperwood_trail",
-        "label": "Whisperwood Meadows",
-        "position": {
-          "x": 580,
-          "y": 120
-        },
-        "targetMapId": "whisperwood_meadows",
-        "targetSpawn": {
-          "x": -480,
-          "y": 160
+          "x": -810,
+          "y": 233
         }
       }
     ],
     "playerSpawn": {
-      "x": -610,
-      "y": 170
+      "x": -915,
+      "y": 255
     },
     "safeZone": null,
     "assetKey": "map_cloverfield_plains"
@@ -280,22 +241,22 @@
     "showOnWorldMap": true,
     "worldMapPosition": {
       "x": 420,
-      "y": 220
+      "y": 260
     },
     "biome": "fungal_grove",
     "musicKey": "music_mushroom_hollow",
     "gridSize": {
-      "width": 56,
-      "height": 44
+      "width": 84,
+      "height": 66
     },
     "spawnTables": [
       {
         "id": "hollow_spore_beds",
         "bounds": {
-          "x": -320,
-          "y": 60,
-          "width": 640,
-          "height": 380
+          "x": -480,
+          "y": 90,
+          "width": 960,
+          "height": 570
         },
         "maxConcurrent": 10,
         "respawnSeconds": 10,
@@ -319,8 +280,8 @@
       {
         "npcId": "mycologist_fern",
         "position": {
-          "x": -80,
-          "y": 220
+          "x": -120,
+          "y": 330
         },
         "facing": "east"
       }
@@ -330,36 +291,535 @@
         "id": "west_trail",
         "label": "Cloverfield Plains",
         "position": {
-          "x": -560,
-          "y": 200
+          "x": -840,
+          "y": 300
         },
-        "targetMapId": "cloverfield_plains",
+        "targetMapId": "cloverfield_plains_ro",
         "targetSpawn": {
-          "x": 400,
-          "y": 200
+          "x": 1136,
+          "y": -352
         }
       },
       {
         "id": "southeast_trail",
         "label": "Whisperwood Meadows",
         "position": {
-          "x": 480,
-          "y": 340
+          "x": 720,
+          "y": 510
         },
         "targetMapId": "whisperwood_meadows",
         "targetSpawn": {
-          "x": -420,
-          "y": 280
+          "x": -630,
+          "y": 420
         },
         "requiredLevel": 5
       }
     ],
     "playerSpawn": {
-      "x": -500,
-      "y": 180
+      "x": -750,
+      "y": 270
     },
     "safeZone": null,
     "assetKey": "map_mushroom_hollow"
+  },
+  {
+    "id": "hearthvale_town_ro",
+    "displayName": "Hearthvale Town",
+    "kind": "town",
+    "regionId": "hearthlight_vale",
+    "levelRange": {
+      "min": 1,
+      "max": 99
+    },
+    "showOnWorldMap": true,
+    "worldMapPosition": {
+      "x": 80,
+      "y": 180
+    },
+    "biome": "temperate_town",
+    "musicKey": "music_hearthvale_town",
+    "gridSize": {
+      "width": 72,
+      "height": 42
+    },
+    "spawnTables": [],
+    "npcs": [
+      {
+        "npcId": "elder",
+        "position": {
+          "x": -16,
+          "y": -304
+        },
+        "facing": "south"
+      },
+      {
+        "npcId": "merchant_silas",
+        "position": {
+          "x": 656,
+          "y": -16
+        },
+        "facing": "west"
+      },
+      {
+        "npcId": "hearth_courier",
+        "position": {
+          "x": -80,
+          "y": 560
+        },
+        "facing": "south"
+      },
+      {
+        "npcId": "trainer_bram",
+        "position": {
+          "x": 80,
+          "y": 560
+        },
+        "facing": "north"
+      },
+      {
+        "npcId": "priestess_wren",
+        "position": {
+          "x": -400,
+          "y": 176
+        },
+        "facing": "east"
+      }
+    ],
+    "portals": [
+      {
+        "id": "east_gate",
+        "label": "Cloverfield Plains",
+        "position": {
+          "x": 1040,
+          "y": -112
+        },
+        "targetMapId": "cloverfield_plains_ro",
+        "targetSpawn": {
+          "x": -1136,
+          "y": -224
+        }
+      },
+      {
+        "id": "lanternspire_gate",
+        "label": "Lanternspire Summit",
+        "position": {
+          "x": -272,
+          "y": 176
+        },
+        "targetMapId": "lanternspire_summit",
+        "targetSpawn": {
+          "x": -944,
+          "y": 32
+        },
+        "requiredLevel": 14,
+        "requiredQuestStartedId": "quest_lanternspire_accord"
+      }
+    ],
+    "playerSpawn": {
+      "x": 16,
+      "y": 176
+    },
+    "safeZone": {
+      "x": -1056,
+      "y": -608,
+      "width": 2112,
+      "height": 1248
+    },
+    "assetKey": "map_hearthvale_town_ro"
+  },
+  {
+    "id": "cloverfield_plains_ro",
+    "displayName": "Cloverfield Plains",
+    "kind": "field",
+    "regionId": "hearthlight_vale",
+    "levelRange": {
+      "min": 1,
+      "max": 4
+    },
+    "showOnWorldMap": true,
+    "worldMapPosition": {
+      "x": 300,
+      "y": 180
+    },
+    "biome": "clover_grassland",
+    "musicKey": "music_cloverfield",
+    "gridSize": {
+      "width": 84,
+      "height": 45
+    },
+    "spawnTables": [
+      {
+        "id": "ro_jellybud_west_clover",
+        "bounds": {
+          "x": -992,
+          "y": -560,
+          "width": 192,
+          "height": 96
+        },
+        "maxConcurrent": 4,
+        "respawnSeconds": 8,
+        "entries": [
+          {
+            "monsterId": "jellybud",
+            "weight": 100,
+            "minLevel": 1,
+            "maxLevel": 3
+          }
+        ]
+      },
+      {
+        "id": "ro_spriggle_east_hill",
+        "bounds": {
+          "x": 352,
+          "y": -560,
+          "width": 192,
+          "height": 96
+        },
+        "maxConcurrent": 4,
+        "respawnSeconds": 9,
+        "entries": [
+          {
+            "monsterId": "spriggle",
+            "weight": 100,
+            "minLevel": 2,
+            "maxLevel": 4
+          }
+        ]
+      },
+      {
+        "id": "ro_mixed_lowland_loop",
+        "bounds": {
+          "x": -480,
+          "y": -144,
+          "width": 384,
+          "height": 96
+        },
+        "maxConcurrent": 6,
+        "respawnSeconds": 10,
+        "entries": [
+          {
+            "monsterId": "jellybud",
+            "weight": 55,
+            "minLevel": 1,
+            "maxLevel": 3
+          },
+          {
+            "monsterId": "spriggle",
+            "weight": 45,
+            "minLevel": 2,
+            "maxLevel": 4
+          }
+        ]
+      },
+      {
+        "id": "ro_southern_patch",
+        "bounds": {
+          "x": -864,
+          "y": 336,
+          "width": 192,
+          "height": 96
+        },
+        "maxConcurrent": 5,
+        "respawnSeconds": 10,
+        "entries": [
+          {
+            "monsterId": "jellybud",
+            "weight": 60,
+            "minLevel": 1,
+            "maxLevel": 3
+          },
+          {
+            "monsterId": "spriggle",
+            "weight": 40,
+            "minLevel": 2,
+            "maxLevel": 4
+          }
+        ]
+      }
+    ],
+    "resourceNodes": [
+      {
+        "id": "clover_patch_1",
+        "displayName": "Clover Patch",
+        "kind": "herb",
+        "position": {
+          "x": -656,
+          "y": -224
+        },
+        "itemId": "clover_herb",
+        "minCount": 1,
+        "maxCount": 2,
+        "respawnSeconds": 38
+      },
+      {
+        "id": "clover_patch_2",
+        "displayName": "Clover Patch",
+        "kind": "herb",
+        "position": {
+          "x": 464,
+          "y": -224
+        },
+        "itemId": "clover_herb",
+        "minCount": 1,
+        "maxCount": 2,
+        "respawnSeconds": 38
+      },
+      {
+        "id": "clover_patch_3",
+        "displayName": "Clover Patch",
+        "kind": "herb",
+        "position": {
+          "x": -592,
+          "y": 416
+        },
+        "itemId": "clover_herb",
+        "minCount": 1,
+        "maxCount": 2,
+        "respawnSeconds": 38
+      },
+      {
+        "id": "clover_patch_4",
+        "displayName": "Clover Patch",
+        "kind": "herb",
+        "position": {
+          "x": 752,
+          "y": 416
+        },
+        "itemId": "clover_herb",
+        "minCount": 1,
+        "maxCount": 2,
+        "respawnSeconds": 38
+      }
+    ],
+    "npcs": [
+      {
+        "npcId": "scout_pip",
+        "position": {
+          "x": -848,
+          "y": -320
+        },
+        "facing": "east"
+      }
+    ],
+    "portals": [
+      {
+        "id": "west_gate",
+        "label": "Hearthvale Town",
+        "position": {
+          "x": -1232,
+          "y": -352
+        },
+        "targetMapId": "hearthvale_town_ro",
+        "targetSpawn": {
+          "x": 976,
+          "y": -112
+        }
+      },
+      {
+        "id": "mine_mouth",
+        "label": "Old Crystal Mine B1",
+        "position": {
+          "x": 176,
+          "y": 224
+        },
+        "targetMapId": "old_crystal_mine_ro_b1",
+        "targetSpawn": {
+          "x": -928,
+          "y": -176
+        }
+      },
+      {
+        "id": "hollow_trail",
+        "label": "Mushroom Hollow",
+        "position": {
+          "x": 1136,
+          "y": -352
+        },
+        "targetMapId": "mushroom_hollow",
+        "targetSpawn": {
+          "x": -750,
+          "y": 270
+        }
+      },
+      {
+        "id": "approach_trail",
+        "label": "Crystal Mine Approach",
+        "position": {
+          "x": -80,
+          "y": 224
+        },
+        "targetMapId": "crystal_mine_approach",
+        "targetSpawn": {
+          "x": 780,
+          "y": 420
+        }
+      },
+      {
+        "id": "whisperwood_trail",
+        "label": "Whisperwood Meadows",
+        "position": {
+          "x": 1232,
+          "y": 544
+        },
+        "targetMapId": "whisperwood_meadows",
+        "targetSpawn": {
+          "x": -720,
+          "y": 240
+        },
+        "requiredLevel": 5
+      }
+    ],
+    "playerSpawn": {
+      "x": -1136,
+      "y": -224
+    },
+    "safeZone": null,
+    "assetKey": "map_cloverfield_plains_ro"
+  },
+  {
+    "id": "old_crystal_mine_ro_b1",
+    "displayName": "Old Crystal Mine B1",
+    "kind": "dungeon",
+    "regionId": "hearthlight_vale",
+    "levelRange": {
+      "min": 8,
+      "max": 15
+    },
+    "showOnWorldMap": false,
+    "worldMapPosition": {
+      "x": 300,
+      "y": 300
+    },
+    "biome": "crystal_cavern",
+    "musicKey": "music_crystal_mine",
+    "gridSize": {
+      "width": 75,
+      "height": 48
+    },
+    "spawnTables": [
+      {
+        "id": "ro_upper_gallery_bats",
+        "bounds": {
+          "x": -432,
+          "y": -608,
+          "width": 192,
+          "height": 64
+        },
+        "maxConcurrent": 4,
+        "respawnSeconds": 18,
+        "entries": [
+          {
+            "monsterId": "cavebat",
+            "weight": 55,
+            "minLevel": 8,
+            "maxLevel": 11
+          },
+          {
+            "monsterId": "shardling",
+            "weight": 45,
+            "minLevel": 8,
+            "maxLevel": 10
+          }
+        ]
+      },
+      {
+        "id": "ro_west_vein",
+        "bounds": {
+          "x": -528,
+          "y": -224,
+          "width": 192,
+          "height": 96
+        },
+        "maxConcurrent": 4,
+        "respawnSeconds": 20,
+        "entries": [
+          {
+            "monsterId": "shardling",
+            "weight": 100,
+            "minLevel": 8,
+            "maxLevel": 10
+          }
+        ]
+      },
+      {
+        "id": "ro_east_vein",
+        "bounds": {
+          "x": 208,
+          "y": -224,
+          "width": 192,
+          "height": 96
+        },
+        "maxConcurrent": 5,
+        "respawnSeconds": 22,
+        "entries": [
+          {
+            "monsterId": "shardling",
+            "weight": 55,
+            "minLevel": 8,
+            "maxLevel": 10
+          },
+          {
+            "monsterId": "crystal_golem",
+            "weight": 45,
+            "minLevel": 10,
+            "maxLevel": 12
+          }
+        ]
+      },
+      {
+        "id": "ro_lower_loop",
+        "bounds": {
+          "x": -560,
+          "y": 160,
+          "width": 1152,
+          "height": 96
+        },
+        "maxConcurrent": 6,
+        "respawnSeconds": 24,
+        "entries": [
+          {
+            "monsterId": "crystal_golem",
+            "weight": 50,
+            "minLevel": 10,
+            "maxLevel": 13
+          },
+          {
+            "monsterId": "vein_wraith",
+            "weight": 30,
+            "minLevel": 12,
+            "maxLevel": 14
+          },
+          {
+            "monsterId": "shardling",
+            "weight": 20,
+            "minLevel": 9,
+            "maxLevel": 11
+          }
+        ]
+      }
+    ],
+    "npcs": [],
+    "portals": [
+      {
+        "id": "mine_exit",
+        "label": "Cloverfield Plains",
+        "position": {
+          "x": -1088,
+          "y": -272
+        },
+        "targetMapId": "cloverfield_plains_ro",
+        "targetSpawn": {
+          "x": 176,
+          "y": 224
+        }
+      }
+    ],
+    "playerSpawn": {
+      "x": -928,
+      "y": -176
+    },
+    "safeZone": null,
+    "assetKey": "map_old_crystal_mine_ro_b1"
   },
   {
     "id": "whisperwood_meadows",
@@ -372,23 +832,23 @@
     },
     "showOnWorldMap": true,
     "worldMapPosition": {
-      "x": 540,
-      "y": 160
+      "x": 520,
+      "y": 150
     },
     "biome": "whisperwood",
     "musicKey": "music_whisperwood",
     "gridSize": {
-      "width": 60,
-      "height": 42
+      "width": 90,
+      "height": 63
     },
     "spawnTables": [
       {
         "id": "whisperwood_glades",
         "bounds": {
-          "x": -360,
-          "y": 40,
-          "width": 720,
-          "height": 400
+          "x": -540,
+          "y": 60,
+          "width": 1080,
+          "height": 600
         },
         "maxConcurrent": 10,
         "respawnSeconds": 12,
@@ -418,8 +878,8 @@
       {
         "npcId": "ranger_elowen",
         "position": {
-          "x": 60,
-          "y": 180
+          "x": 90,
+          "y": 270
         },
         "facing": "south"
       }
@@ -429,45 +889,45 @@
         "id": "west_trail",
         "label": "Cloverfield Plains",
         "position": {
-          "x": -520,
-          "y": 160
+          "x": -780,
+          "y": 240
         },
-        "targetMapId": "cloverfield_plains",
+        "targetMapId": "cloverfield_plains_ro",
         "targetSpawn": {
-          "x": 580,
-          "y": 120
+          "x": 1232,
+          "y": 544
         }
       },
       {
         "id": "northwest_trail",
         "label": "Mushroom Hollow",
         "position": {
-          "x": -440,
-          "y": 280
+          "x": -660,
+          "y": 420
         },
         "targetMapId": "mushroom_hollow",
         "targetSpawn": {
-          "x": 480,
-          "y": 340
+          "x": 720,
+          "y": 510
         }
       },
       {
         "id": "east_road",
         "label": "Old Mill Road",
         "position": {
-          "x": 520,
-          "y": 200
+          "x": 780,
+          "y": 300
         },
         "targetMapId": "old_mill_road",
         "targetSpawn": {
-          "x": -500,
-          "y": 180
+          "x": -750,
+          "y": 270
         }
       }
     ],
     "playerSpawn": {
-      "x": -480,
-      "y": 160
+      "x": -720,
+      "y": 240
     },
     "safeZone": null,
     "assetKey": "map_whisperwood_meadows"
@@ -483,23 +943,23 @@
     },
     "showOnWorldMap": true,
     "worldMapPosition": {
-      "x": 680,
-      "y": 140
+      "x": 660,
+      "y": 135
     },
     "biome": "mill_countryside",
     "musicKey": "music_old_mill_road",
     "gridSize": {
-      "width": 72,
-      "height": 36
+      "width": 108,
+      "height": 54
     },
     "spawnTables": [
       {
         "id": "millroad_verge",
         "bounds": {
-          "x": -480,
-          "y": 60,
-          "width": 960,
-          "height": 280
+          "x": -720,
+          "y": 90,
+          "width": 1440,
+          "height": 420
         },
         "maxConcurrent": 12,
         "respawnSeconds": 14,
@@ -529,16 +989,16 @@
       {
         "npcId": "miller_tobin",
         "position": {
-          "x": -200,
-          "y": 160
+          "x": -300,
+          "y": 240
         },
         "facing": "east"
       },
       {
         "npcId": "caravan_guard",
         "position": {
-          "x": 320,
-          "y": 140
+          "x": 480,
+          "y": 210
         },
         "facing": "west"
       }
@@ -548,45 +1008,45 @@
         "id": "west_road",
         "label": "Whisperwood Meadows",
         "position": {
-          "x": -540,
-          "y": 180
+          "x": -810,
+          "y": 270
         },
         "targetMapId": "whisperwood_meadows",
         "targetSpawn": {
-          "x": 520,
-          "y": 200
+          "x": 780,
+          "y": 300
         }
       },
       {
         "id": "millwick_gate",
         "label": "Millwick Crossing",
         "position": {
-          "x": -80,
-          "y": 120
+          "x": -120,
+          "y": 180
         },
         "targetMapId": "millwick_crossing",
         "targetSpawn": {
-          "x": 640,
-          "y": 200
+          "x": 960,
+          "y": 300
         }
       },
       {
         "id": "south_trail",
         "label": "Moonwell Entrance",
         "position": {
-          "x": 600,
-          "y": 260
+          "x": 900,
+          "y": 390
         },
         "targetMapId": "moonwell_entrance",
         "targetSpawn": {
-          "x": -460,
-          "y": 140
+          "x": -690,
+          "y": 210
         }
       }
     ],
     "playerSpawn": {
-      "x": -500,
-      "y": 180
+      "x": -750,
+      "y": 270
     },
     "safeZone": null,
     "assetKey": "map_old_mill_road"
@@ -602,38 +1062,38 @@
     },
     "showOnWorldMap": true,
     "worldMapPosition": {
-      "x": 620,
-      "y": 100
+      "x": 650,
+      "y": 40
     },
     "biome": "riverside_town",
     "musicKey": "music_millwick_crossing",
     "gridSize": {
-      "width": 40,
-      "height": 32
+      "width": 60,
+      "height": 48
     },
     "spawnTables": [],
     "npcs": [
       {
         "npcId": "mayor_holt",
         "position": {
-          "x": 300,
-          "y": 200
+          "x": 450,
+          "y": 300
         },
         "facing": "south"
       },
       {
         "npcId": "merchant_elsie",
         "position": {
-          "x": 260,
-          "y": 240
+          "x": 390,
+          "y": 360
         },
         "facing": "east"
       },
       {
         "npcId": "hearth_courier",
         "position": {
-          "x": 380,
-          "y": 180
+          "x": 570,
+          "y": 270
         },
         "facing": "west"
       }
@@ -643,19 +1103,19 @@
         "id": "west_gate",
         "label": "Old Mill Road",
         "position": {
-          "x": 40,
-          "y": 200
+          "x": 60,
+          "y": 300
         },
         "targetMapId": "old_mill_road",
         "targetSpawn": {
-          "x": -80,
-          "y": 120
+          "x": -120,
+          "y": 180
         }
       }
     ],
     "playerSpawn": {
-      "x": 640,
-      "y": 200
+      "x": 960,
+      "y": 300
     },
     "safeZone": {
       "x": 60,
@@ -676,23 +1136,23 @@
     },
     "showOnWorldMap": true,
     "worldMapPosition": {
-      "x": 300,
-      "y": 80
+      "x": 280,
+      "y": 50
     },
     "biome": "crystal_foothills",
     "musicKey": "music_crystal_approach",
     "gridSize": {
-      "width": 52,
-      "height": 38
+      "width": 78,
+      "height": 57
     },
     "spawnTables": [
       {
         "id": "foothill_crystal_vein",
         "bounds": {
-          "x": -280,
-          "y": 40,
-          "width": 560,
-          "height": 320
+          "x": -420,
+          "y": 60,
+          "width": 840,
+          "height": 480
         },
         "maxConcurrent": 8,
         "respawnSeconds": 12,
@@ -722,8 +1182,8 @@
       {
         "npcId": "prospector_garrick",
         "position": {
-          "x": 120,
-          "y": 200
+          "x": 180,
+          "y": 300
         },
         "facing": "north"
       }
@@ -733,33 +1193,47 @@
         "id": "south_trail",
         "label": "Cloverfield Plains",
         "position": {
-          "x": 540,
-          "y": 280
+          "x": 810,
+          "y": 420
         },
-        "targetMapId": "cloverfield_plains",
+        "targetMapId": "cloverfield_plains_ro",
         "targetSpawn": {
-          "x": -40,
-          "y": -20
+          "x": -80,
+          "y": 224
         }
       },
       {
         "id": "mine_shaft",
         "label": "Old Crystal Mine",
         "position": {
-          "x": -200,
-          "y": 80
+          "x": -300,
+          "y": 120
         },
         "targetMapId": "old_crystal_mine",
         "targetSpawn": {
-          "x": 420,
-          "y": 120
+          "x": 630,
+          "y": 180
         },
         "requiredLevel": 8
+      },
+      {
+        "id": "emberglass_trail",
+        "label": "Emberglass Shelf",
+        "position": {
+          "x": 540,
+          "y": -390
+        },
+        "targetMapId": "emberglass_shelf",
+        "targetSpawn": {
+          "x": -976,
+          "y": 16
+        },
+        "requiredLevel": 11
       }
     ],
     "playerSpawn": {
-      "x": 520,
-      "y": 280
+      "x": 780,
+      "y": 420
     },
     "safeZone": null,
     "assetKey": "map_crystal_mine_approach"
@@ -781,17 +1255,17 @@
     "biome": "crystal_cavern",
     "musicKey": "music_crystal_mine",
     "gridSize": {
-      "width": 48,
-      "height": 48
+      "width": 72,
+      "height": 72
     },
     "spawnTables": [
       {
         "id": "mine_upper_gallery",
         "bounds": {
-          "x": -400,
-          "y": -200,
-          "width": 500,
-          "height": 400
+          "x": -600,
+          "y": -300,
+          "width": 750,
+          "height": 600
         },
         "maxConcurrent": 8,
         "respawnSeconds": 18,
@@ -819,10 +1293,10 @@
       {
         "id": "mine_deep_vein",
         "bounds": {
-          "x": 80,
-          "y": 120,
-          "width": 420,
-          "height": 360
+          "x": 120,
+          "y": 180,
+          "width": 630,
+          "height": 540
         },
         "maxConcurrent": 6,
         "respawnSeconds": 22,
@@ -854,35 +1328,336 @@
         "id": "mine_exit",
         "label": "Cloverfield Plains",
         "position": {
-          "x": 740,
-          "y": 150
+          "x": 1110,
+          "y": 225
         },
         "targetMapId": "cloverfield_plains",
         "targetSpawn": {
-          "x": 700,
-          "y": 150
+          "x": 1050,
+          "y": 225
         }
       },
       {
         "id": "upper_shaft",
         "label": "Crystal Mine Approach",
         "position": {
-          "x": 420,
-          "y": 120
+          "x": 630,
+          "y": 180
         },
         "targetMapId": "crystal_mine_approach",
         "targetSpawn": {
-          "x": -200,
-          "y": 80
+          "x": -300,
+          "y": 120
         }
       }
     ],
     "playerSpawn": {
-      "x": -540,
-      "y": 155
+      "x": -810,
+      "y": 233
     },
     "safeZone": null,
     "assetKey": "map_old_crystal_mine"
+  },
+  {
+    "id": "emberglass_shelf",
+    "displayName": "Emberglass Shelf",
+    "kind": "field",
+    "regionId": "hearthlight_vale",
+    "levelRange": {
+      "min": 11,
+      "max": 13
+    },
+    "showOnWorldMap": true,
+    "worldMapPosition": {
+      "x": 380,
+      "y": 25
+    },
+    "biome": "emberglass_shelf",
+    "musicKey": "music_emberglass",
+    "gridSize": {
+      "width": 84,
+      "height": 60
+    },
+    "spawnTables": [
+      {
+        "id": "shelf_windcut_veins",
+        "bounds": {
+          "x": -750,
+          "y": -645,
+          "width": 975,
+          "height": 450
+        },
+        "maxConcurrent": 6,
+        "respawnSeconds": 18,
+        "entries": [
+          {
+            "monsterId": "cinder_mote",
+            "weight": 45,
+            "minLevel": 11,
+            "maxLevel": 12
+          },
+          {
+            "monsterId": "prism_scarab",
+            "weight": 35,
+            "minLevel": 11,
+            "maxLevel": 13
+          },
+          {
+            "monsterId": "windmite",
+            "weight": 20,
+            "minLevel": 11,
+            "maxLevel": 12
+          }
+        ]
+      },
+      {
+        "id": "shelf_kilnward_slope",
+        "bounds": {
+          "x": 90,
+          "y": 165,
+          "width": 930,
+          "height": 495
+        },
+        "maxConcurrent": 6,
+        "respawnSeconds": 22,
+        "entries": [
+          {
+            "monsterId": "sinterhorn",
+            "weight": 40,
+            "minLevel": 13,
+            "maxLevel": 13
+          },
+          {
+            "monsterId": "cinder_mote",
+            "weight": 35,
+            "minLevel": 12,
+            "maxLevel": 13
+          },
+          {
+            "monsterId": "prism_scarab",
+            "weight": 25,
+            "minLevel": 12,
+            "maxLevel": 13
+          }
+        ]
+      }
+    ],
+    "resourceNodes": [
+      {
+        "id": "emberglass_seam_1",
+        "displayName": "Emberglass Seam",
+        "kind": "ore",
+        "position": {
+          "x": -304,
+          "y": 16
+        },
+        "itemId": "emberglass_chip",
+        "minCount": 1,
+        "maxCount": 2,
+        "respawnSeconds": 58,
+        "requiredLevel": 11
+      },
+      {
+        "id": "emberglass_seam_2",
+        "displayName": "Emberglass Seam",
+        "kind": "ore",
+        "position": {
+          "x": 176,
+          "y": 16
+        },
+        "itemId": "emberglass_chip",
+        "minCount": 1,
+        "maxCount": 2,
+        "respawnSeconds": 58,
+        "requiredLevel": 11
+      },
+      {
+        "id": "emberglass_seam_3",
+        "displayName": "Emberglass Seam",
+        "kind": "ore",
+        "position": {
+          "x": 592,
+          "y": 16
+        },
+        "itemId": "emberglass_chip",
+        "minCount": 1,
+        "maxCount": 2,
+        "respawnSeconds": 58,
+        "requiredLevel": 11
+      }
+    ],
+    "npcs": [
+      {
+        "npcId": "glasswright_orla",
+        "position": {
+          "x": -848,
+          "y": -176
+        },
+        "facing": "east"
+      }
+    ],
+    "portals": [
+      {
+        "id": "approach_pass",
+        "label": "Crystal Mine Approach",
+        "position": {
+          "x": -1232,
+          "y": 16
+        },
+        "targetMapId": "crystal_mine_approach",
+        "targetSpawn": {
+          "x": 480,
+          "y": -330
+        }
+      },
+      {
+        "id": "hollow_kiln_gate",
+        "label": "Hollow Kiln",
+        "position": {
+          "x": 1232,
+          "y": 16
+        },
+        "targetMapId": "hollow_kiln",
+        "targetSpawn": {
+          "x": -784,
+          "y": 32
+        },
+        "requiredLevel": 13,
+        "requiredQuestId": "quest_emberglass_survey"
+      }
+    ],
+    "playerSpawn": {
+      "x": -976,
+      "y": 16
+    },
+    "safeZone": null,
+    "assetKey": "map_emberglass_shelf"
+  },
+  {
+    "id": "hollow_kiln",
+    "displayName": "Hollow Kiln",
+    "kind": "dungeon",
+    "regionId": "hearthlight_vale",
+    "levelRange": {
+      "min": 13,
+      "max": 14
+    },
+    "showOnWorldMap": true,
+    "worldMapPosition": {
+      "x": 485,
+      "y": 65
+    },
+    "biome": "hollow_kiln",
+    "musicKey": "music_hollow_kiln",
+    "gridSize": {
+      "width": 72,
+      "height": 63
+    },
+    "spawnTables": [
+      {
+        "id": "kiln_upper_flues",
+        "bounds": {
+          "x": -765,
+          "y": -615,
+          "width": 660,
+          "height": 465
+        },
+        "maxConcurrent": 6,
+        "respawnSeconds": 20,
+        "entries": [
+          {
+            "monsterId": "cinder_mote",
+            "weight": 45,
+            "minLevel": 13,
+            "maxLevel": 14
+          },
+          {
+            "monsterId": "prism_scarab",
+            "weight": 35,
+            "minLevel": 13,
+            "maxLevel": 14
+          },
+          {
+            "monsterId": "vein_wraith",
+            "weight": 20,
+            "minLevel": 13,
+            "maxLevel": 14
+          }
+        ]
+      },
+      {
+        "id": "kiln_slag_channels",
+        "bounds": {
+          "x": -270,
+          "y": 255,
+          "width": 675,
+          "height": 450
+        },
+        "maxConcurrent": 6,
+        "respawnSeconds": 24,
+        "entries": [
+          {
+            "monsterId": "sinterhorn",
+            "weight": 50,
+            "minLevel": 13,
+            "maxLevel": 14
+          },
+          {
+            "monsterId": "cinder_mote",
+            "weight": 30,
+            "minLevel": 13,
+            "maxLevel": 14
+          },
+          {
+            "monsterId": "crystal_golem",
+            "weight": 20,
+            "minLevel": 13,
+            "maxLevel": 14
+          }
+        ]
+      },
+      {
+        "id": "kilnheart_dais",
+        "bounds": {
+          "x": 848,
+          "y": 32,
+          "width": 1,
+          "height": 1
+        },
+        "maxConcurrent": 1,
+        "respawnSeconds": 90,
+        "entries": [
+          {
+            "monsterId": "kilnheart_colossus",
+            "weight": 100,
+            "minLevel": 14,
+            "maxLevel": 14
+          }
+        ]
+      }
+    ],
+    "npcs": [],
+    "portals": [
+      {
+        "id": "shelf_return",
+        "label": "Emberglass Shelf",
+        "position": {
+          "x": -1040,
+          "y": 32
+        },
+        "targetMapId": "emberglass_shelf",
+        "targetSpawn": {
+          "x": 1072,
+          "y": 16
+        }
+      }
+    ],
+    "playerSpawn": {
+      "x": -784,
+      "y": 32
+    },
+    "safeZone": null,
+    "assetKey": "map_hollow_kiln"
   },
   {
     "id": "moonwell_entrance",
@@ -896,22 +1671,22 @@
     "showOnWorldMap": true,
     "worldMapPosition": {
       "x": 760,
-      "y": 220
+      "y": 230
     },
     "biome": "moonlit_glade",
     "musicKey": "music_moonwell_entrance",
     "gridSize": {
-      "width": 44,
-      "height": 40
+      "width": 66,
+      "height": 60
     },
     "spawnTables": [
       {
         "id": "moonwell_shore",
         "bounds": {
-          "x": -300,
-          "y": 60,
-          "width": 600,
-          "height": 340
+          "x": -450,
+          "y": 90,
+          "width": 900,
+          "height": 510
         },
         "maxConcurrent": 10,
         "respawnSeconds": 16,
@@ -941,8 +1716,8 @@
       {
         "npcId": "watcher_seren",
         "position": {
-          "x": 40,
-          "y": 200
+          "x": 60,
+          "y": 300
         },
         "facing": "south"
       }
@@ -952,36 +1727,171 @@
         "id": "north_trail",
         "label": "Old Mill Road",
         "position": {
-          "x": -500,
-          "y": 140
+          "x": -750,
+          "y": 210
         },
         "targetMapId": "old_mill_road",
         "targetSpawn": {
-          "x": 600,
-          "y": 260
+          "x": 900,
+          "y": 390
         }
       },
       {
         "id": "ruins_descent",
         "label": "Moonwell Ruins",
         "position": {
-          "x": 180,
-          "y": 320
+          "x": 270,
+          "y": 480
         },
         "targetMapId": "moonwell_ruins",
         "targetSpawn": {
-          "x": -320,
-          "y": 140
+          "x": -480,
+          "y": 210
         },
         "requiredLevel": 11
+      },
+      {
+        "id": "fen_boardwalk",
+        "label": "Moonreed Fen",
+        "position": {
+          "x": 630,
+          "y": 330
+        },
+        "targetMapId": "moonreed_fen",
+        "targetSpawn": {
+          "x": -750,
+          "y": 195
+        },
+        "requiredLevel": 12
       }
     ],
     "playerSpawn": {
-      "x": -460,
-      "y": 140
+      "x": -690,
+      "y": 210
     },
     "safeZone": null,
     "assetKey": "map_moonwell_entrance"
+  },
+  {
+    "id": "moonreed_fen",
+    "displayName": "Moonreed Fen",
+    "kind": "field",
+    "regionId": "hearthlight_vale",
+    "levelRange": {
+      "min": 12,
+      "max": 14
+    },
+    "showOnWorldMap": true,
+    "worldMapPosition": {
+      "x": 880,
+      "y": 155
+    },
+    "biome": "reed_fen",
+    "musicKey": "music_moonwell_entrance",
+    "gridSize": {
+      "width": 87,
+      "height": 63
+    },
+    "spawnTables": [
+      {
+        "id": "fen_reedbeds",
+        "bounds": {
+          "x": -630,
+          "y": 60,
+          "width": 1020,
+          "height": 480
+        },
+        "maxConcurrent": 9,
+        "respawnSeconds": 18,
+        "entries": [
+          {
+            "monsterId": "reedwhisper",
+            "weight": 45,
+            "minLevel": 12,
+            "maxLevel": 13
+          },
+          {
+            "monsterId": "fen_wisp",
+            "weight": 35,
+            "minLevel": 13,
+            "maxLevel": 14
+          },
+          {
+            "monsterId": "moonmoth",
+            "weight": 20,
+            "minLevel": 12,
+            "maxLevel": 13
+          }
+        ]
+      },
+      {
+        "id": "fen_deep_pool",
+        "bounds": {
+          "x": 210,
+          "y": 270,
+          "width": 630,
+          "height": 390
+        },
+        "maxConcurrent": 5,
+        "respawnSeconds": 26,
+        "entries": [
+          {
+            "monsterId": "glimmercroc",
+            "weight": 45,
+            "minLevel": 14,
+            "maxLevel": 14
+          },
+          {
+            "monsterId": "fen_wisp",
+            "weight": 35,
+            "minLevel": 13,
+            "maxLevel": 14
+          },
+          {
+            "monsterId": "reedwhisper",
+            "weight": 20,
+            "minLevel": 12,
+            "maxLevel": 13
+          }
+        ]
+      }
+    ],
+    "npcs": [],
+    "portals": [
+      {
+        "id": "west_boardwalk",
+        "label": "Moonwell Entrance",
+        "position": {
+          "x": -810,
+          "y": 195
+        },
+        "targetMapId": "moonwell_entrance",
+        "targetSpawn": {
+          "x": 630,
+          "y": 330
+        }
+      },
+      {
+        "id": "ruined_causeway",
+        "label": "Moonwell Ruins",
+        "position": {
+          "x": 780,
+          "y": 390
+        },
+        "targetMapId": "moonwell_ruins",
+        "targetSpawn": {
+          "x": -480,
+          "y": 210
+        },
+        "requiredLevel": 13
+      }
+    ],
+    "playerSpawn": {
+      "x": -750,
+      "y": 195
+    },
+    "safeZone": null,
+    "assetKey": "map_moonreed_fen"
   },
   {
     "id": "moonwell_ruins",
@@ -994,23 +1904,23 @@
     },
     "showOnWorldMap": true,
     "worldMapPosition": {
-      "x": 820,
-      "y": 260
+      "x": 850,
+      "y": 290
     },
     "biome": "ancient_ruins",
     "musicKey": "music_moonwell_ruins",
     "gridSize": {
-      "width": 50,
-      "height": 46
+      "width": 75,
+      "height": 69
     },
     "spawnTables": [
       {
         "id": "ruins_outer_ring",
         "bounds": {
-          "x": -360,
-          "y": 20,
-          "width": 480,
-          "height": 380
+          "x": -540,
+          "y": 30,
+          "width": 720,
+          "height": 570
         },
         "maxConcurrent": 8,
         "respawnSeconds": 20,
@@ -1038,10 +1948,10 @@
       {
         "id": "ruins_inner_sanctum",
         "bounds": {
-          "x": 120,
-          "y": 180,
-          "width": 360,
-          "height": 300
+          "x": 180,
+          "y": 270,
+          "width": 540,
+          "height": 450
         },
         "maxConcurrent": 4,
         "respawnSeconds": 30,
@@ -1070,24 +1980,3042 @@
     "npcs": [],
     "portals": [
       {
+        "id": "fen_causeway",
+        "label": "Moonreed Fen",
+        "position": {
+          "x": -330,
+          "y": 270
+        },
+        "targetMapId": "moonreed_fen",
+        "targetSpawn": {
+          "x": 780,
+          "y": 390
+        },
+        "requiredLevel": 13
+      },
+      {
+        "id": "heart_descent",
+        "label": "Moonwell Heart",
+        "position": {
+          "x": 540,
+          "y": 450
+        },
+        "targetMapId": "moonwell_heart",
+        "targetSpawn": {
+          "x": -630,
+          "y": 180
+        },
+        "requiredLevel": 14,
+        "requiredQuestId": "quest_fen_lanterns"
+      },
+      {
         "id": "ruins_ascent",
         "label": "Moonwell Entrance",
         "position": {
-          "x": -340,
-          "y": 140
+          "x": -510,
+          "y": 210
         },
         "targetMapId": "moonwell_entrance",
         "targetSpawn": {
-          "x": 180,
-          "y": 320
+          "x": 270,
+          "y": 480
         }
       }
     ],
     "playerSpawn": {
-      "x": -320,
-      "y": 140
+      "x": -480,
+      "y": 210
     },
     "safeZone": null,
     "assetKey": "map_moonwell_ruins"
+  },
+  {
+    "id": "moonwell_heart",
+    "displayName": "Moonwell Heart",
+    "kind": "instance",
+    "regionId": "hearthlight_vale",
+    "levelRange": {
+      "min": 14,
+      "max": 14
+    },
+    "showOnWorldMap": false,
+    "worldMapPosition": {
+      "x": 885,
+      "y": 310
+    },
+    "biome": "moonwell_depths",
+    "musicKey": "music_moonwell_ruins",
+    "gridSize": {
+      "width": 69,
+      "height": 60
+    },
+    "spawnTables": [
+      {
+        "id": "heart_echo_ring",
+        "bounds": {
+          "x": -330,
+          "y": 30,
+          "width": 660,
+          "height": 450
+        },
+        "maxConcurrent": 4,
+        "respawnSeconds": 24,
+        "entries": [
+          {
+            "monsterId": "wellbound_echo",
+            "weight": 100,
+            "minLevel": 14,
+            "maxLevel": 14
+          }
+        ]
+      },
+      {
+        "id": "heart_inner_pool",
+        "bounds": {
+          "x": 390,
+          "y": 180,
+          "width": 180,
+          "height": 180
+        },
+        "maxConcurrent": 1,
+        "respawnSeconds": 90,
+        "entries": [
+          {
+            "monsterId": "tidemoon_matriarch",
+            "weight": 100,
+            "minLevel": 14,
+            "maxLevel": 14
+          }
+        ]
+      }
+    ],
+    "npcs": [],
+    "portals": [
+      {
+        "id": "ruins_return",
+        "label": "Moonwell Ruins",
+        "position": {
+          "x": -690,
+          "y": 180
+        },
+        "targetMapId": "moonwell_ruins",
+        "targetSpawn": {
+          "x": 540,
+          "y": 450
+        }
+      }
+    ],
+    "playerSpawn": {
+      "x": -630,
+      "y": 180
+    },
+    "safeZone": null,
+    "assetKey": "map_moonwell_heart"
+  },
+  {
+    "id": "lanternspire_summit",
+    "displayName": "Lanternspire Summit",
+    "kind": "instance",
+    "regionId": "hearthlight_vale",
+    "levelRange": {
+      "min": 14,
+      "max": 14
+    },
+    "showOnWorldMap": true,
+    "worldMapPosition": {
+      "x": 590,
+      "y": 25
+    },
+    "biome": "lanternspire_summit",
+    "musicKey": "music_lanternspire",
+    "gridSize": {
+      "width": 78,
+      "height": 57
+    },
+    "spawnTables": [
+      {
+        "id": "summit_aurora_crossing",
+        "bounds": {
+          "x": -810,
+          "y": -525,
+          "width": 780,
+          "height": 1050
+        },
+        "maxConcurrent": 6,
+        "respawnSeconds": 24,
+        "entries": [
+          {
+            "monsterId": "aurora_mote",
+            "weight": 100,
+            "minLevel": 14,
+            "maxLevel": 14
+          }
+        ]
+      },
+      {
+        "id": "summit_gloam_ward",
+        "bounds": {
+          "x": -120,
+          "y": -495,
+          "width": 750,
+          "height": 990
+        },
+        "maxConcurrent": 5,
+        "respawnSeconds": 30,
+        "entries": [
+          {
+            "monsterId": "gloam_warden",
+            "weight": 100,
+            "minLevel": 14,
+            "maxLevel": 14
+          }
+        ]
+      },
+      {
+        "id": "summit_star_crown_dais",
+        "bounds": {
+          "x": 848,
+          "y": 32,
+          "width": 1,
+          "height": 1
+        },
+        "maxConcurrent": 1,
+        "respawnSeconds": 120,
+        "entries": [
+          {
+            "monsterId": "starved_crown",
+            "weight": 100,
+            "minLevel": 14,
+            "maxLevel": 14
+          }
+        ]
+      }
+    ],
+    "npcs": [],
+    "portals": [
+      {
+        "id": "hearthvale_return",
+        "label": "Hearthvale Town",
+        "position": {
+          "x": -1136,
+          "y": 32
+        },
+        "targetMapId": "hearthvale_town_ro",
+        "targetSpawn": {
+          "x": -272,
+          "y": 176
+        }
+      },
+      {
+        "id": "afterlight_passage",
+        "label": "Afterlight Expanse",
+        "position": {
+          "x": 1168,
+          "y": 32
+        },
+        "targetMapId": "afterlight_expanse",
+        "targetSpawn": {
+          "x": -1024,
+          "y": 32
+        },
+        "requiredLevel": 14,
+        "requiredQuestId": "quest_lanternspire_accord"
+      }
+    ],
+    "playerSpawn": {
+      "x": -944,
+      "y": 32
+    },
+    "safeZone": null,
+    "assetKey": "map_lanternspire_summit"
+  },
+  {
+    "id": "afterlight_expanse",
+    "displayName": "Afterlight Expanse",
+    "kind": "field",
+    "regionId": "hearthlight_vale",
+    "levelRange": {
+      "min": 14,
+      "max": 14
+    },
+    "showOnWorldMap": true,
+    "worldMapPosition": {
+      "x": 770,
+      "y": 38
+    },
+    "biome": "afterlight_expanse",
+    "musicKey": "music_afterlight",
+    "gridSize": {
+      "width": 87,
+      "height": 63
+    },
+    "spawnTables": [
+      {
+        "id": "afterlight_sunshard_drift",
+        "bounds": {
+          "x": -1020,
+          "y": -750,
+          "width": 930,
+          "height": 1500
+        },
+        "maxConcurrent": 7,
+        "respawnSeconds": 22,
+        "entries": [
+          {
+            "monsterId": "sunshard_mote",
+            "weight": 100,
+            "minLevel": 14,
+            "maxLevel": 14
+          }
+        ]
+      },
+      {
+        "id": "afterlight_voidglass_reach",
+        "bounds": {
+          "x": -120,
+          "y": -720,
+          "width": 660,
+          "height": 1440
+        },
+        "maxConcurrent": 4,
+        "respawnSeconds": 28,
+        "entries": [
+          {
+            "monsterId": "voidglass_revenant",
+            "weight": 100,
+            "minLevel": 14,
+            "maxLevel": 14
+          }
+        ]
+      },
+      {
+        "id": "afterlight_dawnscale_guard",
+        "bounds": {
+          "x": 570,
+          "y": -645,
+          "width": 345,
+          "height": 1290
+        },
+        "maxConcurrent": 3,
+        "respawnSeconds": 34,
+        "entries": [
+          {
+            "monsterId": "dawnscale_sentinel",
+            "weight": 100,
+            "minLevel": 14,
+            "maxLevel": 14
+          }
+        ]
+      },
+      {
+        "id": "afterlight_eclipse_dais",
+        "bounds": {
+          "x": 1024,
+          "y": -256,
+          "width": 1,
+          "height": 1
+        },
+        "maxConcurrent": 1,
+        "respawnSeconds": 150,
+        "entries": [
+          {
+            "monsterId": "eclipse_herald",
+            "weight": 100,
+            "minLevel": 14,
+            "maxLevel": 14
+          }
+        ]
+      }
+    ],
+    "resourceNodes": [
+      {
+        "id": "sunshard_bloom_1",
+        "displayName": "Sunshard Bloom",
+        "kind": "relic",
+        "position": {
+          "x": -512,
+          "y": -32
+        },
+        "itemId": "sunshard_filament",
+        "minCount": 1,
+        "maxCount": 2,
+        "respawnSeconds": 72,
+        "requiredLevel": 14
+      },
+      {
+        "id": "sunshard_bloom_2",
+        "displayName": "Sunshard Bloom",
+        "kind": "relic",
+        "position": {
+          "x": -32,
+          "y": -128
+        },
+        "itemId": "sunshard_filament",
+        "minCount": 1,
+        "maxCount": 2,
+        "respawnSeconds": 72,
+        "requiredLevel": 14
+      },
+      {
+        "id": "voidglass_seam_1",
+        "displayName": "Voidglass Seam",
+        "kind": "ore",
+        "position": {
+          "x": 256,
+          "y": 32
+        },
+        "itemId": "voidglass_splinter",
+        "minCount": 1,
+        "maxCount": 1,
+        "respawnSeconds": 84,
+        "requiredLevel": 14
+      },
+      {
+        "id": "voidglass_seam_2",
+        "displayName": "Voidglass Seam",
+        "kind": "ore",
+        "position": {
+          "x": 608,
+          "y": 128
+        },
+        "itemId": "voidglass_splinter",
+        "minCount": 1,
+        "maxCount": 1,
+        "respawnSeconds": 84,
+        "requiredLevel": 14
+      }
+    ],
+    "npcs": [],
+    "portals": [
+      {
+        "id": "lanternspire_return",
+        "label": "Lanternspire Summit",
+        "position": {
+          "x": -1280,
+          "y": 32
+        },
+        "targetMapId": "lanternspire_summit",
+        "targetSpawn": {
+          "x": 976,
+          "y": 32
+        }
+      },
+      {
+        "id": "dawnshore_passage",
+        "label": "Dawnshore Reach",
+        "position": {
+          "x": 1312,
+          "y": 32
+        },
+        "targetMapId": "dawnshore_camp",
+        "targetSpawn": {
+          "x": -736,
+          "y": -32
+        },
+        "requiredLevel": 15,
+        "requiredQuestId": "quest_afterlight_vigil"
+      }
+    ],
+    "playerSpawn": {
+      "x": -1024,
+      "y": 32
+    },
+    "safeZone": null,
+    "assetKey": "map_afterlight_expanse"
+  },
+  {
+    "id": "dawnshore_camp",
+    "displayName": "Dawnshore Camp",
+    "kind": "town",
+    "regionId": "dawnshore_reach",
+    "levelRange": {
+      "min": 15,
+      "max": 99
+    },
+    "showOnWorldMap": true,
+    "worldMapPosition": {
+      "x": 90,
+      "y": 150
+    },
+    "biome": "dawnshore_camp",
+    "musicKey": "music_dawnshore_camp",
+    "gridSize": {
+      "width": 69,
+      "height": 51
+    },
+    "spawnTables": [],
+    "npcs": [
+      {
+        "npcId": "trailwarden_nia",
+        "position": {
+          "x": -224,
+          "y": -224
+        },
+        "facing": "south"
+      },
+      {
+        "npcId": "quartermaster_vesa",
+        "position": {
+          "x": 352,
+          "y": -32
+        },
+        "facing": "west"
+      },
+      {
+        "npcId": "hearth_courier",
+        "position": {
+          "x": 640,
+          "y": -32
+        },
+        "facing": "west"
+      }
+    ],
+    "portals": [
+      {
+        "id": "afterlight_return",
+        "label": "Afterlight Expanse",
+        "position": {
+          "x": -992,
+          "y": -32
+        },
+        "targetMapId": "afterlight_expanse",
+        "targetSpawn": {
+          "x": 1120,
+          "y": 32
+        }
+      },
+      {
+        "id": "glasswind_gate",
+        "label": "Glasswind Coast",
+        "position": {
+          "x": 1024,
+          "y": -32
+        },
+        "targetMapId": "glasswind_coast",
+        "targetSpawn": {
+          "x": -1024,
+          "y": 32
+        },
+        "requiredLevel": 15,
+        "requiredQuestStartedId": "quest_glasswind_beacon"
+      }
+    ],
+    "playerSpawn": {
+      "x": -736,
+      "y": -32
+    },
+    "safeZone": {
+      "x": -672,
+      "y": -480,
+      "width": 1344,
+      "height": 960
+    },
+    "assetKey": "map_dawnshore_camp"
+  },
+  {
+    "id": "glasswind_coast",
+    "displayName": "Glasswind Coast",
+    "kind": "field",
+    "regionId": "dawnshore_reach",
+    "levelRange": {
+      "min": 15,
+      "max": 16
+    },
+    "showOnWorldMap": true,
+    "worldMapPosition": {
+      "x": 430,
+      "y": 150
+    },
+    "biome": "glasswind_coast",
+    "musicKey": "music_glasswind_coast",
+    "gridSize": {
+      "width": 87,
+      "height": 63
+    },
+    "spawnTables": [
+      {
+        "id": "glasswind_tideglass_drift",
+        "bounds": {
+          "x": -1020,
+          "y": -750,
+          "width": 915,
+          "height": 1500
+        },
+        "maxConcurrent": 6,
+        "respawnSeconds": 22,
+        "entries": [
+          {
+            "monsterId": "tideglass_mote",
+            "weight": 100,
+            "minLevel": 15,
+            "maxLevel": 15
+          }
+        ]
+      },
+      {
+        "id": "glasswind_saltbound_reach",
+        "bounds": {
+          "x": -120,
+          "y": -705,
+          "width": 645,
+          "height": 1410
+        },
+        "maxConcurrent": 4,
+        "respawnSeconds": 28,
+        "entries": [
+          {
+            "monsterId": "saltbound_husk",
+            "weight": 100,
+            "minLevel": 15,
+            "maxLevel": 16
+          }
+        ]
+      },
+      {
+        "id": "glasswind_beacon_ward",
+        "bounds": {
+          "x": 555,
+          "y": -645,
+          "width": 345,
+          "height": 1290
+        },
+        "maxConcurrent": 3,
+        "respawnSeconds": 34,
+        "entries": [
+          {
+            "monsterId": "beacon_wraith",
+            "weight": 100,
+            "minLevel": 16,
+            "maxLevel": 16
+          }
+        ]
+      },
+      {
+        "id": "glasswind_meridian_dais",
+        "bounds": {
+          "x": 1024,
+          "y": -256,
+          "width": 1,
+          "height": 1
+        },
+        "maxConcurrent": 1,
+        "respawnSeconds": 160,
+        "entries": [
+          {
+            "monsterId": "drowned_meridian",
+            "weight": 100,
+            "minLevel": 16,
+            "maxLevel": 16
+          }
+        ]
+      }
+    ],
+    "resourceNodes": [
+      {
+        "id": "sunwake_kelp_1",
+        "displayName": "Sunwake Kelp",
+        "kind": "fiber",
+        "position": {
+          "x": -800,
+          "y": -448
+        },
+        "itemId": "sunwake_kelp",
+        "minCount": 1,
+        "maxCount": 2,
+        "respawnSeconds": 52,
+        "requiredLevel": 15
+      },
+      {
+        "id": "sunwake_kelp_2",
+        "displayName": "Sunwake Kelp",
+        "kind": "fiber",
+        "position": {
+          "x": -448,
+          "y": 320
+        },
+        "itemId": "sunwake_kelp",
+        "minCount": 1,
+        "maxCount": 2,
+        "respawnSeconds": 52,
+        "requiredLevel": 15
+      },
+      {
+        "id": "sunwake_kelp_3",
+        "displayName": "Sunwake Kelp",
+        "kind": "fiber",
+        "position": {
+          "x": 32,
+          "y": -512
+        },
+        "itemId": "sunwake_kelp",
+        "minCount": 1,
+        "maxCount": 2,
+        "respawnSeconds": 52,
+        "requiredLevel": 15
+      },
+      {
+        "id": "saltglass_seam_1",
+        "displayName": "Saltglass Seam",
+        "kind": "ore",
+        "position": {
+          "x": -128,
+          "y": 32
+        },
+        "itemId": "saltglass_shard",
+        "minCount": 1,
+        "maxCount": 2,
+        "respawnSeconds": 66,
+        "requiredLevel": 15
+      },
+      {
+        "id": "saltglass_seam_2",
+        "displayName": "Saltglass Seam",
+        "kind": "ore",
+        "position": {
+          "x": 448,
+          "y": 320
+        },
+        "itemId": "saltglass_shard",
+        "minCount": 1,
+        "maxCount": 2,
+        "respawnSeconds": 66,
+        "requiredLevel": 15
+      },
+      {
+        "id": "saltglass_seam_3",
+        "displayName": "Saltglass Seam",
+        "kind": "ore",
+        "position": {
+          "x": 640,
+          "y": -160
+        },
+        "itemId": "saltglass_shard",
+        "minCount": 1,
+        "maxCount": 2,
+        "respawnSeconds": 66,
+        "requiredLevel": 15
+      }
+    ],
+    "npcs": [],
+    "portals": [
+      {
+        "id": "dawnshore_return",
+        "label": "Dawnshore Camp",
+        "position": {
+          "x": -1280,
+          "y": 32
+        },
+        "targetMapId": "dawnshore_camp",
+        "targetSpawn": {
+          "x": 800,
+          "y": -32
+        }
+      },
+      {
+        "id": "tidebreak_passage",
+        "label": "Tidebreak Causeway",
+        "position": {
+          "x": 1376,
+          "y": 32
+        },
+        "targetMapId": "tidebreak_causeway",
+        "targetSpawn": {
+          "x": -1072,
+          "y": 16
+        },
+        "requiredLevel": 16,
+        "requiredQuestStartedId": "quest_tidebreak_road"
+      }
+    ],
+    "playerSpawn": {
+      "x": -1024,
+      "y": 32
+    },
+    "safeZone": null,
+    "assetKey": "map_glasswind_coast"
+  },
+  {
+    "id": "tidebreak_causeway",
+    "displayName": "Tidebreak Causeway",
+    "kind": "field",
+    "regionId": "dawnshore_reach",
+    "levelRange": {
+      "min": 16,
+      "max": 17
+    },
+    "showOnWorldMap": true,
+    "worldMapPosition": {
+      "x": 750,
+      "y": 150
+    },
+    "biome": "tidebreak_causeway",
+    "musicKey": "music_tidebreak_causeway",
+    "gridSize": {
+      "width": 90,
+      "height": 60
+    },
+    "spawnTables": [
+      {
+        "id": "tidebreak_brinewing_shallows",
+        "bounds": {
+          "x": -1140,
+          "y": -750,
+          "width": 840,
+          "height": 1500
+        },
+        "maxConcurrent": 6,
+        "respawnSeconds": 24,
+        "entries": [
+          {
+            "monsterId": "brinewing_ray",
+            "weight": 100,
+            "minLevel": 16,
+            "maxLevel": 16
+          }
+        ]
+      },
+      {
+        "id": "tidebreak_surgeclaw_shelf",
+        "bounds": {
+          "x": -270,
+          "y": -720,
+          "width": 780,
+          "height": 1440
+        },
+        "maxConcurrent": 4,
+        "respawnSeconds": 30,
+        "entries": [
+          {
+            "monsterId": "surgeclaw",
+            "weight": 100,
+            "minLevel": 16,
+            "maxLevel": 17
+          }
+        ]
+      },
+      {
+        "id": "tidebreak_galehorn_watch",
+        "bounds": {
+          "x": 570,
+          "y": -645,
+          "width": 450,
+          "height": 1290
+        },
+        "maxConcurrent": 3,
+        "respawnSeconds": 36,
+        "entries": [
+          {
+            "monsterId": "galehorn_prowler",
+            "weight": 100,
+            "minLevel": 17,
+            "maxLevel": 17
+          }
+        ]
+      }
+    ],
+    "resourceNodes": [
+      {
+        "id": "stormreed_stand_1",
+        "displayName": "Stormreed Stand",
+        "kind": "fiber",
+        "position": {
+          "x": -848,
+          "y": -400
+        },
+        "itemId": "stormreed_fiber",
+        "minCount": 1,
+        "maxCount": 2,
+        "respawnSeconds": 58,
+        "requiredLevel": 16
+      },
+      {
+        "id": "stormreed_stand_2",
+        "displayName": "Stormreed Stand",
+        "kind": "fiber",
+        "position": {
+          "x": -304,
+          "y": 400
+        },
+        "itemId": "stormreed_fiber",
+        "minCount": 1,
+        "maxCount": 2,
+        "respawnSeconds": 58,
+        "requiredLevel": 16
+      },
+      {
+        "id": "stormreed_stand_3",
+        "displayName": "Stormreed Stand",
+        "kind": "fiber",
+        "position": {
+          "x": 304,
+          "y": -208
+        },
+        "itemId": "stormreed_fiber",
+        "minCount": 1,
+        "maxCount": 2,
+        "respawnSeconds": 58,
+        "requiredLevel": 16
+      },
+      {
+        "id": "tideiron_seam_1",
+        "displayName": "Tideiron Seam",
+        "kind": "ore",
+        "position": {
+          "x": -16,
+          "y": 16
+        },
+        "itemId": "tideiron_scale",
+        "minCount": 1,
+        "maxCount": 2,
+        "respawnSeconds": 72,
+        "requiredLevel": 16
+      },
+      {
+        "id": "tideiron_seam_2",
+        "displayName": "Tideiron Seam",
+        "kind": "ore",
+        "position": {
+          "x": 496,
+          "y": -208
+        },
+        "itemId": "tideiron_scale",
+        "minCount": 1,
+        "maxCount": 2,
+        "respawnSeconds": 72,
+        "requiredLevel": 16
+      },
+      {
+        "id": "tideiron_seam_3",
+        "displayName": "Tideiron Seam",
+        "kind": "ore",
+        "position": {
+          "x": 848,
+          "y": 368
+        },
+        "itemId": "tideiron_scale",
+        "minCount": 1,
+        "maxCount": 2,
+        "respawnSeconds": 72,
+        "requiredLevel": 16
+      }
+    ],
+    "npcs": [
+      {
+        "npcId": "beaconwright_orrin",
+        "position": {
+          "x": 944,
+          "y": -208
+        },
+        "facing": "south"
+      }
+    ],
+    "portals": [
+      {
+        "id": "glasswind_return",
+        "label": "Glasswind Coast",
+        "position": {
+          "x": -1328,
+          "y": 16
+        },
+        "targetMapId": "glasswind_coast",
+        "targetSpawn": {
+          "x": 1280,
+          "y": 32
+        }
+      },
+      {
+        "id": "stormglass_gate",
+        "label": "Stormglass Reliquary",
+        "position": {
+          "x": 1424,
+          "y": 16
+        },
+        "targetMapId": "stormglass_reliquary",
+        "targetSpawn": {
+          "x": -880,
+          "y": 32
+        },
+        "requiredLevel": 17,
+        "requiredQuestStartedId": "quest_stormglass_reliquary"
+      }
+    ],
+    "playerSpawn": {
+      "x": -1072,
+      "y": 16
+    },
+    "safeZone": null,
+    "assetKey": "map_tidebreak_causeway"
+  },
+  {
+    "id": "stormglass_reliquary",
+    "displayName": "Stormglass Reliquary",
+    "kind": "dungeon",
+    "regionId": "dawnshore_reach",
+    "levelRange": {
+      "min": 17,
+      "max": 18
+    },
+    "showOnWorldMap": true,
+    "worldMapPosition": {
+      "x": 1060,
+      "y": 150
+    },
+    "biome": "stormglass_reliquary",
+    "musicKey": "music_stormglass_reliquary",
+    "gridSize": {
+      "width": 78,
+      "height": 57
+    },
+    "spawnTables": [
+      {
+        "id": "stormglass_custodian_halls",
+        "bounds": {
+          "x": -840,
+          "y": -645,
+          "width": 1350,
+          "height": 1290
+        },
+        "maxConcurrent": 6,
+        "respawnSeconds": 38,
+        "entries": [
+          {
+            "monsterId": "stormglass_custodian",
+            "weight": 100,
+            "minLevel": 17,
+            "maxLevel": 18
+          }
+        ]
+      },
+      {
+        "id": "stormglass_tempest_sanctum",
+        "bounds": {
+          "x": 880,
+          "y": 32,
+          "width": 1,
+          "height": 1
+        },
+        "maxConcurrent": 1,
+        "respawnSeconds": 180,
+        "entries": [
+          {
+            "monsterId": "tempest_remnant",
+            "weight": 100,
+            "minLevel": 18,
+            "maxLevel": 18
+          }
+        ]
+      }
+    ],
+    "resourceNodes": [
+      {
+        "id": "stormglass_relic_1",
+        "displayName": "Stormglass Memory",
+        "kind": "relic",
+        "position": {
+          "x": -464,
+          "y": -416
+        },
+        "itemId": "stormglass_fragment",
+        "minCount": 1,
+        "maxCount": 2,
+        "respawnSeconds": 88,
+        "requiredLevel": 17
+      },
+      {
+        "id": "stormglass_relic_2",
+        "displayName": "Stormglass Memory",
+        "kind": "relic",
+        "position": {
+          "x": -16,
+          "y": 416
+        },
+        "itemId": "stormglass_fragment",
+        "minCount": 1,
+        "maxCount": 2,
+        "respawnSeconds": 88,
+        "requiredLevel": 17
+      },
+      {
+        "id": "stormglass_relic_3",
+        "displayName": "Stormglass Memory",
+        "kind": "relic",
+        "position": {
+          "x": 400,
+          "y": -160
+        },
+        "itemId": "stormglass_fragment",
+        "minCount": 1,
+        "maxCount": 2,
+        "respawnSeconds": 88,
+        "requiredLevel": 17
+      }
+    ],
+    "npcs": [],
+    "portals": [
+      {
+        "id": "tidebreak_return",
+        "label": "Tidebreak Causeway",
+        "position": {
+          "x": -1136,
+          "y": 32
+        },
+        "targetMapId": "tidebreak_causeway",
+        "targetSpawn": {
+          "x": 1168,
+          "y": 16
+        }
+      },
+      {
+        "id": "beaconfall_ascent",
+        "label": "Beaconfall Cliffs",
+        "position": {
+          "x": 1232,
+          "y": 32
+        },
+        "targetMapId": "beaconfall_cliffs",
+        "targetSpawn": {
+          "x": -1072,
+          "y": 32
+        },
+        "requiredLevel": 18,
+        "requiredQuestId": "quest_stormglass_reliquary"
+      }
+    ],
+    "playerSpawn": {
+      "x": -880,
+      "y": 32
+    },
+    "safeZone": null,
+    "assetKey": "map_stormglass_reliquary"
+  },
+  {
+    "id": "beaconfall_cliffs",
+    "displayName": "Beaconfall Cliffs",
+    "kind": "field",
+    "regionId": "dawnshore_reach",
+    "levelRange": {
+      "min": 18,
+      "max": 19
+    },
+    "showOnWorldMap": true,
+    "worldMapPosition": {
+      "x": 1370,
+      "y": 150
+    },
+    "biome": "beaconfall_cliffs",
+    "musicKey": "music_beaconfall_cliffs",
+    "gridSize": {
+      "width": 90,
+      "height": 63
+    },
+    "spawnTables": [
+      {
+        "id": "beaconfall_sunveil_terraces",
+        "bounds": {
+          "x": -1170,
+          "y": -780,
+          "width": 810,
+          "height": 1560
+        },
+        "maxConcurrent": 6,
+        "respawnSeconds": 28,
+        "entries": [
+          {
+            "monsterId": "sunveil_sprite",
+            "weight": 100,
+            "minLevel": 18,
+            "maxLevel": 18
+          }
+        ]
+      },
+      {
+        "id": "beaconfall_zephyr_scree",
+        "bounds": {
+          "x": -285,
+          "y": -750,
+          "width": 750,
+          "height": 1500
+        },
+        "maxConcurrent": 5,
+        "respawnSeconds": 32,
+        "entries": [
+          {
+            "monsterId": "zephyrkin_screecher",
+            "weight": 100,
+            "minLevel": 18,
+            "maxLevel": 19
+          }
+        ]
+      },
+      {
+        "id": "beaconfall_cliffglass_watch",
+        "bounds": {
+          "x": 555,
+          "y": -675,
+          "width": 465,
+          "height": 1350
+        },
+        "maxConcurrent": 3,
+        "respawnSeconds": 40,
+        "entries": [
+          {
+            "monsterId": "cliffglass_ram",
+            "weight": 100,
+            "minLevel": 19,
+            "maxLevel": 19
+          }
+        ]
+      }
+    ],
+    "resourceNodes": [
+      {
+        "id": "sunveil_bloom_1",
+        "displayName": "Sunveil Bloom",
+        "kind": "herb",
+        "position": {
+          "x": -848,
+          "y": 352
+        },
+        "itemId": "sunveil_petal",
+        "minCount": 1,
+        "maxCount": 2,
+        "respawnSeconds": 62,
+        "requiredLevel": 18
+      },
+      {
+        "id": "sunveil_bloom_2",
+        "displayName": "Sunveil Bloom",
+        "kind": "herb",
+        "position": {
+          "x": -112,
+          "y": -352
+        },
+        "itemId": "sunveil_petal",
+        "minCount": 1,
+        "maxCount": 2,
+        "respawnSeconds": 62,
+        "requiredLevel": 18
+      },
+      {
+        "id": "sunveil_bloom_3",
+        "displayName": "Sunveil Bloom",
+        "kind": "herb",
+        "position": {
+          "x": 464,
+          "y": 256
+        },
+        "itemId": "sunveil_petal",
+        "minCount": 1,
+        "maxCount": 2,
+        "respawnSeconds": 62,
+        "requiredLevel": 18
+      },
+      {
+        "id": "skyglass_seam_1",
+        "displayName": "Skyglass Seam",
+        "kind": "ore",
+        "position": {
+          "x": 16,
+          "y": 32
+        },
+        "itemId": "skyglass_ore",
+        "minCount": 1,
+        "maxCount": 2,
+        "respawnSeconds": 78,
+        "requiredLevel": 18
+      },
+      {
+        "id": "skyglass_seam_2",
+        "displayName": "Skyglass Seam",
+        "kind": "ore",
+        "position": {
+          "x": 656,
+          "y": -320
+        },
+        "itemId": "skyglass_ore",
+        "minCount": 1,
+        "maxCount": 2,
+        "respawnSeconds": 78,
+        "requiredLevel": 18
+      },
+      {
+        "id": "skyglass_seam_3",
+        "displayName": "Skyglass Seam",
+        "kind": "ore",
+        "position": {
+          "x": 1040,
+          "y": 352
+        },
+        "itemId": "skyglass_ore",
+        "minCount": 1,
+        "maxCount": 2,
+        "respawnSeconds": 78,
+        "requiredLevel": 18
+      }
+    ],
+    "npcs": [
+      {
+        "npcId": "astronomer_sela",
+        "position": {
+          "x": -752,
+          "y": -160
+        },
+        "facing": "south"
+      },
+      {
+        "npcId": "cliffsmith_roan",
+        "position": {
+          "x": -304,
+          "y": 160
+        },
+        "facing": "west"
+      }
+    ],
+    "portals": [
+      {
+        "id": "stormglass_return",
+        "label": "Stormglass Reliquary",
+        "position": {
+          "x": -1328,
+          "y": 32
+        },
+        "targetMapId": "stormglass_reliquary",
+        "targetSpawn": {
+          "x": 1040,
+          "y": 32
+        }
+      },
+      {
+        "id": "sunspire_gate",
+        "label": "Sunspire Observatory",
+        "position": {
+          "x": 1424,
+          "y": 32
+        },
+        "targetMapId": "sunspire_observatory",
+        "targetSpawn": {
+          "x": -928,
+          "y": 16
+        },
+        "requiredLevel": 18,
+        "requiredQuestStartedId": "quest_sunspire_lens"
+      }
+    ],
+    "playerSpawn": {
+      "x": -1072,
+      "y": 32
+    },
+    "safeZone": null,
+    "assetKey": "map_beaconfall_cliffs"
+  },
+  {
+    "id": "sunspire_observatory",
+    "displayName": "Sunspire Observatory",
+    "kind": "dungeon",
+    "regionId": "dawnshore_reach",
+    "levelRange": {
+      "min": 19,
+      "max": 20
+    },
+    "showOnWorldMap": true,
+    "worldMapPosition": {
+      "x": 1670,
+      "y": 150
+    },
+    "biome": "sunspire_observatory",
+    "musicKey": "music_sunspire_observatory",
+    "gridSize": {
+      "width": 81,
+      "height": 60
+    },
+    "spawnTables": [
+      {
+        "id": "sunspire_lensbound_galleries",
+        "bounds": {
+          "x": -840,
+          "y": -690,
+          "width": 1140,
+          "height": 1380
+        },
+        "maxConcurrent": 6,
+        "respawnSeconds": 40,
+        "entries": [
+          {
+            "monsterId": "lensbound_sentry",
+            "weight": 100,
+            "minLevel": 19,
+            "maxLevel": 20
+          }
+        ]
+      },
+      {
+        "id": "sunspire_starfall_choir",
+        "bounds": {
+          "x": 285,
+          "y": -645,
+          "width": 450,
+          "height": 1290
+        },
+        "maxConcurrent": 4,
+        "respawnSeconds": 44,
+        "entries": [
+          {
+            "monsterId": "starfall_choir",
+            "weight": 100,
+            "minLevel": 20,
+            "maxLevel": 20
+          }
+        ]
+      },
+      {
+        "id": "sunspire_orrery_chamber",
+        "bounds": {
+          "x": 928,
+          "y": 16,
+          "width": 1,
+          "height": 1
+        },
+        "maxConcurrent": 1,
+        "respawnSeconds": 210,
+        "entries": [
+          {
+            "monsterId": "celestial_orrery",
+            "weight": 100,
+            "minLevel": 20,
+            "maxLevel": 20
+          }
+        ]
+      }
+    ],
+    "resourceNodes": [
+      {
+        "id": "starfall_relic_1",
+        "displayName": "Starfall Memory",
+        "kind": "relic",
+        "position": {
+          "x": -512,
+          "y": -464
+        },
+        "itemId": "starfall_dust",
+        "minCount": 1,
+        "maxCount": 2,
+        "respawnSeconds": 92,
+        "requiredLevel": 19
+      },
+      {
+        "id": "starfall_relic_2",
+        "displayName": "Starfall Memory",
+        "kind": "relic",
+        "position": {
+          "x": -64,
+          "y": 464
+        },
+        "itemId": "starfall_dust",
+        "minCount": 1,
+        "maxCount": 2,
+        "respawnSeconds": 92,
+        "requiredLevel": 19
+      },
+      {
+        "id": "starfall_relic_3",
+        "displayName": "Starfall Memory",
+        "kind": "relic",
+        "position": {
+          "x": 352,
+          "y": -208
+        },
+        "itemId": "starfall_dust",
+        "minCount": 1,
+        "maxCount": 2,
+        "respawnSeconds": 92,
+        "requiredLevel": 19
+      }
+    ],
+    "npcs": [],
+    "portals": [
+      {
+        "id": "beaconfall_return",
+        "label": "Beaconfall Cliffs",
+        "position": {
+          "x": -1184,
+          "y": 16
+        },
+        "targetMapId": "beaconfall_cliffs",
+        "targetSpawn": {
+          "x": 1232,
+          "y": 32
+        }
+      },
+      {
+        "id": "highlands_passage",
+        "label": "Aurora Highlands",
+        "position": {
+          "x": 1280,
+          "y": 16
+        },
+        "targetMapId": "aurora_highlands",
+        "targetSpawn": {
+          "x": -1072,
+          "y": 16
+        },
+        "requiredLevel": 20,
+        "requiredQuestId": "quest_sunspire_lens"
+      }
+    ],
+    "playerSpawn": {
+      "x": -928,
+      "y": 16
+    },
+    "safeZone": null,
+    "assetKey": "map_sunspire_observatory"
+  },
+  {
+    "id": "aurora_highlands",
+    "displayName": "Aurora Highlands",
+    "kind": "field",
+    "regionId": "dawnshore_reach",
+    "levelRange": {
+      "min": 20,
+      "max": 21
+    },
+    "showOnWorldMap": true,
+    "worldMapPosition": {
+      "x": 1670,
+      "y": 430
+    },
+    "biome": "aurora_highlands",
+    "musicKey": "music_aurora_highlands",
+    "gridSize": {
+      "width": 90,
+      "height": 66
+    },
+    "spawnTables": [
+      {
+        "id": "aurora_prismwing_meadow",
+        "bounds": {
+          "x": -1170,
+          "y": -810,
+          "width": 810,
+          "height": 1620
+        },
+        "maxConcurrent": 6,
+        "respawnSeconds": 28,
+        "entries": [
+          {
+            "monsterId": "prismwing_moth",
+            "weight": 100,
+            "minLevel": 20,
+            "maxLevel": 20
+          }
+        ]
+      },
+      {
+        "id": "aurora_sunforge_run",
+        "bounds": {
+          "x": -285,
+          "y": -780,
+          "width": 750,
+          "height": 1560
+        },
+        "maxConcurrent": 5,
+        "respawnSeconds": 34,
+        "entries": [
+          {
+            "monsterId": "sunforge_boar",
+            "weight": 100,
+            "minLevel": 20,
+            "maxLevel": 21
+          }
+        ]
+      },
+      {
+        "id": "aurora_horizon_watch",
+        "bounds": {
+          "x": 555,
+          "y": -705,
+          "width": 480,
+          "height": 1410
+        },
+        "maxConcurrent": 4,
+        "respawnSeconds": 40,
+        "entries": [
+          {
+            "monsterId": "horizon_raptor",
+            "weight": 100,
+            "minLevel": 21,
+            "maxLevel": 21
+          }
+        ]
+      }
+    ],
+    "resourceNodes": [
+      {
+        "id": "dawnsage_patch_1",
+        "displayName": "Dawnsage Patch",
+        "kind": "herb",
+        "position": {
+          "x": -880,
+          "y": 400
+        },
+        "itemId": "dawnsage_leaf",
+        "minCount": 1,
+        "maxCount": 2,
+        "respawnSeconds": 64,
+        "requiredLevel": 20
+      },
+      {
+        "id": "dawnsage_patch_2",
+        "displayName": "Dawnsage Patch",
+        "kind": "herb",
+        "position": {
+          "x": -80,
+          "y": -400
+        },
+        "itemId": "dawnsage_leaf",
+        "minCount": 1,
+        "maxCount": 2,
+        "respawnSeconds": 64,
+        "requiredLevel": 20
+      },
+      {
+        "id": "dawnsage_patch_3",
+        "displayName": "Dawnsage Patch",
+        "kind": "herb",
+        "position": {
+          "x": 464,
+          "y": 304
+        },
+        "itemId": "dawnsage_leaf",
+        "minCount": 1,
+        "maxCount": 2,
+        "respawnSeconds": 64,
+        "requiredLevel": 20
+      },
+      {
+        "id": "sunmetal_outcrop_1",
+        "displayName": "Sunmetal Outcrop",
+        "kind": "ore",
+        "position": {
+          "x": 80,
+          "y": 16
+        },
+        "itemId": "sunmetal_plate",
+        "minCount": 1,
+        "maxCount": 2,
+        "respawnSeconds": 82,
+        "requiredLevel": 20
+      },
+      {
+        "id": "sunmetal_outcrop_2",
+        "displayName": "Sunmetal Outcrop",
+        "kind": "ore",
+        "position": {
+          "x": 688,
+          "y": -368
+        },
+        "itemId": "sunmetal_plate",
+        "minCount": 1,
+        "maxCount": 2,
+        "respawnSeconds": 82,
+        "requiredLevel": 20
+      },
+      {
+        "id": "sunmetal_outcrop_3",
+        "displayName": "Sunmetal Outcrop",
+        "kind": "ore",
+        "position": {
+          "x": 1040,
+          "y": 400
+        },
+        "itemId": "sunmetal_plate",
+        "minCount": 1,
+        "maxCount": 2,
+        "respawnSeconds": 82,
+        "requiredLevel": 20
+      }
+    ],
+    "npcs": [
+      {
+        "npcId": "keeper_aurell",
+        "position": {
+          "x": -848,
+          "y": -208
+        },
+        "facing": "south"
+      },
+      {
+        "npcId": "warden_maelis",
+        "position": {
+          "x": -560,
+          "y": 272
+        },
+        "facing": "north"
+      },
+      {
+        "npcId": "archivist_nerys",
+        "position": {
+          "x": -112,
+          "y": -176
+        },
+        "facing": "south"
+      },
+      {
+        "npcId": "trader_vesper",
+        "position": {
+          "x": 272,
+          "y": 304
+        },
+        "facing": "west"
+      }
+    ],
+    "portals": [
+      {
+        "id": "sunspire_return",
+        "label": "Sunspire Observatory",
+        "position": {
+          "x": -1328,
+          "y": 16
+        },
+        "targetMapId": "sunspire_observatory",
+        "targetSpawn": {
+          "x": 1088,
+          "y": 16
+        }
+      },
+      {
+        "id": "zenith_gate",
+        "label": "Zenith Archive",
+        "position": {
+          "x": 1424,
+          "y": 16
+        },
+        "targetMapId": "zenith_archive",
+        "targetSpawn": {
+          "x": -928,
+          "y": 32
+        },
+        "requiredLevel": 20,
+        "requiredQuestStartedId": "quest_zenith_archive"
+      }
+    ],
+    "playerSpawn": {
+      "x": -1072,
+      "y": 16
+    },
+    "safeZone": null,
+    "assetKey": "map_aurora_highlands"
+  },
+  {
+    "id": "zenith_archive",
+    "displayName": "Zenith Archive",
+    "kind": "dungeon",
+    "regionId": "dawnshore_reach",
+    "levelRange": {
+      "min": 21,
+      "max": 22
+    },
+    "showOnWorldMap": true,
+    "worldMapPosition": {
+      "x": 1370,
+      "y": 430
+    },
+    "biome": "zenith_archive",
+    "musicKey": "music_zenith_archive",
+    "gridSize": {
+      "width": 81,
+      "height": 63
+    },
+    "spawnTables": [
+      {
+        "id": "zenith_index_wings",
+        "bounds": {
+          "x": -840,
+          "y": -720,
+          "width": 1140,
+          "height": 1440
+        },
+        "maxConcurrent": 6,
+        "respawnSeconds": 42,
+        "entries": [
+          {
+            "monsterId": "index_wraith",
+            "weight": 100,
+            "minLevel": 21,
+            "maxLevel": 22
+          }
+        ]
+      },
+      {
+        "id": "zenith_gilded_catalogue",
+        "bounds": {
+          "x": 285,
+          "y": -675,
+          "width": 450,
+          "height": 1350
+        },
+        "maxConcurrent": 4,
+        "respawnSeconds": 46,
+        "entries": [
+          {
+            "monsterId": "gilded_automaton",
+            "weight": 100,
+            "minLevel": 22,
+            "maxLevel": 22
+          }
+        ]
+      },
+      {
+        "id": "zenith_keeper_chamber",
+        "bounds": {
+          "x": 928,
+          "y": 32,
+          "width": 1,
+          "height": 1
+        },
+        "maxConcurrent": 1,
+        "respawnSeconds": 230,
+        "entries": [
+          {
+            "monsterId": "keeper_of_zenith",
+            "weight": 100,
+            "minLevel": 22,
+            "maxLevel": 22
+          }
+        ]
+      }
+    ],
+    "resourceNodes": [
+      {
+        "id": "memory_leaf_1",
+        "displayName": "Living Index",
+        "kind": "relic",
+        "position": {
+          "x": -512,
+          "y": -448
+        },
+        "itemId": "memory_leaf",
+        "minCount": 1,
+        "maxCount": 2,
+        "respawnSeconds": 96,
+        "requiredLevel": 21
+      },
+      {
+        "id": "memory_leaf_2",
+        "displayName": "Living Index",
+        "kind": "relic",
+        "position": {
+          "x": -64,
+          "y": 448
+        },
+        "itemId": "memory_leaf",
+        "minCount": 1,
+        "maxCount": 2,
+        "respawnSeconds": 96,
+        "requiredLevel": 21
+      },
+      {
+        "id": "memory_leaf_3",
+        "displayName": "Living Index",
+        "kind": "relic",
+        "position": {
+          "x": 352,
+          "y": -224
+        },
+        "itemId": "memory_leaf",
+        "minCount": 1,
+        "maxCount": 2,
+        "respawnSeconds": 96,
+        "requiredLevel": 21
+      }
+    ],
+    "npcs": [],
+    "portals": [
+      {
+        "id": "aurora_return",
+        "label": "Aurora Highlands",
+        "position": {
+          "x": -1184,
+          "y": 32
+        },
+        "targetMapId": "aurora_highlands",
+        "targetSpawn": {
+          "x": 1232,
+          "y": 16
+        }
+      },
+      {
+        "id": "choirwood_passage",
+        "label": "Choirwood Canopy",
+        "position": {
+          "x": 1280,
+          "y": 32
+        },
+        "targetMapId": "choirwood_canopy",
+        "targetSpawn": {
+          "x": -1072,
+          "y": 16
+        },
+        "requiredLevel": 22,
+        "requiredQuestId": "quest_zenith_archive"
+      }
+    ],
+    "playerSpawn": {
+      "x": -928,
+      "y": 32
+    },
+    "safeZone": null,
+    "assetKey": "map_zenith_archive"
+  },
+  {
+    "id": "choirwood_canopy",
+    "displayName": "Choirwood Canopy",
+    "kind": "field",
+    "regionId": "dawnshore_reach",
+    "levelRange": {
+      "min": 22,
+      "max": 23
+    },
+    "showOnWorldMap": true,
+    "worldMapPosition": {
+      "x": 1060,
+      "y": 430
+    },
+    "biome": "choirwood_canopy",
+    "musicKey": "music_choirwood_canopy",
+    "gridSize": {
+      "width": 90,
+      "height": 66
+    },
+    "spawnTables": [
+      {
+        "id": "choirwood_chimebark_glade",
+        "bounds": {
+          "x": -1170,
+          "y": -810,
+          "width": 810,
+          "height": 1620
+        },
+        "maxConcurrent": 6,
+        "respawnSeconds": 30,
+        "entries": [
+          {
+            "monsterId": "chimebeetle",
+            "weight": 100,
+            "minLevel": 22,
+            "maxLevel": 22
+          }
+        ]
+      },
+      {
+        "id": "choirwood_canticle_green",
+        "bounds": {
+          "x": -285,
+          "y": -780,
+          "width": 750,
+          "height": 1560
+        },
+        "maxConcurrent": 5,
+        "respawnSeconds": 36,
+        "entries": [
+          {
+            "monsterId": "canticle_stag",
+            "weight": 100,
+            "minLevel": 22,
+            "maxLevel": 23
+          }
+        ]
+      },
+      {
+        "id": "choirwood_muted_bellgrove",
+        "bounds": {
+          "x": 555,
+          "y": -705,
+          "width": 480,
+          "height": 1410
+        },
+        "maxConcurrent": 4,
+        "respawnSeconds": 42,
+        "entries": [
+          {
+            "monsterId": "mossbound_cantor",
+            "weight": 100,
+            "minLevel": 23,
+            "maxLevel": 23
+          }
+        ]
+      }
+    ],
+    "resourceNodes": [
+      {
+        "id": "echo_moss_patch_1",
+        "displayName": "Echo Moss Patch",
+        "kind": "herb",
+        "position": {
+          "x": -880,
+          "y": 464
+        },
+        "itemId": "echo_moss",
+        "minCount": 1,
+        "maxCount": 2,
+        "respawnSeconds": 68,
+        "requiredLevel": 22
+      },
+      {
+        "id": "echo_moss_patch_2",
+        "displayName": "Echo Moss Patch",
+        "kind": "herb",
+        "position": {
+          "x": 80,
+          "y": -400
+        },
+        "itemId": "echo_moss",
+        "minCount": 1,
+        "maxCount": 2,
+        "respawnSeconds": 68,
+        "requiredLevel": 22
+      },
+      {
+        "id": "echo_moss_patch_3",
+        "displayName": "Echo Moss Patch",
+        "kind": "herb",
+        "position": {
+          "x": 560,
+          "y": 272
+        },
+        "itemId": "echo_moss",
+        "minCount": 1,
+        "maxCount": 2,
+        "respawnSeconds": 68,
+        "requiredLevel": 22
+      },
+      {
+        "id": "resonant_bark_stand_1",
+        "displayName": "Resonant Bark Stand",
+        "kind": "fiber",
+        "position": {
+          "x": 16,
+          "y": 16
+        },
+        "itemId": "resonant_bark",
+        "minCount": 1,
+        "maxCount": 2,
+        "respawnSeconds": 86,
+        "requiredLevel": 22
+      },
+      {
+        "id": "resonant_bark_stand_2",
+        "displayName": "Resonant Bark Stand",
+        "kind": "fiber",
+        "position": {
+          "x": 752,
+          "y": -368
+        },
+        "itemId": "resonant_bark",
+        "minCount": 1,
+        "maxCount": 2,
+        "respawnSeconds": 86,
+        "requiredLevel": 22
+      },
+      {
+        "id": "resonant_bark_stand_3",
+        "displayName": "Resonant Bark Stand",
+        "kind": "fiber",
+        "position": {
+          "x": 1040,
+          "y": 368
+        },
+        "itemId": "resonant_bark",
+        "minCount": 1,
+        "maxCount": 2,
+        "respawnSeconds": 86,
+        "requiredLevel": 22
+      }
+    ],
+    "npcs": [
+      {
+        "npcId": "runesinger_lyra",
+        "position": {
+          "x": -848,
+          "y": -208
+        },
+        "facing": "south"
+      },
+      {
+        "npcId": "cantor_eira",
+        "position": {
+          "x": -496,
+          "y": 304
+        },
+        "facing": "west"
+      },
+      {
+        "npcId": "keeper_orem",
+        "position": {
+          "x": -80,
+          "y": -208
+        },
+        "facing": "south"
+      }
+    ],
+    "portals": [
+      {
+        "id": "zenith_return",
+        "label": "Zenith Archive",
+        "position": {
+          "x": -1328,
+          "y": 16
+        },
+        "targetMapId": "zenith_archive",
+        "targetSpawn": {
+          "x": 1088,
+          "y": 32
+        }
+      },
+      {
+        "id": "crownroot_gate",
+        "label": "Crownroot Sanctum",
+        "position": {
+          "x": 1424,
+          "y": 16
+        },
+        "targetMapId": "crownroot_sanctum",
+        "targetSpawn": {
+          "x": -928,
+          "y": 32
+        },
+        "requiredLevel": 23,
+        "requiredQuestStartedId": "quest_crownroot_concordance"
+      }
+    ],
+    "playerSpawn": {
+      "x": -1072,
+      "y": 16
+    },
+    "safeZone": null,
+    "assetKey": "map_choirwood_canopy"
+  },
+  {
+    "id": "crownroot_sanctum",
+    "displayName": "Crownroot Sanctum",
+    "kind": "dungeon",
+    "regionId": "dawnshore_reach",
+    "levelRange": {
+      "min": 23,
+      "max": 24
+    },
+    "showOnWorldMap": true,
+    "worldMapPosition": {
+      "x": 750,
+      "y": 430
+    },
+    "biome": "crownroot_sanctum",
+    "musicKey": "music_crownroot_sanctum",
+    "gridSize": {
+      "width": 81,
+      "height": 63
+    },
+    "spawnTables": [
+      {
+        "id": "crownroot_scriptorium_halls",
+        "bounds": {
+          "x": -840,
+          "y": -720,
+          "width": 1140,
+          "height": 1440
+        },
+        "maxConcurrent": 6,
+        "respawnSeconds": 44,
+        "entries": [
+          {
+            "monsterId": "scriptroot_lurker",
+            "weight": 100,
+            "minLevel": 23,
+            "maxLevel": 24
+          }
+        ]
+      },
+      {
+        "id": "crownroot_bellglass_crypt",
+        "bounds": {
+          "x": 285,
+          "y": -675,
+          "width": 450,
+          "height": 1350
+        },
+        "maxConcurrent": 4,
+        "respawnSeconds": 48,
+        "entries": [
+          {
+            "monsterId": "bellglass_myconid",
+            "weight": 100,
+            "minLevel": 24,
+            "maxLevel": 24
+          }
+        ]
+      },
+      {
+        "id": "crownroot_inner_choir",
+        "bounds": {
+          "x": 928,
+          "y": 32,
+          "width": 1,
+          "height": 1
+        },
+        "maxConcurrent": 1,
+        "respawnSeconds": 245,
+        "entries": [
+          {
+            "monsterId": "crownroot_hierophant",
+            "weight": 100,
+            "minLevel": 24,
+            "maxLevel": 24
+          }
+        ]
+      }
+    ],
+    "resourceNodes": [
+      {
+        "id": "hymn_leaf_1",
+        "displayName": "Hymn Leaf",
+        "kind": "relic",
+        "position": {
+          "x": -512,
+          "y": -512
+        },
+        "itemId": "hymn_leaf",
+        "minCount": 1,
+        "maxCount": 2,
+        "respawnSeconds": 102,
+        "requiredLevel": 23
+      },
+      {
+        "id": "hymn_leaf_2",
+        "displayName": "Hymn Leaf",
+        "kind": "relic",
+        "position": {
+          "x": -64,
+          "y": 416
+        },
+        "itemId": "hymn_leaf",
+        "minCount": 1,
+        "maxCount": 2,
+        "respawnSeconds": 102,
+        "requiredLevel": 23
+      },
+      {
+        "id": "hymn_leaf_3",
+        "displayName": "Hymn Leaf",
+        "kind": "relic",
+        "position": {
+          "x": 352,
+          "y": -256
+        },
+        "itemId": "hymn_leaf",
+        "minCount": 1,
+        "maxCount": 2,
+        "respawnSeconds": 102,
+        "requiredLevel": 23
+      }
+    ],
+    "npcs": [],
+    "portals": [
+      {
+        "id": "choirwood_return",
+        "label": "Choirwood Canopy",
+        "position": {
+          "x": -1184,
+          "y": 32
+        },
+        "targetMapId": "choirwood_canopy",
+        "targetSpawn": {
+          "x": 1232,
+          "y": 16
+        }
+      },
+      {
+        "id": "runeveil_passage",
+        "label": "Runeveil Gardens",
+        "position": {
+          "x": 1280,
+          "y": 32
+        },
+        "targetMapId": "runeveil_gardens",
+        "targetSpawn": {
+          "x": -1072,
+          "y": 16
+        },
+        "requiredLevel": 24,
+        "requiredQuestId": "quest_crownroot_concordance"
+      }
+    ],
+    "playerSpawn": {
+      "x": -928,
+      "y": 32
+    },
+    "safeZone": null,
+    "assetKey": "map_crownroot_sanctum"
+  },
+  {
+    "id": "runeveil_gardens",
+    "displayName": "Runeveil Gardens",
+    "kind": "field",
+    "regionId": "dawnshore_reach",
+    "levelRange": {
+      "min": 24,
+      "max": 25
+    },
+    "showOnWorldMap": true,
+    "worldMapPosition": {
+      "x": 440,
+      "y": 430
+    },
+    "biome": "runeveil_gardens",
+    "musicKey": "music_runeveil_gardens",
+    "gridSize": {
+      "width": 90,
+      "height": 66
+    },
+    "spawnTables": [
+      {
+        "id": "runeveil_petaled_walks",
+        "bounds": {
+          "x": -1170,
+          "y": -810,
+          "width": 810,
+          "height": 1620
+        },
+        "maxConcurrent": 6,
+        "respawnSeconds": 32,
+        "entries": [
+          {
+            "monsterId": "glyphhare",
+            "weight": 100,
+            "minLevel": 24,
+            "maxLevel": 25
+          }
+        ]
+      },
+      {
+        "id": "runeveil_lantern_green",
+        "bounds": {
+          "x": -285,
+          "y": -780,
+          "width": 750,
+          "height": 1560
+        },
+        "maxConcurrent": 5,
+        "respawnSeconds": 38,
+        "entries": [
+          {
+            "monsterId": "lanternback_elk",
+            "weight": 100,
+            "minLevel": 24,
+            "maxLevel": 25
+          }
+        ]
+      },
+      {
+        "id": "runeveil_wayglass_hedge",
+        "bounds": {
+          "x": 555,
+          "y": -705,
+          "width": 480,
+          "height": 1410
+        },
+        "maxConcurrent": 4,
+        "respawnSeconds": 44,
+        "entries": [
+          {
+            "monsterId": "wayglass_watcher",
+            "weight": 100,
+            "minLevel": 25,
+            "maxLevel": 25
+          }
+        ]
+      }
+    ],
+    "resourceNodes": [
+      {
+        "id": "runebloom_patch_1",
+        "displayName": "Runebloom Patch",
+        "kind": "herb",
+        "position": {
+          "x": -880,
+          "y": 464
+        },
+        "itemId": "runebloom_petal",
+        "minCount": 1,
+        "maxCount": 2,
+        "respawnSeconds": 72,
+        "requiredLevel": 24
+      },
+      {
+        "id": "runebloom_patch_2",
+        "displayName": "Runebloom Patch",
+        "kind": "herb",
+        "position": {
+          "x": 80,
+          "y": -400
+        },
+        "itemId": "runebloom_petal",
+        "minCount": 1,
+        "maxCount": 2,
+        "respawnSeconds": 72,
+        "requiredLevel": 24
+      },
+      {
+        "id": "runebloom_patch_3",
+        "displayName": "Runebloom Patch",
+        "kind": "herb",
+        "position": {
+          "x": 560,
+          "y": 272
+        },
+        "itemId": "runebloom_petal",
+        "minCount": 1,
+        "maxCount": 2,
+        "respawnSeconds": 72,
+        "requiredLevel": 24
+      },
+      {
+        "id": "wayglass_cluster_1",
+        "displayName": "Wayglass Cluster",
+        "kind": "relic",
+        "position": {
+          "x": 16,
+          "y": 16
+        },
+        "itemId": "wayglass_shard",
+        "minCount": 1,
+        "maxCount": 2,
+        "respawnSeconds": 90,
+        "requiredLevel": 24
+      },
+      {
+        "id": "wayglass_cluster_2",
+        "displayName": "Wayglass Cluster",
+        "kind": "relic",
+        "position": {
+          "x": 752,
+          "y": -368
+        },
+        "itemId": "wayglass_shard",
+        "minCount": 1,
+        "maxCount": 2,
+        "respawnSeconds": 90,
+        "requiredLevel": 24
+      },
+      {
+        "id": "wayglass_cluster_3",
+        "displayName": "Wayglass Cluster",
+        "kind": "relic",
+        "position": {
+          "x": 1040,
+          "y": 368
+        },
+        "itemId": "wayglass_shard",
+        "minCount": 1,
+        "maxCount": 2,
+        "respawnSeconds": 90,
+        "requiredLevel": 24
+      }
+    ],
+    "npcs": [
+      {
+        "npcId": "waykeeper_talin",
+        "position": {
+          "x": -848,
+          "y": -208
+        },
+        "facing": "south"
+      },
+      {
+        "npcId": "runesmith_sera",
+        "position": {
+          "x": -496,
+          "y": 304
+        },
+        "facing": "west"
+      },
+      {
+        "npcId": "archivist_pell",
+        "position": {
+          "x": -80,
+          "y": -208
+        },
+        "facing": "south"
+      }
+    ],
+    "portals": [
+      {
+        "id": "crownroot_return",
+        "label": "Crownroot Sanctum",
+        "position": {
+          "x": -1328,
+          "y": 16
+        },
+        "targetMapId": "crownroot_sanctum",
+        "targetSpawn": {
+          "x": 1088,
+          "y": 32
+        }
+      },
+      {
+        "id": "namesong_gate",
+        "label": "Namesong Vault",
+        "position": {
+          "x": 1424,
+          "y": 16
+        },
+        "targetMapId": "namesong_vault",
+        "targetSpawn": {
+          "x": -928,
+          "y": 32
+        },
+        "requiredLevel": 25,
+        "requiredQuestStartedId": "quest_namesong_vault"
+      }
+    ],
+    "playerSpawn": {
+      "x": -1072,
+      "y": 16
+    },
+    "safeZone": null,
+    "assetKey": "map_runeveil_gardens"
+  },
+  {
+    "id": "namesong_vault",
+    "displayName": "Namesong Vault",
+    "kind": "dungeon",
+    "regionId": "dawnshore_reach",
+    "levelRange": {
+      "min": 25,
+      "max": 26
+    },
+    "showOnWorldMap": true,
+    "worldMapPosition": {
+      "x": 130,
+      "y": 430
+    },
+    "biome": "namesong_vault",
+    "musicKey": "music_namesong_vault",
+    "gridSize": {
+      "width": 81,
+      "height": 63
+    },
+    "spawnTables": [
+      {
+        "id": "namesong_epitaph_halls",
+        "bounds": {
+          "x": -840,
+          "y": -720,
+          "width": 1140,
+          "height": 1440
+        },
+        "maxConcurrent": 6,
+        "respawnSeconds": 46,
+        "entries": [
+          {
+            "monsterId": "epitaph_sentinel",
+            "weight": 100,
+            "minLevel": 25,
+            "maxLevel": 26
+          }
+        ]
+      },
+      {
+        "id": "namesong_erased_scriptorium",
+        "bounds": {
+          "x": 285,
+          "y": -675,
+          "width": 450,
+          "height": 1350
+        },
+        "maxConcurrent": 4,
+        "respawnSeconds": 52,
+        "entries": [
+          {
+            "monsterId": "pale_scriptling",
+            "weight": 100,
+            "minLevel": 26,
+            "maxLevel": 26
+          }
+        ]
+      },
+      {
+        "id": "namesong_inner_archive",
+        "bounds": {
+          "x": 928,
+          "y": 32,
+          "width": 1,
+          "height": 1
+        },
+        "maxConcurrent": 1,
+        "respawnSeconds": 260,
+        "entries": [
+          {
+            "monsterId": "archivore",
+            "weight": 100,
+            "minLevel": 26,
+            "maxLevel": 26
+          }
+        ]
+      }
+    ],
+    "resourceNodes": [
+      {
+        "id": "hollowstar_seam_1",
+        "displayName": "Hollowstar Seam",
+        "kind": "ore",
+        "position": {
+          "x": -512,
+          "y": -512
+        },
+        "itemId": "hollowstar_ore",
+        "minCount": 1,
+        "maxCount": 2,
+        "respawnSeconds": 108,
+        "requiredLevel": 25
+      },
+      {
+        "id": "hollowstar_seam_2",
+        "displayName": "Hollowstar Seam",
+        "kind": "ore",
+        "position": {
+          "x": -64,
+          "y": 416
+        },
+        "itemId": "hollowstar_ore",
+        "minCount": 1,
+        "maxCount": 2,
+        "respawnSeconds": 108,
+        "requiredLevel": 25
+      },
+      {
+        "id": "hollowstar_seam_3",
+        "displayName": "Hollowstar Seam",
+        "kind": "ore",
+        "position": {
+          "x": 352,
+          "y": -256
+        },
+        "itemId": "hollowstar_ore",
+        "minCount": 1,
+        "maxCount": 2,
+        "respawnSeconds": 108,
+        "requiredLevel": 25
+      }
+    ],
+    "npcs": [],
+    "portals": [
+      {
+        "id": "runeveil_return",
+        "label": "Runeveil Gardens",
+        "position": {
+          "x": -1184,
+          "y": 32
+        },
+        "targetMapId": "runeveil_gardens",
+        "targetSpawn": {
+          "x": 1232,
+          "y": 16
+        }
+      },
+      {
+        "id": "waystar_passage",
+        "label": "Waystar Moor",
+        "position": {
+          "x": 1280,
+          "y": 32
+        },
+        "targetMapId": "waystar_moor",
+        "targetSpawn": {
+          "x": -1072,
+          "y": 16
+        },
+        "requiredLevel": 26,
+        "requiredQuestId": "quest_namesong_vault"
+      }
+    ],
+    "playerSpawn": {
+      "x": -928,
+      "y": 32
+    },
+    "safeZone": null,
+    "assetKey": "map_namesong_vault"
+  },
+  {
+    "id": "waystar_moor",
+    "displayName": "Waystar Moor",
+    "kind": "field",
+    "regionId": "dawnshore_reach",
+    "levelRange": {
+      "min": 26,
+      "max": 27
+    },
+    "showOnWorldMap": true,
+    "worldMapPosition": {
+      "x": 130,
+      "y": 710
+    },
+    "biome": "waystar_moor",
+    "musicKey": "music_waystar_moor",
+    "gridSize": {
+      "width": 90,
+      "height": 66
+    },
+    "spawnTables": [
+      {
+        "id": "waystar_west_heath",
+        "bounds": {
+          "x": -1170,
+          "y": -810,
+          "width": 810,
+          "height": 1620
+        },
+        "maxConcurrent": 6,
+        "respawnSeconds": 34,
+        "entries": [
+          {
+            "monsterId": "waystar_grazer",
+            "weight": 100,
+            "minLevel": 26,
+            "maxLevel": 27
+          }
+        ]
+      },
+      {
+        "id": "waystar_compass_green",
+        "bounds": {
+          "x": -285,
+          "y": -780,
+          "width": 750,
+          "height": 1560
+        },
+        "maxConcurrent": 5,
+        "respawnSeconds": 40,
+        "entries": [
+          {
+            "monsterId": "compass_scarab",
+            "weight": 100,
+            "minLevel": 26,
+            "maxLevel": 27
+          }
+        ]
+      },
+      {
+        "id": "waystar_east_moor",
+        "bounds": {
+          "x": 555,
+          "y": -705,
+          "width": 480,
+          "height": 1410
+        },
+        "maxConcurrent": 4,
+        "respawnSeconds": 46,
+        "entries": [
+          {
+            "monsterId": "pathless_wisp",
+            "weight": 100,
+            "minLevel": 27,
+            "maxLevel": 27
+          }
+        ]
+      }
+    ],
+    "resourceNodes": [
+      {
+        "id": "waystar_pollen_1",
+        "displayName": "Waystar Bloom",
+        "kind": "herb",
+        "position": {
+          "x": -880,
+          "y": 464
+        },
+        "itemId": "waystar_pollen",
+        "minCount": 1,
+        "maxCount": 2,
+        "respawnSeconds": 78,
+        "requiredLevel": 26
+      },
+      {
+        "id": "waystar_pollen_2",
+        "displayName": "Waystar Bloom",
+        "kind": "herb",
+        "position": {
+          "x": 80,
+          "y": -400
+        },
+        "itemId": "waystar_pollen",
+        "minCount": 1,
+        "maxCount": 2,
+        "respawnSeconds": 78,
+        "requiredLevel": 26
+      },
+      {
+        "id": "waystar_pollen_3",
+        "displayName": "Waystar Bloom",
+        "kind": "herb",
+        "position": {
+          "x": 560,
+          "y": 272
+        },
+        "itemId": "waystar_pollen",
+        "minCount": 1,
+        "maxCount": 2,
+        "respawnSeconds": 78,
+        "requiredLevel": 26
+      },
+      {
+        "id": "convergent_glass_1",
+        "displayName": "Convergent Glass",
+        "kind": "relic",
+        "position": {
+          "x": 16,
+          "y": 16
+        },
+        "itemId": "convergent_glass",
+        "minCount": 1,
+        "maxCount": 2,
+        "respawnSeconds": 96,
+        "requiredLevel": 26
+      },
+      {
+        "id": "convergent_glass_2",
+        "displayName": "Convergent Glass",
+        "kind": "relic",
+        "position": {
+          "x": 848,
+          "y": -368
+        },
+        "itemId": "convergent_glass",
+        "minCount": 1,
+        "maxCount": 2,
+        "respawnSeconds": 96,
+        "requiredLevel": 26
+      },
+      {
+        "id": "convergent_glass_3",
+        "displayName": "Convergent Glass",
+        "kind": "relic",
+        "position": {
+          "x": 1040,
+          "y": 368
+        },
+        "itemId": "convergent_glass",
+        "minCount": 1,
+        "maxCount": 2,
+        "respawnSeconds": 96,
+        "requiredLevel": 26
+      }
+    ],
+    "npcs": [
+      {
+        "npcId": "moorwarden_calix",
+        "position": {
+          "x": -848,
+          "y": -208
+        },
+        "facing": "south"
+      },
+      {
+        "npcId": "quartermaster_fenn",
+        "position": {
+          "x": -496,
+          "y": 304
+        },
+        "facing": "west"
+      },
+      {
+        "npcId": "pathweaver_ione",
+        "position": {
+          "x": -80,
+          "y": -208
+        },
+        "facing": "south"
+      }
+    ],
+    "portals": [
+      {
+        "id": "namesong_return",
+        "label": "Namesong Vault",
+        "position": {
+          "x": -1328,
+          "y": 16
+        },
+        "targetMapId": "namesong_vault",
+        "targetSpawn": {
+          "x": 1088,
+          "y": 32
+        }
+      },
+      {
+        "id": "convergence_gate",
+        "label": "Convergence Spire",
+        "position": {
+          "x": 1424,
+          "y": 16
+        },
+        "targetMapId": "convergence_spire",
+        "targetSpawn": {
+          "x": -928,
+          "y": 32
+        },
+        "requiredLevel": 27,
+        "requiredQuestStartedId": "quest_convergence_rite"
+      }
+    ],
+    "playerSpawn": {
+      "x": -1072,
+      "y": 16
+    },
+    "safeZone": null,
+    "assetKey": "map_waystar_moor"
+  },
+  {
+    "id": "convergence_spire",
+    "displayName": "Convergence Spire",
+    "kind": "dungeon",
+    "regionId": "dawnshore_reach",
+    "levelRange": {
+      "min": 27,
+      "max": 28
+    },
+    "showOnWorldMap": true,
+    "worldMapPosition": {
+      "x": 440,
+      "y": 710
+    },
+    "biome": "convergence_spire",
+    "musicKey": "music_convergence_spire",
+    "gridSize": {
+      "width": 81,
+      "height": 63
+    },
+    "spawnTables": [
+      {
+        "id": "convergence_vow_halls",
+        "bounds": {
+          "x": -840,
+          "y": -720,
+          "width": 1140,
+          "height": 1440
+        },
+        "maxConcurrent": 6,
+        "respawnSeconds": 48,
+        "entries": [
+          {
+            "monsterId": "vowsteel_knight",
+            "weight": 100,
+            "minLevel": 27,
+            "maxLevel": 28
+          }
+        ]
+      },
+      {
+        "id": "convergence_split_hall",
+        "bounds": {
+          "x": 285,
+          "y": -675,
+          "width": 450,
+          "height": 1350
+        },
+        "maxConcurrent": 4,
+        "respawnSeconds": 54,
+        "entries": [
+          {
+            "monsterId": "splitstar_echo",
+            "weight": 100,
+            "minLevel": 28,
+            "maxLevel": 28
+          }
+        ]
+      },
+      {
+        "id": "manyroad_dais",
+        "bounds": {
+          "x": 928,
+          "y": 32,
+          "width": 1,
+          "height": 1
+        },
+        "maxConcurrent": 1,
+        "respawnSeconds": 275,
+        "entries": [
+          {
+            "monsterId": "manyroad_crown",
+            "weight": 100,
+            "minLevel": 28,
+            "maxLevel": 28
+          }
+        ]
+      }
+    ],
+    "resourceNodes": [
+      {
+        "id": "vowsteel_fragment_1",
+        "displayName": "Vowsteel Remnant",
+        "kind": "ore",
+        "position": {
+          "x": -512,
+          "y": -512
+        },
+        "itemId": "vowsteel_fragment",
+        "minCount": 1,
+        "maxCount": 2,
+        "respawnSeconds": 114,
+        "requiredLevel": 27
+      },
+      {
+        "id": "vowsteel_fragment_2",
+        "displayName": "Vowsteel Remnant",
+        "kind": "ore",
+        "position": {
+          "x": -64,
+          "y": 416
+        },
+        "itemId": "vowsteel_fragment",
+        "minCount": 1,
+        "maxCount": 2,
+        "respawnSeconds": 114,
+        "requiredLevel": 27
+      },
+      {
+        "id": "vowsteel_fragment_3",
+        "displayName": "Vowsteel Remnant",
+        "kind": "ore",
+        "position": {
+          "x": 352,
+          "y": -256
+        },
+        "itemId": "vowsteel_fragment",
+        "minCount": 1,
+        "maxCount": 2,
+        "respawnSeconds": 114,
+        "requiredLevel": 27
+      }
+    ],
+    "npcs": [],
+    "portals": [
+      {
+        "id": "waystar_return",
+        "label": "Waystar Moor",
+        "position": {
+          "x": -1184,
+          "y": 32
+        },
+        "targetMapId": "waystar_moor",
+        "targetSpawn": {
+          "x": 1232,
+          "y": 16
+        }
+      }
+    ],
+    "playerSpawn": {
+      "x": -928,
+      "y": 32
+    },
+    "safeZone": null,
+    "assetKey": "map_convergence_spire"
   }
 ]

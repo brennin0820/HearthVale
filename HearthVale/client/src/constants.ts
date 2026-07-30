@@ -37,7 +37,7 @@ export const NPC_ROLE_COLORS: Record<NpcRole, number> = {
 
 export const DEFAULT_MAP_COLOR = 0x3a3a4a;
 
-export const INITIAL_MAP_ID = 'hearthvale_town';
+export const INITIAL_MAP_ID = 'hearthvale_town_ro';
 
 export const HUD_DEPTH = 1000;
 

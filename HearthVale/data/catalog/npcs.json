@@ -197,7 +197,214 @@
     "title": "Keeper of the Hearth",
     "dialogue": [
       "May the hearthlight keep you. Rest in the vale and let its calm settle your spirit.",
-      "Dark things stir beyond Millwick. When you are ready, the vale will ask much of you."
+      "The Moonwell and Hollow Kiln are two halves of an older promise. Restore both, and return to me.",
+      "When their lights answer one another, the Lanternspire road will open for its final keeper."
+    ]
+  },
+  {
+    "id": "glasswright_orla",
+    "displayName": "Glasswright Orla",
+    "role": "quest",
+    "title": "Emberglass Artisan",
+    "dialogue": [
+      "Careful where you step. Emberglass remembers every spark that ever touched it.",
+      "The old kiln is awake again, but a warm hearth and a hungry furnace are not the same thing.",
+      "Bring me what the shelf sheds, and together we might teach that fire some manners."
+    ]
+  },
+  {
+    "id": "trailwarden_nia",
+    "displayName": "Trailwarden Nia",
+    "role": "quest",
+    "title": "Dawnshore Trailwarden",
+    "dialogue": [
+      "You crossed the new light and kept your footing. That makes you Dawnshore company now.",
+      "The Glasswind beacon has turned seaward, and every false reflection along the coast is answering it.",
+      "Gather what the tide leaves behind, still the beacon ward, and bring its true bearing home."
+    ]
+  },
+  {
+    "id": "quartermaster_vesa",
+    "displayName": "Quartermaster Vesa",
+    "role": "merchant",
+    "title": "Coast Supply",
+    "dialogue": [
+      "Saltglass for fittings, sunwake kelp for cordage, and enough stew to make the crossing sensible.",
+      "Bring me sound materials from the coast and I will turn them into something the wind cannot take."
+    ]
+  },
+  {
+    "id": "beaconwright_orrin",
+    "displayName": "Beaconwright Orrin",
+    "role": "quest",
+    "title": "Tidebreak Keeper",
+    "dialogue": [
+      "Every post on this road was set to teach the storm where not to stand. Lately, it has stopped listening.",
+      "The old Reliquary is awake beyond the causeway. Watch the light beneath your feet and move before it closes.",
+      "Bring its quiet heart back here. I would rather tend a beacon than inherit another weather god."
+    ]
+  },
+  {
+    "id": "astronomer_sela",
+    "displayName": "Astronomer Sela",
+    "role": "quest",
+    "title": "Dawnshore Astronomer",
+    "dialogue": [
+      "The Reliquary storm hid the upper cliffs for a century. Now the old beacon is drawing a line straight through the dawn.",
+      "Sunveil grows where that light touches stone. Gather it before the sprites drink every drop of color.",
+      "Beyond the ascent stands Sunspire Observatory. Its great lens is turning without a hand to guide it."
+    ]
+  },
+  {
+    "id": "cliffsmith_roan",
+    "displayName": "Cliffsmith Roan",
+    "role": "merchant",
+    "title": "Skyglass Smith",
+    "dialogue": [
+      "Up here, good footing is armor. Skyglass makes both, provided you respect its temper.",
+      "Bring petals for the glare, ore for the edge, and pinions for balance. I will handle the hammering.",
+      "The observatory mechanisms shed fine parts, but none of them fall quietly."
+    ]
+  },
+  {
+    "id": "keeper_aurell",
+    "displayName": "Keeper Aurell",
+    "role": "quest",
+    "title": "Prismwing Keeper",
+    "dialogue": [
+      "The highlands do not ask us to be gentle. Gentleness is the answer we choose anyway.",
+      "The Prismwings are caught in the Archive glare. Free their silk, gather Dawnsage, and I can preserve what remains.",
+      "Maelis offers a harder road. Choose one oath carefully; the heights remember commitments."
+    ]
+  },
+  {
+    "id": "warden_maelis",
+    "displayName": "Warden Maelis",
+    "role": "quest",
+    "title": "Horizon Warden",
+    "dialogue": [
+      "Every charging beast between here and the Archive is another hour the old mechanisms keep turning.",
+      "Bring down the Sunforge herd, turn the Raptors, and I will put a direct edge in your hand.",
+      "Aurell offers the patient road. Mine is the swift one. The highlands will only honor one."
+    ]
+  },
+  {
+    "id": "archivist_nerys",
+    "displayName": "Archivist Nerys",
+    "role": "quest",
+    "title": "Last Free Indexer",
+    "dialogue": [
+      "Zenith Archive catalogued every road until it began confusing a record with a command.",
+      "Complete either highland oath. I need proof that you can choose before I ask you to reopen a place that forbids choice.",
+      "The Keeper protects the final codex. Return it blank, and the morning belongs to everyone again."
+    ]
+  },
+  {
+    "id": "trader_vesper",
+    "displayName": "Trader Vesper",
+    "role": "merchant",
+    "title": "Highland Provisioner",
+    "dialogue": [
+      "Dawnsage for fractures, sunmetal for footing, and enough cordial to make an Archive expedition respectable.",
+      "I buy from both oaths. A good workshop should not pretend one honest road is the only road."
+    ]
+  },
+  {
+    "id": "runesinger_lyra",
+    "displayName": "Runesinger Lyra",
+    "role": "quest",
+    "title": "Choirwood Runesinger",
+    "dialogue": [
+      "Zenith kept too many endings. Choirwood has the opposite trouble: one buried voice is swallowing every other song.",
+      "Learn the canopy's living refrain before you enter Crownroot. Echo Moss and Resonant Bark remember how harmony works.",
+      "Return the Concordance Seed to me, and I will teach each of your paths the technique the old choir tried to silence."
+    ]
+  },
+  {
+    "id": "cantor_eira",
+    "displayName": "Cantor Eira",
+    "role": "merchant",
+    "title": "Resonance Artisan",
+    "dialogue": [
+      "A useful instrument does not need to be loud. It needs to leave room for the next voice.",
+      "Bring shell, antler, bark, and whatever rings beneath Crownroot. I can make the materials agree.",
+      "Keep a Clearvoice Tisane close. The sanctum attacks the song before it attacks the singer."
+    ]
+  },
+  {
+    "id": "keeper_orem",
+    "displayName": "Keeper Orem",
+    "role": "flavor",
+    "title": "Canopy Listener",
+    "dialogue": [
+      "Stand still long enough and you can hear which notes belong to the wood and which one is giving orders.",
+      "The Mossbound Cantors were gardeners once. Break the hush around them, and the canopy may remember that too."
+    ]
+  },
+  {
+    "id": "waykeeper_talin",
+    "displayName": "Waykeeper Talin",
+    "role": "quest",
+    "title": "Runeveil Waykeeper",
+    "dialogue": [
+      "Crownroot taught the old choir to listen. Runeveil teaches its tools to listen too.",
+      "Gather the marks growing wild along the walks, then choose where their strength belongs. A bound rune is a promise you may revise.",
+      "Once the garden paths are clear, Pell can open Namesong without feeding it another fixed ending."
+    ]
+  },
+  {
+    "id": "runesmith_sera",
+    "displayName": "Runesmith Sera",
+    "role": "merchant",
+    "title": "Wayglass Engraver",
+    "dialogue": [
+      "One mark per piece. That limit is what turns power into a choice instead of clutter.",
+      "Binding costs nothing and breaks nothing. Change your mind at the armory whenever the road asks a different question.",
+      "Bring petals, wayglass, hide, antler, and vault dust. I can teach each material where it is useful."
+    ]
+  },
+  {
+    "id": "archivist_pell",
+    "displayName": "Archivist Pell",
+    "role": "quest",
+    "title": "Namesong Memorialist",
+    "dialogue": [
+      "Namesong was built to remember people. The Archivore learned to treat remembrance as ownership.",
+      "Bind the strengths you trust, enter the Vault, and return the stolen names without closing them into another catalogue.",
+      "The seal is proof enough. The names themselves belong to the lives still growing around them."
+    ]
+  },
+  {
+    "id": "moorwarden_calix",
+    "displayName": "Moorwarden Calix",
+    "role": "quest",
+    "title": "Keeper of the Waystars",
+    "dialogue": [
+      "Every light in this moor once marked a road someone freely chose. The Spire is pulling them into one answer.",
+      "Settle the creatures caught between bearings and gather enough starstuff to anchor the old crossings.",
+      "When the paths hold steady, Ione can lead you to the choice the Spire was built to deny."
+    ]
+  },
+  {
+    "id": "quartermaster_fenn",
+    "displayName": "Quartermaster Fenn",
+    "role": "merchant",
+    "title": "Waystar Commissary",
+    "dialogue": [
+      "The moor takes your direction before it takes your life. Anchorcord tea handles the first problem.",
+      "Bring hide, shell, pollen, and glass. I can turn a wandering haul into equipment that remembers its purpose.",
+      "The finest tools do not choose a road for you. They make sure you survive the choice."
+    ]
+  },
+  {
+    "id": "pathweaver_ione",
+    "displayName": "Pathweaver Ione",
+    "role": "trainer",
+    "title": "Keeper of the Twelve Callings",
+    "dialogue": [
+      "A job is a discipline. A calling is the promise you decide to make with it.",
+      "The Manyroad Crown binds every possible self into obedience. Bring me its keystone, and your path will remain your own.",
+      "Your first calling is freely chosen. I can retune it later, but old vows ask a price before they loosen."
     ]
   }
 ]

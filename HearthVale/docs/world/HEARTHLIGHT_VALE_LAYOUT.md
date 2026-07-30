@@ -1,8 +1,20 @@
 # Hearthlight Vale — Zone Layout Reference
 
+> **Current Phaser Next route (2026-07-22):** the original 10-map plan below
+> has expanded to 19 exported maps. New journeys begin in
+> `hearthvale_town_ro`; its authored field connects into Mushroom Hollow,
+> Crystal Mine Approach, and Whisperwood, from which the full Millwick,
+> Moonreed Fen, Moonwell, Emberglass Shelf, Hollow Kiln, Lanternspire finale,
+> and Afterlight postgame hunt are reachable. `npm run verify:campaign`
+> enforces reachability to and from all 33 live maps, including the east road
+> from Afterlight into Dawnshore Reach. Hearthlight Vale itself remains a
+> 19-map region. The
+> tables below remain the original layout reference; `src/data/world/maps.ts`
+> and the exported region chart are authoritative for the live route.
+
 Canonical layout reference for the **Hearthlight Vale** starter region (levels **1–14**). All names are original HearthVale IP. Map IDs match `src/data/world/maps.ts`; this document is the human-readable companion.
 
-**Related:** `docs/ROADMAP.md` · `STRATEGY.md` · `src/data/world/`
+**Related:** `docs/ROADMAP.md` · `STRATEGY.md` · `docs/world/DAWNSHORE_REACH_LAYOUT.md` · `src/data/world/`
 
 ---
 
@@ -13,14 +25,14 @@ Canonical layout reference for the **Hearthlight Vale** starter region (levels *
 | **Region ID** | `hearthlight_vale` |
 | **Display name** | Hearthlight Vale |
 | **Level range** | 1–14 (starter arc) |
-| **Capital** | Hearthvale Town (`hearthvale_town`) |
-| **Map count** | 10 (Phase A catalog) |
+| **Capital** | Hearthvale Town (`hearthvale_town_ro`) |
+| **Map count** | 19 live exports (10-map original Phase A target) |
 | **Playable loop (Phase B)** | Town → Cloverfield Plains → Mushroom Hollow → Old Crystal Mine |
-| **Expansion arc (Phase C–D)** | Whisperwood Meadows → Old Mill Road → Millwick Crossing → Moonwell chain |
+| **Expansion arcs (Phase C–D+)** | Millwick → Moonwell chain; Crystal Approach → Emberglass Shelf → Hollow Kiln; both capstones → Lanternspire Summit → Afterlight Expanse |
 
 ### Narrative spine
 
-Hearthlight Vale is the warm threshold of the wider HearthVale world: a sheltered vale where new adventurers learn gathering, light combat, and portal travel before pushing toward the Moonwell ruins and border towns. Progression follows field difficulty outward from Hearthvale Town, with the Old Crystal Mine as the first dungeon test and Moonwell Ruins as the region capstone.
+Hearthlight Vale is the warm threshold of the wider HearthVale world: a sheltered vale where new adventurers learn gathering, light combat, and portal travel before pushing toward the Moonwell ruins and border towns. Progression follows field difficulty outward from Hearthvale Town, with the Old Crystal Mine as the first dungeon test, parallel Moonwell Heart and Hollow Kiln capstones, a joined Lanternspire Summit finale at level 14, and the Afterlight Expanse as its repeatable postgame hunt.
 
 ---
 
@@ -31,13 +43,13 @@ Hearthlight Vale is the warm threshold of the wider HearthVale world: a sheltere
 | `town` | Hubs, vendors, quests, warp services | Yes | Yes | Hearthvale Town, Millwick Crossing |
 | `field` | Overworld combat, gathering, travel | No* | Yes | Cloverfield Plains, Mushroom Hollow |
 | `dungeon` | Instanced depth, bosses, rare drops | No | Usually hidden | Old Crystal Mine, Moonwell Ruins |
-| `instance` | Scripted one-off spaces (future) | Varies | Hidden | Reserved — not in Phase A catalog |
+| `instance` | Scripted one-off spaces | Varies | Hidden | Moonwell Heart |
 
 \*Field maps may contain small camp clearings; only `town` maps set `safeZone: true` in data.
 
 ### Data fields (per map)
 
-Each `MapDefinition` carries: `id`, `displayName`, `kind`, `regionId`, `levelRange`, `showOnWorldMap`, `worldMapPosition`, `biome`, `musicKey`, `gridSize`, `spawnTables`, `npcs`, `portals`, `playerSpawn`, `safeZone`, `assetKey`.
+Each `MapDefinition` carries: `id`, `displayName`, `kind`, `regionId`, `levelRange`, `showOnWorldMap`, `worldMapPosition`, `biome`, `musicKey`, `gridSize`, `spawnTables`, optional `resourceNodes`, `npcs`, `portals`, `playerSpawn`, `safeZone`, `assetKey`.
 
 ---
 
@@ -55,6 +67,20 @@ Each `MapDefinition` carries: `id`, `displayName`, `kind`, `regionId`, `levelRan
 | 8 | `old_crystal_mine` | Old Crystal Mine | dungeon | 8–15 | crystal_depths | **No** | First dungeon; boss in Phase C |
 | 9 | `moonwell_entrance` | Moonwell Entrance | field | 10–12 | moonlit_moor | Yes | Region border field |
 | 10 | `moonwell_ruins` | Moonwell Ruins | dungeon | 11–14 | ruined_sanctum | **No** | Region capstone dungeon |
+
+### Live expansions beyond the original catalog
+
+| Map ID | Display name | Kind | Lv range | World map | Purpose |
+|--------|--------------|------|----------|-----------|---------|
+| `hearthvale_town_ro` | Hearthvale Town | town | 1–99 | Yes | Active authored capital and new-game start |
+| `cloverfield_plains_ro` | Cloverfield Plains | field | 1–4 | Yes | Active authored opening field and campaign junction |
+| `old_crystal_mine_ro_b1` | Old Crystal Mine B1 | dungeon | 8–15 | No | Authored alternate mine entry |
+| `moonreed_fen` | Moonreed Fen | field | 12–14 | Yes | Water/spirit hunt and gathering route |
+| `moonwell_heart` | Moonwell Heart | instance | 14 | No | Tidemoon Matriarch finale |
+| `emberglass_shelf` | Emberglass Shelf | field | 11–13 | Yes | Fire/crystal survey, Glasswright Orla, kiln approach |
+| `hollow_kiln` | Hollow Kiln | dungeon | 13–14 | Yes | Kilnheart Colossus finale and legendary reward |
+| `lanternspire_summit` | Lanternspire Summit | instance | 14 | Yes | Joined final quest, Gloam Wardens, and The Starved Crown |
+| `afterlight_expanse` | Afterlight Expanse | field | 14 | Yes | Postgame vigil, rare crafting materials, and Eclipse Herald boss |
 
 ### Map aliases (legacy / shorthand)
 
@@ -189,6 +215,15 @@ Bidirectional pairs use matching portal IDs on each side. One-way portals are no
 | `cloverfield_plains` | `quarry_path` | Quarry Path | (400, -100) | `crystal_mine_approach` | (-450, 160) | — |
 | `crystal_mine_approach` | `plains_return` | Cloverfield | (-430, 170) | `cloverfield_plains` | (420, -90) | — |
 | `crystal_mine_approach` | `mine_shaft` | Mine Shaft | (500, 100) | `old_crystal_mine` | (-300, 100) | Alt. dungeon entry |
+| `crystal_mine_approach` | `emberglass_trail` | Emberglass Shelf | (360, -260) | `emberglass_shelf` | (-656, 16) | `requiredLevel: 11` |
+| `emberglass_shelf` | `approach_pass` | Crystal Mine Approach | (-816, 16) | `crystal_mine_approach` | (320, -220) | — |
+| `emberglass_shelf` | `hollow_kiln_gate` | Hollow Kiln | (816, 16) | `hollow_kiln` | (-528, 16) | Lv 13 + Emberglass Survey |
+| `hollow_kiln` | `shelf_return` | Emberglass Shelf | (-688, 16) | `emberglass_shelf` | (720, 16) | — |
+| `hearthvale_town_ro` | `lanternspire_gate` | Lanternspire Summit | (-176, 112) | `lanternspire_summit` | (-624, 16) | Lv 14 + accepted Lanternspire Accord |
+| `lanternspire_summit` | `hearthvale_return` | Hearthvale Town | (-752, 16) | `hearthvale_town_ro` | (-176, 112) | — |
+| `lanternspire_summit` | `afterlight_passage` | Afterlight Expanse | (784, 16) | `afterlight_expanse` | (-688, 16) | Lv 14 + completed Lanternspire Accord |
+| `afterlight_expanse` | `lanternspire_return` | Lanternspire Summit | (-848, 16) | `lanternspire_summit` | (656, 16) | — |
+| `afterlight_expanse` | `dawnshore_passage` | Dawnshore Reach | (880, 16) | `dawnshore_camp` | (-496, -16) | Lv 15 + completed Afterlight Vigil |
 
 **Verification:** `npm run verify:portals` (Phase A tooling) checks target existence and bidirectional pairing.
 
@@ -196,16 +231,19 @@ Bidirectional pairs use matching portal IDs on each side. One-way portals are no
 
 ## Hearth Courier warp services
 
-Hearth Courier NPCs (`hearth_courier`) provide paid fast travel within **Hearthlight Vale**. Warp targets reference `targetMapId` + `targetSpawn`; fees are data-driven (Phase B UI).
+Hearth Courier NPCs (`hearth_courier`) provide active fast travel within **Hearthlight Vale**. The Phaser Next wayline panel reads `targetMapId`, `targetSpawn`, cost, level, and quest unlocks directly from the region data, explains blocked routes, and preserves the full journey state.
 
-| Service ID | From (hub) | Destination | Display name | Fee | Min level | Phase |
-|------------|------------|-------------|--------------|-----|-----------|-------|
-| `warp_cloverfield_free` | `hearthvale_town` | `cloverfield_plains` | Cloverfield Plains | **Free** | 1 | A/B |
-| `warp_hollow` | `hearthvale_town` | `mushroom_hollow` | Mushroom Hollow | 50z | 3 | B |
-| `warp_whisperwood` | `hearthvale_town` | `whisperwood_meadows` | Whisperwood Meadows | 120z | 5 | C |
-| `warp_millwick` | `hearthvale_town` | `millwick_crossing` | Millwick Crossing | 200z | 8 | D |
-| `warp_moonwell` | `millwick_crossing` | `moonwell_entrance` | Moonwell Entrance | 350z | 10 | D |
-| `warp_town_return` | `millwick_crossing` | `hearthvale_town` | Hearthvale Town | 150z | 1 | D |
+| Service ID | Destination map | Display name | Fee | Min level | Unlock |
+|------------|-----------------|--------------|-----|-----------|--------|
+| `warp_cloverfield` | `cloverfield_plains_ro` | Cloverfield Plains | **Free** | 1 | — |
+| `warp_mushroom_hollow` | `mushroom_hollow` | Mushroom Hollow | 120g | 3 | — |
+| `warp_whisperwood` | `whisperwood_meadows` | Whisperwood Meadows | 180g | 5 | — |
+| `warp_millwick` | `millwick_crossing` | Millwick Crossing | 250g | 8 | Letter for Millwick |
+| `warp_crystal_approach` | `crystal_mine_approach` | Crystal Mine Approach | 200g | 6 | — |
+| `warp_emberglass` | `emberglass_shelf` | Emberglass Shelf | 300g | 11 | The Emberglass Survey |
+| `warp_moonwell` | `moonwell_entrance` | Moonwell Entrance | 320g | 10 | Moonwell Sigil |
+| `warp_afterlight` | `afterlight_expanse` | Afterlight Expanse | 420g | 14 | The Lanternspire Accord |
+| `warp_emberglass` | Hearth Courier | `emberglass_shelf` | Emberglass Shelf | 300z | 11 | Post-survey |
 
 **Design rules**
 
@@ -293,7 +331,9 @@ Normalized coordinates for Phase D world-map UI (`worldMapPosition`):
         │         (capital)                  │
         │                                    │
   Crystal Mine                                │
-  Approach ●                                  │
+  Approach ●──● Emberglass Shelf              │
+                  │                           │
+              Hollow Kiln                     │
         │                                     │
         └──────── Moonwell Entrance ●─────────┘
                          │
@@ -306,4 +346,6 @@ Normalized coordinates for Phase D world-map UI (`worldMapPosition`):
 
 | Date | Change |
 |------|--------|
+| 2026-07-22 | Documented the verified cross-region exit to Dawnshore Reach and the shared resource-node map contract |
+| 2026-07-22 | Updated live route to 17 maps and documented Emberglass Shelf, Hollow Kiln, their portals, warp, and parallel finale role |
 | 2026-06-11 | Initial layout reference — Phase A parallel bootstrap |

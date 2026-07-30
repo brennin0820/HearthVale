@@ -9,7 +9,7 @@ import type {
 const items = await loadJsonFile<ItemDefinition[]>('catalog/items.json');
 const errors: string[] = [];
 
-const KINDS: ItemKind[] = ['consumable', 'material', 'equipment', 'quest'];
+const KINDS: ItemKind[] = ['consumable', 'material', 'equipment', 'rune', 'quest'];
 const RARITIES: ItemRarity[] = ['common', 'uncommon', 'rare', 'epic', 'legendary'];
 const SLOTS: EquipmentSlot[] = ['weapon', 'offhand', 'head', 'body', 'accessory'];
 
@@ -67,6 +67,19 @@ for (const item of items) {
     }
   } else if (item.slot || item.stats) {
     errors.push(`[items] ${tag}: only equipment may declare slot/stats`);
+  }
+
+  if (item.kind === 'rune') {
+    if (!item.runeStats || Object.keys(item.runeStats).length === 0) {
+      errors.push(`[items] ${tag}: rune should grant at least one rune stat`);
+    }
+    if (!item.runeSlots || item.runeSlots.length === 0) {
+      errors.push(`[items] ${tag}: rune must declare at least one compatible slot`);
+    } else if (item.runeSlots.some((slot) => !SLOTS.includes(slot))) {
+      errors.push(`[items] ${tag}: rune declares an invalid compatible slot`);
+    }
+  } else if (item.runeStats || item.runeSlots) {
+    errors.push(`[items] ${tag}: only runes may declare runeStats/runeSlots`);
   }
 
   if (item.kind === 'consumable') {

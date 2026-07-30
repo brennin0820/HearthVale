@@ -12,6 +12,8 @@ import {
   MONSTERS,
   NPCS,
   QUESTS,
+  RECIPES,
+  SHOPS,
   SKILLS,
 } from '../src/data/catalog/index.js';
 import { BIOMES } from '../src/data/world/biomes.js';
@@ -69,6 +71,8 @@ await writeJson('catalog/npcs.json', NPCS);
 await writeJson('catalog/items.json', ITEMS);
 await writeJson('catalog/quests.json', QUESTS);
 await writeJson('catalog/drops.json', DROP_TABLES);
+await writeJson('catalog/shops.json', SHOPS);
+await writeJson('catalog/recipes.json', RECIPES);
 await writeJson('catalog/jobs.json', JOB_CLASSES);
 await writeJson('catalog/skills.json', SKILLS);
 await writeJson('biomes.json', BIOMES);

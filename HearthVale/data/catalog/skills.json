@@ -136,7 +136,7 @@
       "kind": "damage",
       "powerMultiplier": 1.35
     },
-    "element": "arcane"
+    "element": "fire"
   },
   {
     "id": "crystal_lance",
@@ -279,5 +279,388 @@
       "stat": "bonusDropChance",
       "amount": 20
     }
+  },
+  {
+    "id": "rootbound_challenge",
+    "displayName": "Rootbound Challenge",
+    "type": "support",
+    "targetType": "self",
+    "description": "Names the Warden as the unbroken root, hardening their guard against the next chorus of blows.",
+    "mpCost": 18,
+    "cooldown": 18,
+    "effect": {
+      "kind": "buff",
+      "stat": "def",
+      "amount": 16,
+      "duration": 12
+    },
+    "jobIds": [
+      "warden"
+    ],
+    "requiredLevel": 24,
+    "unlockQuestId": "quest_crownroot_concordance"
+  },
+  {
+    "id": "chorus_of_arrows",
+    "displayName": "Chorus of Arrows",
+    "type": "physical",
+    "targetType": "area",
+    "description": "Looses a rising cadence of shafts that breaks across nearby foes like a bright refrain.",
+    "mpCost": 20,
+    "cooldown": 10,
+    "effect": {
+      "kind": "damage",
+      "powerMultiplier": 1.15
+    },
+    "element": "wind",
+    "jobIds": [
+      "ranger"
+    ],
+    "requiredLevel": 24,
+    "unlockQuestId": "quest_crownroot_concordance"
+  },
+  {
+    "id": "crownroot_nova",
+    "displayName": "Crownroot Nova",
+    "type": "magical",
+    "targetType": "area",
+    "description": "Calls the Sanctum seed to flower at once in a ring of grasping green light.",
+    "mpCost": 26,
+    "cooldown": 12,
+    "effect": {
+      "kind": "damage",
+      "powerMultiplier": 1.4
+    },
+    "element": "nature",
+    "jobIds": [
+      "channeler"
+    ],
+    "requiredLevel": 24,
+    "unlockQuestId": "quest_crownroot_concordance"
+  },
+  {
+    "id": "concordant_mend",
+    "displayName": "Concordant Mend",
+    "type": "support",
+    "targetType": "ally",
+    "description": "Restores a wounded companion with a resonant pulse that remembers the party whole.",
+    "mpCost": 22,
+    "cooldown": 9,
+    "effect": {
+      "kind": "heal",
+      "amount": 64,
+      "stat": "hp"
+    },
+    "jobIds": [
+      "mender"
+    ],
+    "requiredLevel": 24,
+    "unlockQuestId": "quest_crownroot_concordance"
+  },
+  {
+    "id": "battle_cant",
+    "displayName": "Battle Cant",
+    "type": "support",
+    "targetType": "self",
+    "description": "Turns a trader’s road-call into a sharp tempo that lends weight to every strike.",
+    "mpCost": 14,
+    "cooldown": 20,
+    "effect": {
+      "kind": "buff",
+      "stat": "atk",
+      "amount": 12,
+      "duration": 14
+    },
+    "jobIds": [
+      "wayfarer"
+    ],
+    "requiredLevel": 24,
+    "unlockQuestId": "quest_crownroot_concordance"
+  },
+  {
+    "id": "echo_fang",
+    "displayName": "Echo Fang",
+    "type": "physical",
+    "targetType": "enemy",
+    "description": "Strikes once in the present and once from the shadow of the note that follows.",
+    "mpCost": 18,
+    "cooldown": 9,
+    "effect": {
+      "kind": "damage",
+      "powerMultiplier": 2.05
+    },
+    "element": "arcane",
+    "jobIds": [
+      "shade"
+    ],
+    "requiredLevel": 24,
+    "unlockQuestId": "quest_crownroot_concordance"
+  },
+  {
+    "id": "citadel_oath",
+    "displayName": "Citadel Oath",
+    "type": "support",
+    "targetType": "self",
+    "description": "Names the whole party as the Marshal’s keep, raising a formidable shared defense.",
+    "mpCost": 24,
+    "cooldown": 22,
+    "effect": {
+      "kind": "buff",
+      "stat": "def",
+      "amount": 24,
+      "duration": 12
+    },
+    "jobIds": [
+      "warden"
+    ],
+    "evolutionIds": [
+      "hearthwall_marshal"
+    ],
+    "requiredLevel": 28,
+    "unlockQuestId": "quest_convergence_rite"
+  },
+  {
+    "id": "sunward_cleave",
+    "displayName": "Sunward Cleave",
+    "type": "physical",
+    "targetType": "area",
+    "description": "Sweeps a bright vanguard arc through every foe crowding the road ahead.",
+    "mpCost": 26,
+    "cooldown": 11,
+    "effect": {
+      "kind": "damage",
+      "powerMultiplier": 1.55
+    },
+    "element": "fire",
+    "jobIds": [
+      "warden"
+    ],
+    "evolutionIds": [
+      "dawnspear_vanguard"
+    ],
+    "requiredLevel": 28,
+    "unlockQuestId": "quest_convergence_rite"
+  },
+  {
+    "id": "meteor_fletching",
+    "displayName": "Meteor Fletching",
+    "type": "physical",
+    "targetType": "area",
+    "description": "Scatters star-marked arrows that fall together across a chosen patch of ground.",
+    "mpCost": 24,
+    "cooldown": 10,
+    "effect": {
+      "kind": "damage",
+      "powerMultiplier": 1.35
+    },
+    "element": "arcane",
+    "jobIds": [
+      "ranger"
+    ],
+    "evolutionIds": [
+      "waystar_stalker"
+    ],
+    "requiredLevel": 28,
+    "unlockQuestId": "quest_convergence_rite"
+  },
+  {
+    "id": "horizon_piercer",
+    "displayName": "Horizon Piercer",
+    "type": "physical",
+    "targetType": "enemy",
+    "description": "Holds one perfect line from bowstring to horizon, then sends it through the quarry.",
+    "mpCost": 28,
+    "cooldown": 12,
+    "effect": {
+      "kind": "damage",
+      "powerMultiplier": 2.35
+    },
+    "element": "wind",
+    "jobIds": [
+      "ranger"
+    ],
+    "evolutionIds": [
+      "farpoint_sentinel"
+    ],
+    "requiredLevel": 28,
+    "unlockQuestId": "quest_convergence_rite"
+  },
+  {
+    "id": "prismatic_collapse",
+    "displayName": "Prismatic Collapse",
+    "type": "magical",
+    "targetType": "area",
+    "description": "Folds several elemental angles inward until their common center erupts.",
+    "mpCost": 34,
+    "cooldown": 13,
+    "effect": {
+      "kind": "damage",
+      "powerMultiplier": 1.75
+    },
+    "element": "crystal",
+    "jobIds": [
+      "channeler"
+    ],
+    "evolutionIds": [
+      "convergence_magus"
+    ],
+    "requiredLevel": 28,
+    "unlockQuestId": "quest_convergence_rite"
+  },
+  {
+    "id": "stormbloom",
+    "displayName": "Stormbloom",
+    "type": "magical",
+    "targetType": "area",
+    "description": "Opens a flower of charged wind whose petals strike before they can be counted.",
+    "mpCost": 30,
+    "cooldown": 10,
+    "effect": {
+      "kind": "damage",
+      "powerMultiplier": 1.55
+    },
+    "element": "wind",
+    "jobIds": [
+      "channeler"
+    ],
+    "evolutionIds": [
+      "stormbloom_seer"
+    ],
+    "requiredLevel": 28,
+    "unlockQuestId": "quest_convergence_rite"
+  },
+  {
+    "id": "waystar_liturgy",
+    "displayName": "Waystar Liturgy",
+    "type": "support",
+    "targetType": "ally",
+    "description": "Calls a traveling light by name and sends it directly to the party’s deepest wound.",
+    "mpCost": 30,
+    "cooldown": 10,
+    "effect": {
+      "kind": "heal",
+      "amount": 90,
+      "stat": "hp"
+    },
+    "jobIds": [
+      "mender"
+    ],
+    "evolutionIds": [
+      "beacon_saint"
+    ],
+    "requiredLevel": 28,
+    "unlockQuestId": "quest_convergence_rite"
+  },
+  {
+    "id": "constellation_ward",
+    "displayName": "Constellation Ward",
+    "type": "support",
+    "targetType": "ally",
+    "description": "Joins distant points of light into a shelter that turns hostile magic aside.",
+    "mpCost": 28,
+    "cooldown": 18,
+    "effect": {
+      "kind": "buff",
+      "stat": "matk_resist",
+      "amount": 20,
+      "duration": 14
+    },
+    "jobIds": [
+      "mender"
+    ],
+    "evolutionIds": [
+      "concord_aegis"
+    ],
+    "requiredLevel": 28,
+    "unlockQuestId": "quest_convergence_rite"
+  },
+  {
+    "id": "provisioners_chant",
+    "displayName": "Provisioner’s Chant",
+    "type": "support",
+    "targetType": "self",
+    "description": "Turns a roadmaster’s inventory call into a steady rhythm for heavier attacks.",
+    "mpCost": 18,
+    "cooldown": 20,
+    "effect": {
+      "kind": "buff",
+      "stat": "atk",
+      "amount": 16,
+      "duration": 15
+    },
+    "jobIds": [
+      "wayfarer"
+    ],
+    "evolutionIds": [
+      "grand_trailbroker"
+    ],
+    "requiredLevel": 28,
+    "unlockQuestId": "quest_convergence_rite"
+  },
+  {
+    "id": "prospectors_luck",
+    "displayName": "Prospector’s Luck",
+    "type": "utility",
+    "targetType": "self",
+    "description": "Keeps the Starprospector listening for the quiet second glint in every find.",
+    "mpCost": 0,
+    "cooldown": 0,
+    "effect": {
+      "kind": "gather",
+      "stat": "dropRate",
+      "amount": 20
+    },
+    "jobIds": [
+      "wayfarer"
+    ],
+    "evolutionIds": [
+      "starprospector"
+    ],
+    "requiredLevel": 28,
+    "unlockQuestId": "quest_convergence_rite"
+  },
+  {
+    "id": "manyroad_execution",
+    "displayName": "Manyroad Execution",
+    "type": "physical",
+    "targetType": "enemy",
+    "description": "Rejects every possible escape but one, then meets the foe at its ending.",
+    "mpCost": 28,
+    "cooldown": 12,
+    "effect": {
+      "kind": "damage",
+      "powerMultiplier": 2.5
+    },
+    "element": "shadow",
+    "jobIds": [
+      "shade"
+    ],
+    "evolutionIds": [
+      "gloam_reaver"
+    ],
+    "requiredLevel": 28,
+    "unlockQuestId": "quest_convergence_rite"
+  },
+  {
+    "id": "mirrorstep_flurry",
+    "displayName": "Mirrorstep Flurry",
+    "type": "physical",
+    "targetType": "enemy",
+    "description": "Strikes from a procession of bright afterimages before choosing which one was real.",
+    "mpCost": 24,
+    "cooldown": 9,
+    "effect": {
+      "kind": "damage",
+      "powerMultiplier": 1.9
+    },
+    "element": "arcane",
+    "jobIds": [
+      "shade"
+    ],
+    "evolutionIds": [
+      "mirrorstep_dancer"
+    ],
+    "requiredLevel": 28,
+    "unlockQuestId": "quest_convergence_rite"
   }
 ]

@@ -1,4 +1,7 @@
 import { loadJsonFile, loadMapsJson } from './lib/load-data.js';
+import { access } from 'node:fs/promises';
+import { constants } from 'node:fs';
+import path from 'node:path';
 
 interface AssetEntry {
   key: string;
@@ -30,6 +33,15 @@ for (const map of maps) {
 for (const entry of entries) {
   if (!entry.placeholder && !entry.path) {
     errors.push(`[assets] "${entry.key}" needs path or placeholder:true`);
+  }
+}
+
+for (const entry of entries) {
+  if (entry.placeholder || !entry.path) continue;
+  try {
+    await access(path.join('data', entry.path), constants.R_OK);
+  } catch {
+    errors.push(`[assets] "${entry.key}" path "${entry.path}" is not readable`);
   }
 }
 

@@ -1,0 +1,507 @@
+import type { RecipeDefinition } from './types.js';
+
+export const RECIPES: RecipeDefinition[] = [
+  {
+    id: 'recipe_healing_brew', displayName: 'Steep Healing Brew', category: 'alchemy',
+    stationNpcIds: ['herbalist_lyra', 'baker_odella'], requiredLevel: 1, goldCost: 5,
+    result: { itemId: 'healing_brew', count: 1 },
+    ingredients: [{ itemId: 'clover_herb', count: 3 }],
+  },
+  {
+    id: 'recipe_greater_healing_brew', displayName: 'Double-Steep Greater Brew', category: 'alchemy',
+    stationNpcIds: ['herbalist_lyra'], requiredLevel: 6, goldCost: 18,
+    result: { itemId: 'greater_healing_brew', count: 1 },
+    ingredients: [
+      { itemId: 'healing_brew', count: 1 },
+      { itemId: 'spore_cap', count: 2 },
+      { itemId: 'clover_herb', count: 2 },
+    ],
+  },
+  {
+    id: 'recipe_mana_draught', displayName: 'Distill Mana Draught', category: 'alchemy',
+    stationNpcIds: ['herbalist_lyra'], requiredLevel: 3, goldCost: 20,
+    result: { itemId: 'mana_draught', count: 1 },
+    ingredients: [
+      { itemId: 'glowcap_dust', count: 2 },
+      { itemId: 'moon_flake', count: 1 },
+    ],
+  },
+  {
+    id: 'recipe_antidote_leaf', displayName: 'Fold Antidote Poultice', category: 'alchemy',
+    stationNpcIds: ['herbalist_lyra'], requiredLevel: 2, goldCost: 5,
+    result: { itemId: 'antidote_leaf', count: 1 },
+    ingredients: [
+      { itemId: 'clover_herb', count: 1 },
+      { itemId: 'spore_cap', count: 1 },
+    ],
+  },
+  {
+    id: 'recipe_warding_incense', displayName: 'Blend Warding Incense', category: 'alchemy',
+    stationNpcIds: ['merchant_elsie'], requiredLevel: 8, goldCost: 32,
+    result: { itemId: 'warding_incense', count: 1 },
+    ingredients: [
+      { itemId: 'wraith_ash', count: 2 },
+      { itemId: 'barkchip', count: 2 },
+    ],
+  },
+  {
+    id: 'recipe_gale_tonic', displayName: 'Brew Gale Tonic', category: 'alchemy',
+    stationNpcIds: ['merchant_elsie'], requiredLevel: 7, goldCost: 28,
+    result: { itemId: 'gale_tonic', count: 1 },
+    ingredients: [
+      { itemId: 'gale_feather', count: 2 },
+      { itemId: 'clover_herb', count: 2 },
+    ],
+  },
+  {
+    id: 'recipe_moonwater_phial', displayName: 'Settle Moonwater Phial', category: 'alchemy',
+    stationNpcIds: ['merchant_elsie'], requiredLevel: 10, goldCost: 30,
+    result: { itemId: 'moonwater_phial', count: 1 },
+    ingredients: [
+      { itemId: 'moon_flake', count: 2 },
+      { itemId: 'tide_pearl', count: 1 },
+    ],
+  },
+  {
+    id: 'recipe_heartwater_draught', displayName: 'Distill Heartwater Draught', category: 'alchemy',
+    stationNpcIds: ['merchant_elsie'], requiredLevel: 13, goldCost: 60,
+    result: { itemId: 'heartwater_draught', count: 1 },
+    ingredients: [
+      { itemId: 'wellglass_fragment', count: 2 },
+      { itemId: 'moonwater_phial', count: 1 },
+    ],
+  },
+  {
+    id: 'recipe_bark_buckler', displayName: 'Bind Bark Buckler', category: 'smithing',
+    stationNpcIds: ['merchant_silas'], requiredLevel: 3, goldCost: 45,
+    result: { itemId: 'bark_buckler', count: 1 },
+    ingredients: [
+      { itemId: 'barkchip', count: 6 },
+      { itemId: 'iron_nugget', count: 2 },
+    ],
+  },
+  {
+    id: 'recipe_miners_helm', displayName: "Forge Miner's Helm", category: 'smithing',
+    stationNpcIds: ['merchant_elsie'], requiredLevel: 8, goldCost: 90,
+    result: { itemId: 'miners_helm', count: 1 },
+    ingredients: [
+      { itemId: 'iron_nugget', count: 6 },
+      { itemId: 'crystal_shard', count: 3 },
+    ],
+  },
+  {
+    id: 'recipe_crystal_ward', displayName: 'Facet Crystal Ward', category: 'smithing',
+    stationNpcIds: ['merchant_elsie'], requiredLevel: 11, goldCost: 160,
+    result: { itemId: 'crystal_ward', count: 1 },
+    ingredients: [
+      { itemId: 'crystal_shard', count: 6 },
+      { itemId: 'rune_fragment', count: 2 },
+    ],
+  },
+  {
+    id: 'recipe_spore_weave_vest', displayName: 'Weave Spore Vest', category: 'tailoring',
+    stationNpcIds: ['merchant_elsie'], requiredLevel: 7, goldCost: 120,
+    result: { itemId: 'spore_weave_vest', count: 1 },
+    ingredients: [
+      { itemId: 'spore_cap', count: 6 },
+      { itemId: 'reed_silk', count: 2 },
+    ],
+  },
+  {
+    id: 'recipe_fen_lantern_charm', displayName: 'Set Fen Lantern Charm', category: 'tailoring',
+    stationNpcIds: ['merchant_elsie'], requiredLevel: 12, goldCost: 180,
+    result: { itemId: 'fen_lantern_charm', count: 1 },
+    ingredients: [
+      { itemId: 'tide_pearl', count: 3 },
+      { itemId: 'reed_silk', count: 4 },
+      { itemId: 'wraith_ash', count: 1 },
+    ],
+  },
+  {
+    id: 'recipe_cinder_cordial', displayName: 'Steep Cinder Cordial', category: 'alchemy',
+    stationNpcIds: ['merchant_elsie'], requiredLevel: 12, goldCost: 45,
+    result: { itemId: 'cinder_cordial', count: 1 },
+    ingredients: [
+      { itemId: 'kiln_ash', count: 2 },
+      { itemId: 'moonwater_phial', count: 1 },
+    ],
+  },
+  {
+    id: 'recipe_kilnforged_aegis', displayName: 'Forge Kiln Aegis', category: 'smithing',
+    stationNpcIds: ['merchant_elsie'], requiredLevel: 13, goldCost: 220,
+    result: { itemId: 'kilnforged_aegis', count: 1 },
+    ingredients: [
+      { itemId: 'emberglass_chip', count: 6 },
+      { itemId: 'prism_shell', count: 3 },
+      { itemId: 'iron_nugget', count: 4 },
+      { itemId: 'kiln_ash', count: 2 },
+    ],
+  },
+  {
+    id: 'recipe_dawnpetal_elixir', displayName: 'Steep Dawnpetal Elixir', category: 'alchemy',
+    stationNpcIds: ['herbalist_lyra'], requiredLevel: 14, goldCost: 75,
+    result: { itemId: 'dawnpetal_elixir', count: 1 },
+    ingredients: [
+      { itemId: 'aurora_thread', count: 2 },
+      { itemId: 'gloam_shard', count: 1 },
+      { itemId: 'moon_flake', count: 1 },
+    ],
+  },
+  {
+    id: 'recipe_afterlight_tonic', displayName: 'Steep Afterlight Tonic', category: 'alchemy',
+    stationNpcIds: ['herbalist_lyra'], requiredLevel: 14, goldCost: 95,
+    result: { itemId: 'afterlight_tonic', count: 1 },
+    ingredients: [
+      { itemId: 'sunshard_filament', count: 2 },
+      { itemId: 'voidglass_splinter', count: 1 },
+      { itemId: 'aurora_thread', count: 1 },
+    ],
+  },
+  {
+    id: 'recipe_dawnstar_circlet', displayName: 'Set Dawnstar Circlet', category: 'smithing',
+    stationNpcIds: ['merchant_elsie'], requiredLevel: 14, goldCost: 300,
+    result: { itemId: 'dawnstar_circlet', count: 1 },
+    ingredients: [
+      { itemId: 'sunshard_filament', count: 6 },
+      { itemId: 'voidglass_splinter', count: 4 },
+      { itemId: 'aurora_thread', count: 2 },
+    ],
+  },
+  {
+    id: 'recipe_shoreline_stew', displayName: 'Cook Shoreline Stew', category: 'alchemy',
+    stationNpcIds: ['quartermaster_vesa'], requiredLevel: 15, goldCost: 70,
+    result: { itemId: 'shoreline_stew', count: 2 },
+    ingredients: [
+      { itemId: 'sunwake_kelp', count: 2 },
+      { itemId: 'clover_herb', count: 2 },
+    ],
+  },
+  {
+    id: 'recipe_brineward_tonic', displayName: 'Steep Brineward Tonic', category: 'alchemy',
+    stationNpcIds: ['quartermaster_vesa'], requiredLevel: 15, goldCost: 110,
+    result: { itemId: 'brineward_tonic', count: 1 },
+    ingredients: [
+      { itemId: 'sunwake_kelp', count: 2 },
+      { itemId: 'beacon_ash', count: 1 },
+      { itemId: 'moonwater_phial', count: 1 },
+    ],
+  },
+  {
+    id: 'recipe_tidecall_charm', displayName: 'Set Tidecall Charm', category: 'smithing',
+    stationNpcIds: ['quartermaster_vesa'], requiredLevel: 15, goldCost: 340,
+    result: { itemId: 'tidecall_charm', count: 1 },
+    ingredients: [
+      { itemId: 'saltglass_shard', count: 5 },
+      { itemId: 'beacon_ash', count: 3 },
+      { itemId: 'sunshard_filament', count: 2 },
+    ],
+  },
+  {
+    id: 'recipe_coastwarden_coat', displayName: 'Weave Coastwarden Coat', category: 'tailoring',
+    stationNpcIds: ['quartermaster_vesa'], requiredLevel: 15, goldCost: 380,
+    result: { itemId: 'coastwarden_coat', count: 1 },
+    ingredients: [
+      { itemId: 'sunwake_kelp', count: 6 },
+      { itemId: 'saltglass_shard', count: 5 },
+      { itemId: 'reed_silk', count: 3 },
+    ],
+  },
+  {
+    id: 'recipe_stormclear_draught', displayName: 'Steep Stormclear Draught', category: 'alchemy',
+    stationNpcIds: ['quartermaster_vesa'], requiredLevel: 16, goldCost: 85,
+    result: { itemId: 'stormclear_draught', count: 2 },
+    ingredients: [
+      { itemId: 'stormreed_fiber', count: 2 },
+      { itemId: 'charged_pearl', count: 1 },
+    ],
+  },
+  {
+    id: 'recipe_tempest_cordial', displayName: 'Spark Tempest Cordial', category: 'alchemy',
+    stationNpcIds: ['quartermaster_vesa'], requiredLevel: 17, goldCost: 130,
+    result: { itemId: 'tempest_cordial', count: 1 },
+    ingredients: [
+      { itemId: 'stormreed_fiber', count: 3 },
+      { itemId: 'charged_pearl', count: 1 },
+      { itemId: 'sunwake_kelp', count: 1 },
+    ],
+  },
+  {
+    id: 'recipe_tidebreak_spear', displayName: 'Forge Tidebreak Spear', category: 'smithing',
+    stationNpcIds: ['quartermaster_vesa'], requiredLevel: 16, goldCost: 460,
+    result: { itemId: 'tidebreak_spear', count: 1 },
+    ingredients: [
+      { itemId: 'tideiron_scale', count: 6 },
+      { itemId: 'charged_pearl', count: 2 },
+      { itemId: 'saltglass_shard', count: 3 },
+    ],
+  },
+  {
+    id: 'recipe_stormglass_buckler', displayName: 'Facet Stormglass Buckler', category: 'smithing',
+    stationNpcIds: ['quartermaster_vesa'], requiredLevel: 17, goldCost: 520,
+    result: { itemId: 'stormglass_buckler', count: 1 },
+    ingredients: [
+      { itemId: 'stormglass_fragment', count: 5 },
+      { itemId: 'tideiron_scale', count: 4 },
+      { itemId: 'charged_pearl', count: 2 },
+    ],
+  },
+  {
+    id: 'recipe_clarity_tonic', displayName: 'Steep Clarity Tonic', category: 'alchemy',
+    stationNpcIds: ['cliffsmith_roan'], requiredLevel: 18, goldCost: 100,
+    result: { itemId: 'clarity_tonic', count: 2 },
+    ingredients: [
+      { itemId: 'sunveil_petal', count: 2 },
+      { itemId: 'stormglass_fragment', count: 1 },
+    ],
+  },
+  {
+    id: 'recipe_sunward_philter', displayName: 'Distill Sunward Philter', category: 'alchemy',
+    stationNpcIds: ['cliffsmith_roan'], requiredLevel: 18, goldCost: 150,
+    result: { itemId: 'sunward_philter', count: 1 },
+    ingredients: [
+      { itemId: 'sunveil_petal', count: 3 },
+      { itemId: 'zephyr_pinion', count: 1 },
+      { itemId: 'charged_pearl', count: 1 },
+    ],
+  },
+  {
+    id: 'recipe_skyglass_arcblade', displayName: 'Forge Skyglass Arcblade', category: 'smithing',
+    stationNpcIds: ['cliffsmith_roan'], requiredLevel: 19, goldCost: 620,
+    result: { itemId: 'skyglass_arcblade', count: 1 },
+    ingredients: [
+      { itemId: 'skyglass_ore', count: 6 },
+      { itemId: 'zephyr_pinion', count: 3 },
+      { itemId: 'auric_cog', count: 2 },
+    ],
+  },
+  {
+    id: 'recipe_observatory_aegis', displayName: 'Assemble Observatory Aegis', category: 'smithing',
+    stationNpcIds: ['cliffsmith_roan'], requiredLevel: 19, goldCost: 680,
+    result: { itemId: 'observatory_aegis', count: 1 },
+    ingredients: [
+      { itemId: 'skyglass_ore', count: 5 },
+      { itemId: 'lens_prism', count: 2 },
+      { itemId: 'auric_cog', count: 3 },
+    ],
+  },
+  {
+    id: 'recipe_astrolabe_regalia', displayName: 'Weave Astrolabe Regalia', category: 'tailoring',
+    stationNpcIds: ['cliffsmith_roan'], requiredLevel: 20, goldCost: 820,
+    result: { itemId: 'astrolabe_regalia', count: 1 },
+    ingredients: [
+      { itemId: 'starfall_dust', count: 6 },
+      { itemId: 'lens_prism', count: 4 },
+      { itemId: 'stormreed_fiber', count: 5 },
+    ],
+  },
+  {
+    id: 'recipe_mending_salve', displayName: 'Blend Mending Salve', category: 'alchemy',
+    stationNpcIds: ['trader_vesper'], requiredLevel: 20, goldCost: 120,
+    result: { itemId: 'mending_salve', count: 2 },
+    ingredients: [
+      { itemId: 'dawnsage_leaf', count: 2 },
+      { itemId: 'sunmetal_plate', count: 1 },
+    ],
+  },
+  {
+    id: 'recipe_horizon_draught', displayName: 'Steep Horizon Draught', category: 'alchemy',
+    stationNpcIds: ['trader_vesper'], requiredLevel: 20, goldCost: 180,
+    result: { itemId: 'horizon_draught', count: 1 },
+    ingredients: [
+      { itemId: 'dawnsage_leaf', count: 3 },
+      { itemId: 'horizon_talon', count: 1 },
+      { itemId: 'zephyr_pinion', count: 1 },
+    ],
+  },
+  {
+    id: 'recipe_sunmetal_greaves', displayName: 'Forge Sunmetal Greaves', category: 'smithing',
+    stationNpcIds: ['trader_vesper'], requiredLevel: 21, goldCost: 760,
+    result: { itemId: 'sunmetal_greaves', count: 1 },
+    ingredients: [
+      { itemId: 'sunmetal_plate', count: 6 },
+      { itemId: 'horizon_talon', count: 3 },
+      { itemId: 'auric_cog', count: 2 },
+    ],
+  },
+  {
+    id: 'recipe_archive_lantern', displayName: 'Assemble Archive Lantern', category: 'smithing',
+    stationNpcIds: ['trader_vesper'], requiredLevel: 21, goldCost: 840,
+    result: { itemId: 'archive_lantern', count: 1 },
+    ingredients: [
+      { itemId: 'archive_ink', count: 4 },
+      { itemId: 'memory_leaf', count: 3 },
+      { itemId: 'lens_prism', count: 2 },
+    ],
+  },
+  {
+    id: 'recipe_choicebound_charm', displayName: 'Bind Choicebound Charm', category: 'tailoring',
+    stationNpcIds: ['trader_vesper'], requiredLevel: 22, goldCost: 980,
+    result: { itemId: 'choicebound_charm', count: 1 },
+    ingredients: [
+      { itemId: 'aurora_silk', count: 4 },
+      { itemId: 'memory_leaf', count: 4 },
+      { itemId: 'zenith_prism', count: 1 },
+    ],
+  },
+  {
+    id: 'recipe_clearvoice_tisane', displayName: 'Steep Clearvoice Tisane', category: 'alchemy',
+    stationNpcIds: ['cantor_eira'], requiredLevel: 22, goldCost: 140,
+    result: { itemId: 'clearvoice_tisane', count: 2 },
+    ingredients: [
+      { itemId: 'echo_moss', count: 2 },
+      { itemId: 'resonant_bark', count: 1 },
+    ],
+  },
+  {
+    id: 'recipe_choirwood_tonic', displayName: 'Tune Choirwood Tonic', category: 'alchemy',
+    stationNpcIds: ['cantor_eira'], requiredLevel: 22, goldCost: 210,
+    result: { itemId: 'choirwood_tonic', count: 1 },
+    ingredients: [
+      { itemId: 'echo_moss', count: 3 },
+      { itemId: 'chime_shell', count: 2 },
+      { itemId: 'dawnsage_leaf', count: 1 },
+    ],
+  },
+  {
+    id: 'recipe_cantor_longbow', displayName: 'String Cantor Longbow', category: 'tailoring',
+    stationNpcIds: ['cantor_eira'], requiredLevel: 23, goldCost: 1080,
+    result: { itemId: 'cantor_longbow', count: 1 },
+    ingredients: [
+      { itemId: 'resonant_bark', count: 6 },
+      { itemId: 'canticle_antler', count: 4 },
+      { itemId: 'aurora_silk', count: 3 },
+    ],
+  },
+  {
+    id: 'recipe_scriptroot_staff', displayName: 'Inscribe Scriptroot Staff', category: 'smithing',
+    stationNpcIds: ['cantor_eira'], requiredLevel: 23, goldCost: 1120,
+    result: { itemId: 'scriptroot_staff', count: 1 },
+    ingredients: [
+      { itemId: 'resonant_bark', count: 6 },
+      { itemId: 'hymn_leaf', count: 4 },
+      { itemId: 'archive_ink', count: 3 },
+    ],
+  },
+  {
+    id: 'recipe_bellglass_ward', displayName: 'Facet Bellglass Ward', category: 'smithing',
+    stationNpcIds: ['cantor_eira'], requiredLevel: 24, goldCost: 1260,
+    result: { itemId: 'bellglass_ward', count: 1 },
+    ingredients: [
+      { itemId: 'bellglass_spore', count: 5 },
+      { itemId: 'chime_shell', count: 4 },
+      { itemId: 'crownroot_resin', count: 2 },
+    ],
+  },
+  {
+    id: 'recipe_embermark_rune', displayName: 'Engrave Embermark Rune', category: 'smithing',
+    stationNpcIds: ['runesmith_sera'], requiredLevel: 24, goldCost: 520,
+    result: { itemId: 'embermark_rune', count: 1 },
+    ingredients: [
+      { itemId: 'runebloom_petal', count: 3 },
+      { itemId: 'glyphhide', count: 2 },
+      { itemId: 'wayglass_shard', count: 1 },
+    ],
+  },
+  {
+    id: 'recipe_bastion_rune', displayName: 'Engrave Bastion Rune', category: 'smithing',
+    stationNpcIds: ['runesmith_sera'], requiredLevel: 24, goldCost: 540,
+    result: { itemId: 'bastion_rune', count: 1 },
+    ingredients: [
+      { itemId: 'wayglass_shard', count: 3 },
+      { itemId: 'lantern_antler', count: 2 },
+      { itemId: 'resonant_bark', count: 1 },
+    ],
+  },
+  {
+    id: 'recipe_heartroot_rune', displayName: 'Engrave Heartroot Rune', category: 'tailoring',
+    stationNpcIds: ['runesmith_sera'], requiredLevel: 24, goldCost: 600,
+    result: { itemId: 'heartroot_rune', count: 1 },
+    ingredients: [
+      { itemId: 'runebloom_petal', count: 4 },
+      { itemId: 'lantern_antler', count: 2 },
+      { itemId: 'hymn_leaf', count: 1 },
+    ],
+  },
+  {
+    id: 'recipe_galescript_rune', displayName: 'Engrave Galescript Rune', category: 'tailoring',
+    stationNpcIds: ['runesmith_sera'], requiredLevel: 25, goldCost: 680,
+    result: { itemId: 'galescript_rune', count: 1 },
+    ingredients: [
+      { itemId: 'glyphhide', count: 4 },
+      { itemId: 'namekeeper_wax', count: 2 },
+      { itemId: 'wayglass_shard', count: 2 },
+    ],
+  },
+  {
+    id: 'recipe_seer_rune', displayName: 'Engrave Seer Rune', category: 'smithing',
+    stationNpcIds: ['runesmith_sera'], requiredLevel: 25, goldCost: 760,
+    result: { itemId: 'seer_rune', count: 1 },
+    ingredients: [
+      { itemId: 'epitaph_dust', count: 3 },
+      { itemId: 'hollowstar_ore', count: 2 },
+      { itemId: 'namekeeper_wax', count: 2 },
+    ],
+  },
+  {
+    id: 'recipe_anchorcord_tea', displayName: 'Brew Anchorcord Tea', category: 'alchemy',
+    stationNpcIds: ['quartermaster_fenn'], requiredLevel: 26, goldCost: 420,
+    result: { itemId: 'anchorcord_tea', count: 2 },
+    ingredients: [
+      { itemId: 'waystar_pollen', count: 3 },
+      { itemId: 'moorlight_essence', count: 2 },
+      { itemId: 'hymn_leaf', count: 1 },
+    ],
+  },
+  {
+    id: 'recipe_waystar_rune', displayName: 'Engrave Waystar Rune', category: 'tailoring',
+    stationNpcIds: ['quartermaster_fenn'], requiredLevel: 26, goldCost: 860,
+    result: { itemId: 'waystar_rune', count: 1 },
+    ingredients: [
+      { itemId: 'waystar_pollen', count: 4 },
+      { itemId: 'compass_shell', count: 3 },
+      { itemId: 'moorlight_essence', count: 2 },
+    ],
+  },
+  {
+    id: 'recipe_convergence_rune', displayName: 'Engrave Convergence Rune', category: 'smithing',
+    stationNpcIds: ['quartermaster_fenn'], requiredLevel: 27, goldCost: 980,
+    result: { itemId: 'convergence_rune', count: 1 },
+    ingredients: [
+      { itemId: 'convergent_glass', count: 4 },
+      { itemId: 'vowsteel_fragment', count: 3 },
+      { itemId: 'splitstar_filament', count: 2 },
+    ],
+  },
+  {
+    id: 'recipe_pathforged_glaive', displayName: 'Forge Pathforged Glaive', category: 'smithing',
+    stationNpcIds: ['quartermaster_fenn'], requiredLevel: 27, goldCost: 1680,
+    result: { itemId: 'pathforged_glaive', count: 1 },
+    ingredients: [
+      { itemId: 'vowsteel_fragment', count: 7 },
+      { itemId: 'convergent_glass', count: 4 },
+      { itemId: 'comet_hide', count: 3 },
+    ],
+  },
+  {
+    id: 'recipe_waystar_cowl', displayName: 'Stitch Waystar Cowl', category: 'tailoring',
+    stationNpcIds: ['quartermaster_fenn'], requiredLevel: 27, goldCost: 1460,
+    result: { itemId: 'waystar_cowl', count: 1 },
+    ingredients: [
+      { itemId: 'comet_hide', count: 6 },
+      { itemId: 'waystar_pollen', count: 4 },
+      { itemId: 'compass_shell', count: 3 },
+    ],
+  },
+  {
+    id: 'recipe_moorwarden_coat', displayName: 'Stitch Moorwarden Coat', category: 'tailoring',
+    stationNpcIds: ['quartermaster_fenn'], requiredLevel: 28, goldCost: 1920,
+    result: { itemId: 'moorwarden_coat', count: 1 },
+    ingredients: [
+      { itemId: 'comet_hide', count: 8 },
+      { itemId: 'splitstar_filament', count: 4 },
+      { itemId: 'moorlight_essence', count: 4 },
+    ],
+  },
+];
+
+export const RECIPE_BY_ID = new Map(RECIPES.map((recipe) => [recipe.id, recipe]));
