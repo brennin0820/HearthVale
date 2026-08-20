@@ -5,6 +5,8 @@ async function main(): Promise<void> {
   await import('./world-room-smoke.js');
   console.log('\n--- character-persistence-smoke ---');
   await import('./character-persistence-smoke.js');
+  console.log('\n--- portal-travel-persistence-smoke ---');
+  await import('./portal-travel-persistence-smoke.js');
   console.log('\nAll server smoke tests passed.');
 }
 
