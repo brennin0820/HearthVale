@@ -510,7 +510,7 @@ export const MAPS: MapDefinition[] = [
     worldMapPosition: { x: 650, y: 40 },
     biome: 'riverside_town',
     musicKey: 'music_millwick_crossing',
-    gridSize: scaleGrid({ width: 40, height: 32 }),
+    gridSize: { width: 44, height: 32 },
     spawnTables: [],
     npcs: [
       { npcId: 'mayor_holt', position: scaleWorldPoint({ x: 300, y: 200 }), facing: 'south' },

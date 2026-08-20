@@ -1,4 +1,93 @@
 {
   "mapId": "crystal_mine_approach",
-  "props": []
+  "props": [
+    {
+      "id": "crystal_mine_approach_ground",
+      "kind": "plaza",
+      "x": 0,
+      "y": 0,
+      "width": 1664,
+      "height": 1216,
+      "fillColor": 6714459,
+      "alpha": 0.32
+    },
+    {
+      "id": "approach_south_trail",
+      "kind": "path",
+      "x": -16,
+      "y": 304,
+      "width": 1440,
+      "height": 96,
+      "fillColor": 11705200,
+      "accentColor": 14138762,
+      "alpha": 0.68
+    },
+    {
+      "id": "approach_mine_track",
+      "kind": "path",
+      "x": -368,
+      "y": 32,
+      "width": 96,
+      "height": 640,
+      "fillColor": 11705200,
+      "accentColor": 14138762,
+      "alpha": 0.68
+    },
+    {
+      "id": "approach_cliff_nw",
+      "kind": "crate",
+      "x": -608,
+      "y": -416,
+      "width": 192,
+      "height": 128,
+      "fillColor": 6449272,
+      "accentColor": 10134452,
+      "alpha": 1
+    },
+    {
+      "id": "approach_cliff_north",
+      "kind": "crate",
+      "x": -80,
+      "y": -464,
+      "width": 224,
+      "height": 96,
+      "fillColor": 6449272,
+      "accentColor": 10134452,
+      "alpha": 1
+    },
+    {
+      "id": "approach_crystals",
+      "kind": "crate",
+      "x": 304,
+      "y": -128,
+      "width": 96,
+      "height": 128,
+      "fillColor": 6449272,
+      "accentColor": 10134452,
+      "alpha": 1
+    },
+    {
+      "id": "approach_boulder_east",
+      "kind": "crate",
+      "x": 656,
+      "y": 208,
+      "width": 96,
+      "height": 96,
+      "fillColor": 6449272,
+      "accentColor": 10134452,
+      "alpha": 1
+    },
+    {
+      "id": "approach_pines_sw",
+      "kind": "tree",
+      "x": -576,
+      "y": 400,
+      "width": 128,
+      "height": 96,
+      "shape": "ellipse",
+      "fillColor": 3562810,
+      "accentColor": 7491640,
+      "alpha": 1
+    }
+  ]
 }

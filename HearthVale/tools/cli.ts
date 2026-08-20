@@ -38,6 +38,7 @@ Data pipeline:
   verify-campaign     Active journey reachability and world-map uniqueness
   verify-spawns       Spawn monster ID check
   verify-npcs         NPC ID check
+  verify-map-art      Collision/props coverage and reachable travel anchors
   verify-bounds       Map bounds check
   verify-drops        Drop table check
   verify-items        Item catalog check
@@ -75,6 +76,7 @@ const scriptMap: Record<string, string> = {
   'verify-campaign': 'scripts/verify-campaign.ts',
   'verify-spawns': 'scripts/verify-spawns.ts',
   'verify-npcs': 'scripts/verify-npcs.ts',
+  'verify-map-art': 'scripts/verify-map-art.ts',
   'verify-bounds': 'scripts/verify-bounds.ts',
   'verify-drops': 'scripts/verify-drops.ts',
   'verify-items': 'scripts/verify-items.ts',
@@ -106,6 +108,7 @@ switch (command) {
       'scripts/verify-campaign.ts',
       'scripts/verify-spawns.ts',
       'scripts/verify-npcs.ts',
+      'scripts/verify-map-art.ts',
       'scripts/verify-bounds.ts',
       'scripts/verify-drops.ts',
       'scripts/verify-items.ts',

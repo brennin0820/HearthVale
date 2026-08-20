@@ -1,7 +1,8 @@
 import type { MapDefinition } from '../types/world.js';
+import { loadJsonAsset } from './jsonAssets.js';
 
-const MAPS_URL = '/maps.json';
-const MONSTERS_URL = '/catalog/monsters.json';
+const MAPS_URL = './maps.json';
+const MONSTERS_URL = './catalog/monsters.json';
 
 let cachedMaps: MapDefinition[] | null = null;
 let mapById: Record<string, MapDefinition> = {};
@@ -25,12 +26,7 @@ export async function loadMonsterCatalog(): Promise<Map<string, MonsterCatalogEn
     return cachedMonsters;
   }
 
-  const response = await fetch(MONSTERS_URL);
-  if (!response.ok) {
-    throw new Error(`Failed to load monsters.json (${response.status})`);
-  }
-
-  const monsters = (await response.json()) as MonsterCatalogEntry[];
+  const monsters = await loadJsonAsset<MonsterCatalogEntry[]>(MONSTERS_URL);
   cachedMonsters = new Map(monsters.map((monster) => [monster.id, monster]));
   return cachedMonsters;
 }
@@ -40,12 +36,7 @@ export async function loadWorldMaps(): Promise<MapDefinition[]> {
     return cachedMaps;
   }
 
-  const response = await fetch(MAPS_URL);
-  if (!response.ok) {
-    throw new Error(`Failed to load maps.json (${response.status})`);
-  }
-
-  const maps = (await response.json()) as MapDefinition[];
+  const maps = await loadJsonAsset<MapDefinition[]>(MAPS_URL);
   cachedMaps = maps;
   mapById = Object.fromEntries(maps.map((map) => [map.id, map]));
   return maps;

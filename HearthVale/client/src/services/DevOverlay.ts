@@ -5,10 +5,11 @@ import type { MapDefinition } from '../types/world.js';
 export class DevOverlay {
   private text: Phaser.GameObjects.Text | null = null;
   private visible = false;
+  private toggleKey: Phaser.Input.Keyboard.Key | null = null;
 
   constructor(private scene: Phaser.Scene) {}
 
-  mount(map: MapDefinition): void {
+  mount(): void {
     this.text = this.scene.add
       .text(12, this.scene.scale.height - 120, '', {
         fontFamily: 'monospace',
@@ -21,8 +22,8 @@ export class DevOverlay {
       .setDepth(2000)
       .setVisible(false);
 
-    const f3 = this.scene.input.keyboard?.addKey(Phaser.Input.Keyboard.KeyCodes.F3);
-    f3?.on('down', () => this.toggle(map));
+    this.toggleKey = this.scene.input.keyboard?.addKey(Phaser.Input.Keyboard.KeyCodes.F3) ?? null;
+    this.toggleKey?.on('down', this.toggle, this);
   }
 
   update(map: MapDefinition, position: { x: number; y: number }): void {
@@ -40,11 +41,18 @@ export class DevOverlay {
     );
   }
 
-  private toggle(map: MapDefinition): void {
+  destroy(): void {
+    this.toggleKey?.off('down', this.toggle, this);
+    this.toggleKey = null;
+    this.text?.destroy();
+    this.text = null;
+  }
+
+  private toggle(): void {
     this.visible = !this.visible;
     this.text?.setVisible(this.visible);
     if (this.visible && this.text) {
-      this.text.setText(`map: ${map.id}\n(F3 to hide)`);
+      this.text.setText('DEV\n(F3 to hide)');
     }
   }
 }

@@ -9,12 +9,38 @@
     "repeat": -1
   },
   {
+    "key": "player_walk_up",
+    "frames": [
+      "player_up_0",
+      "player_up_1"
+    ],
+    "frameRate": 6,
+    "repeat": -1
+  },
+  {
+    "key": "player_walk_left",
+    "frames": [
+      "player_left_0",
+      "player_left_1"
+    ],
+    "frameRate": 6,
+    "repeat": -1
+  },
+  {
+    "key": "player_walk_right",
+    "frames": [
+      "player_right_0",
+      "player_right_1"
+    ],
+    "frameRate": 6,
+    "repeat": -1
+  },
+  {
     "key": "portal_pulse",
     "frames": [
-      "portal_0",
-      "portal_1"
+      "portal_0"
     ],
-    "frameRate": 4,
+    "frameRate": 1,
     "repeat": -1
   }
 ]

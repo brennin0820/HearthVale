@@ -1,0 +1,42 @@
+name: Copilot task
+description: Assign a focused HearthVale job to GitHub Copilot cloud agent
+title: "[Copilot] "
+labels: ["copilot"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Assign this issue to **Copilot** (or open it from [github.com/copilot/agents](https://github.com/copilot/agents) with repo `brennin0820/HearthVale`).
+        Prefer custom agent **hearthvale-builder**. One slice only.
+  - type: dropdown
+    id: slice
+    attributes:
+      label: Phase slice
+      options:
+        - Job selection UI (level 10 → tier-1 path)
+        - Enforce portal requiredLevel
+        - Mine floors + Gemhorn Sentinel boss
+        - Hearth Courier warp UI
+        - Mine-completion quest
+        - Phase D world map UI
+        - Millwick vendor buy/sell
+        - Other (describe below)
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: Checklist Copilot must satisfy before the PR is ready.
+      placeholder: |
+        - [ ] Behavior works in npm run dev:client
+        - [ ] npm run verify passes
+        - [ ] npm run build:client passes
+        - [ ] Session handoff appended (+# only)
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: Extra notes / files to touch
+      placeholder: Optional paths, constraints, or "do not touch" list.

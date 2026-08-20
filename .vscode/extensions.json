@@ -1,5 +1,7 @@
 {
-    "recommendations": [
-        "openai.chatgpt"
-    ]
+  "recommendations": [
+    "GitHub.copilot",
+    "GitHub.copilot-chat",
+    "openai.chatgpt"
+  ]
 }

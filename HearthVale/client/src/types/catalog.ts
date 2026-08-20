@@ -52,3 +52,23 @@ export interface JobSkillsEntry {
   id: string;
   startingSkills: string[];
 }
+
+export interface ItemDefinition {
+  id: string;
+  displayName: string;
+  kind: 'consumable' | 'material' | 'equipment' | 'quest';
+  stackMax: number;
+  rarity?: 'common' | 'uncommon' | 'rare' | 'epic' | 'legendary';
+}
+
+export interface DropEntry {
+  itemId: string;
+  weight: number;
+  minCount: number;
+  maxCount: number;
+}
+
+export interface DropTableDefinition {
+  monsterId: string;
+  entries: DropEntry[];
+}

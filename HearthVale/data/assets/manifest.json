@@ -80,196 +80,46 @@
     "placeholder": true
   },
   {
-    "key": "map_moonwell_heart",
-    "type": "map",
-    "placeholder": true
-  },
-  {
-    "key": "map_lanternspire_summit",
-    "type": "map",
-    "placeholder": true
-  },
-  {
-    "key": "map_afterlight_expanse",
-    "type": "map",
-    "placeholder": true
-  },
-  {
-    "key": "map_dawnshore_camp",
-    "type": "map",
-    "placeholder": true
-  },
-  {
-    "key": "map_glasswind_coast",
-    "type": "map",
-    "placeholder": true
-  },
-  {
-    "key": "map_tidebreak_causeway",
-    "type": "map",
-    "placeholder": true
-  },
-  {
-    "key": "map_stormglass_reliquary",
-    "type": "map",
-    "placeholder": true
-  },
-  {
-    "key": "map_beaconfall_cliffs",
-    "type": "map",
-    "placeholder": true
-  },
-  {
-    "key": "map_sunspire_observatory",
-    "type": "map",
-    "placeholder": true
-  },
-  {
-    "key": "map_aurora_highlands",
-    "type": "map",
-    "placeholder": true
-  },
-  {
-    "key": "map_zenith_archive",
-    "type": "map",
-    "placeholder": true
-  },
-  {
-    "key": "map_choirwood_canopy",
-    "type": "map",
-    "placeholder": true
-  },
-  {
-    "key": "map_crownroot_sanctum",
-    "type": "map",
-    "placeholder": true
-  },
-  {
-    "key": "map_runeveil_gardens",
-    "type": "map",
-    "placeholder": true
-  },
-  {
-    "key": "map_namesong_vault",
-    "type": "map",
-    "placeholder": true
-  },
-  {
-    "key": "map_waystar_moor",
-    "type": "map",
-    "placeholder": true
-  },
-  {
-    "key": "map_convergence_spire",
-    "type": "map",
-    "placeholder": true
-  },
-  {
-    "key": "player_down_0",
-    "type": "sprite",
+    "key": "atlas_hearthvale_characters",
+    "type": "atlas",
     "placeholder": false,
-    "path": "assets/sprites/player_down_0.png"
+    "path": "/assets/hearthvale-characters.svg",
+    "frameWidth": 48,
+    "frameHeight": 48,
+    "frames": {
+      "player_down_0": 0,
+      "player_down_1": 1,
+      "player_up_0": 2,
+      "player_up_1": 3,
+      "player_left_0": 4,
+      "player_left_1": 5,
+      "player_right_0": 6,
+      "player_right_1": 7,
+      "npc_quest": 8,
+      "npc_merchant": 9,
+      "npc_trainer": 10,
+      "npc_warp": 11,
+      "npc_flavor": 12
+    },
+    "license": "HearthVale-original"
   },
   {
-    "key": "player_down_1",
-    "type": "sprite",
+    "key": "atlas_hearthvale_world",
+    "type": "atlas",
     "placeholder": false,
-    "path": "assets/sprites/player_down_1.png"
-  },
-  {
-    "key": "portal_0",
-    "type": "sprite",
-    "placeholder": false,
-    "path": "assets/sprites/portal_0.png"
-  },
-  {
-    "key": "portal_1",
-    "type": "sprite",
-    "placeholder": false,
-    "path": "assets/sprites/portal_1.png"
-  },
-  {
-    "key": "clover_herb",
-    "type": "icon",
-    "placeholder": false,
-    "path": "assets/sprites/items/clover_herb.png"
-  },
-  {
-    "key": "spore_cap",
-    "type": "icon",
-    "placeholder": false,
-    "path": "assets/sprites/items/spore_cap.png"
-  },
-  {
-    "key": "crystal_shard",
-    "type": "icon",
-    "placeholder": false,
-    "path": "assets/sprites/items/crystal_shard.png"
-  },
-  {
-    "key": "gale_feather",
-    "type": "icon",
-    "placeholder": false,
-    "path": "assets/sprites/items/gale_feather.png"
-  },
-  {
-    "key": "moon_flake",
-    "type": "icon",
-    "placeholder": false,
-    "path": "assets/sprites/items/moon_flake.png"
-  },
-  {
-    "key": "jellybud",
-    "type": "sprite",
-    "placeholder": false,
-    "path": "assets/sprites/monsters/jellybud.png"
-  },
-  {
-    "key": "spriggle",
-    "type": "sprite",
-    "placeholder": false,
-    "path": "assets/sprites/monsters/spriggle.png"
-  },
-  {
-    "key": "puffshroom",
-    "type": "sprite",
-    "placeholder": false,
-    "path": "assets/sprites/monsters/puffshroom.png"
-  },
-  {
-    "key": "grass_base",
-    "type": "tile",
-    "placeholder": false,
-    "path": "assets/sprites/tiles/grass_base.png"
-  },
-  {
-    "key": "grass_clover",
-    "type": "tile",
-    "placeholder": false,
-    "path": "assets/sprites/tiles/grass_clover.png"
-  },
-  {
-    "key": "grass_flower",
-    "type": "tile",
-    "placeholder": false,
-    "path": "assets/sprites/tiles/grass_flower.png"
-  },
-  {
-    "key": "dirt_path",
-    "type": "tile",
-    "placeholder": false,
-    "path": "assets/sprites/tiles/dirt_path.png"
-  },
-  {
-    "key": "elder",
-    "type": "portrait",
-    "placeholder": false,
-    "path": "assets/sprites/portraits/elder.png"
-  },
-  {
-    "key": "merchant_silas",
-    "type": "portrait",
-    "placeholder": false,
-    "path": "assets/sprites/portraits/merchant_silas.png"
+    "path": "/assets/hearthvale-world.svg",
+    "frameWidth": 48,
+    "frameHeight": 48,
+    "frames": {
+      "prop_tree": 0,
+      "prop_cottage": 1,
+      "prop_crystal": 2,
+      "prop_fence": 3,
+      "prop_crate": 4,
+      "prop_lantern": 5,
+      "prop_moonwell": 6,
+      "portal_0": 7
+    },
+    "license": "HearthVale-original"
   }
 ]

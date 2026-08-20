@@ -471,6 +471,17 @@
   background: var(--t-accent);
   transform: translate(-50%, -50%);
 }
+.hv-hud__poi--portal {
+  width: 9px;
+  height: 9px;
+  background: #86c8ff;
+  box-shadow: 0 0 0 2px rgba(20, 45, 70, .65), 0 0 8px rgba(120, 205, 255, .8);
+}
+.hv-hud__poi--npc {
+  width: 6px;
+  height: 6px;
+  background: #f1cf76;
+}
 
 .hv-hud__minimap-compass {
   position: absolute;
@@ -482,7 +493,8 @@
   border-right: 6px solid transparent;
   border-bottom: 10px solid var(--t-textPrimary);
   transform: translate(-50%, -50%);
-  animation: pulseSoft 2.6s ease-in-out infinite;
+  filter: drop-shadow(0 1px 3px rgba(0,0,0,.9));
+  transition: left .1s linear, top .1s linear;
 }
 
 .hv-hud__minimap-title {
@@ -796,3 +808,236 @@
   display: flex; align-items: center; justify-content: center;
 }
 .hv-shape__stance-dot { width: 7px; height: 7px; border-radius: 50%; }
+
+/* Hearthglass field layout
+   A compact, original top-down MMO HUD: vital information hugs the edges,
+   combat focus stays centered at the top, and the playfield remains open. */
+.hv-hud {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  transform: none;
+  color: var(--t-textPrimary);
+}
+
+.hv-hud__player,
+.hv-hud__log,
+.hv-hud__banner,
+.hv-hud__target,
+.hv-hud__minimap,
+.hv-hud__currency,
+.hv-hud__quests,
+.hv-hud__bag,
+.hv-hud__hotbar,
+.hv-hud__stance,
+.hv-hud__aura-icon {
+  background: color-mix(in srgb, var(--t-panelBg) 68%, transparent);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.hv-hud__player {
+  left: 24px;
+  top: 20px;
+  width: 386px;
+  min-height: 112px;
+  padding: 12px;
+  gap: 12px;
+  border-left: 3px solid var(--t-accent);
+}
+
+.hv-hud__portrait,
+.hv-hud__portrait-face {
+  width: 76px;
+  height: 76px;
+}
+.hv-hud__portrait-head { left: 22px; top: 13px; width: 32px; height: 32px; }
+.hv-hud__portrait-body { left: 16px; width: 44px; height: 27px; }
+.hv-hud__portrait-level { width: 27px; height: 27px; font-size: 12px; }
+.hv-hud__player-name { font-size: 21px; line-height: 1; }
+.hv-hud__player-title { font-size: 12px; }
+.hv-hud__hp-bar { height: 18px; }
+.hv-hud__mp-bar { height: 11px; }
+.hv-hud__sp-bar { height: 7px; }
+.hv-hud__mp-bar::before,
+.hv-hud__sp-bar::before {
+  position: absolute;
+  z-index: 1;
+  left: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+  font: 700 8px/1 ui-monospace, Menlo, monospace;
+  color: rgba(255,255,255,.78);
+  text-shadow: 0 1px 2px rgba(0,0,0,.8);
+}
+.hv-hud__mp-bar::before { content: 'MP'; }
+.hv-hud__sp-bar::before { content: 'SP'; }
+
+.hv-hud__auras {
+  left: 24px;
+  top: 144px;
+  width: 386px;
+  gap: 6px;
+}
+.hv-hud__aura-icon { width: 32px; height: 32px; font-size: 12px; }
+.hv-hud__aura-time { font-size: 9px; }
+
+/* Party remains available to the data layer, but the solo prototype does not
+   spend persistent screen space on mock party frames. */
+.hv-hud__party { display: none; }
+
+.hv-hud__banner {
+  top: 18px;
+  min-width: 300px;
+  padding: 7px 18px;
+  background: color-mix(in srgb, var(--t-panelBg) 56%, transparent);
+}
+.hv-hud__banner-title { font-size: 18px; }
+.hv-hud__banner-subtitle { font-size: 11px; }
+
+.hv-hud__target {
+  top: 78px;
+  width: min(430px, calc(100vw - 48px));
+  padding: 9px 14px;
+  border-top: 2px solid var(--t-accent);
+}
+.hv-hud__target-name { font-size: 15px; }
+.hv-hud__target-hp { height: 13px; margin-bottom: 2px; }
+
+.hv-hud__minimap {
+  right: 24px;
+  top: 20px;
+  width: 192px;
+  height: 192px;
+  border: 1px solid var(--t-accentSoft);
+  transition: width .16s ease, height .16s ease, box-shadow .16s ease;
+}
+.hv-hud__minimap--portal-near {
+  box-shadow: var(--t-panelRing), 0 0 0 2px #86c8ff, 0 0 22px rgba(92, 184, 255, .42);
+}
+.hv-hud--map-open .hv-hud__minimap {
+  width: min(520px, calc(100vw - 48px));
+  height: min(520px, calc(100vh - 48px));
+  background: color-mix(in srgb, var(--t-panelBg) 82%, transparent);
+  z-index: 5;
+}
+
+.hv-hud__currency {
+  right: 24px;
+  top: 224px;
+  width: 192px;
+  height: 38px;
+  justify-content: space-evenly;
+}
+.hv-hud__currency-coin { width: 13px; height: 13px; }
+.hv-hud__currency-item span { font-size: 12px; }
+
+.hv-hud__quests {
+  right: 24px;
+  top: 274px;
+  width: 286px;
+  height: 128px;
+  padding: 10px 12px;
+}
+.hv-hud__section-title { font-size: 12px; margin-bottom: 6px; }
+.hv-hud__quest-list { gap: 5px; }
+.hv-hud__quest-item span:last-child { font-size: 11px; line-height: 1.25; }
+.hv-hud__quest-bullet { width: 6px; height: 6px; }
+
+.hv-hud__log {
+  left: 24px;
+  bottom: 22px;
+  width: 360px;
+  height: 116px;
+  opacity: .92;
+}
+.hv-hud__log-tabs { padding: 6px 10px 5px; gap: 12px; }
+.hv-hud__log-tab { font-size: 10px; }
+.hv-hud__log-body { padding: 6px 10px; gap: 3px; }
+.hv-hud__log-line { font-size: 11px; line-height: 1.2; }
+
+.hv-hud__bag {
+  right: 24px;
+  bottom: 22px;
+  width: 322px;
+  height: 84px;
+  padding: 8px 10px;
+  gap: 7px;
+}
+.hv-hud__bag-tabs { gap: 0; }
+.hv-hud__bag-tab { font-size: 10px; text-transform: uppercase; letter-spacing: .08em; }
+.hv-hud__bag-grid {
+  width: auto;
+  flex-wrap: nowrap;
+  gap: 6px;
+  overflow: hidden;
+}
+
+.hv-hud__xp {
+  bottom: 88px;
+  width: min(680px, calc(100vw - 820px));
+  min-width: 420px;
+  height: 22px;
+  gap: 8px;
+}
+.hv-hud__xp-level { width: 22px; height: 22px; font-size: 10px; }
+.hv-hud__xp-track { height: 8px; }
+.hv-hud__xp-label { font-size: 10px; }
+
+.hv-hud__hotbar {
+  bottom: 22px;
+  gap: 6px;
+  padding: 7px;
+  border-radius: var(--t-panelRadius);
+  background: color-mix(in srgb, var(--t-panelBg) 68%, transparent);
+  box-shadow: var(--t-panelRing);
+  backdrop-filter: var(--t-panelBackdrop);
+}
+.hv-hud__stance {
+  left: 398px;
+  bottom: 26px;
+  font-size: 10px;
+  padding: 5px 8px;
+  border-radius: 999px;
+  background: var(--t-panelBg);
+}
+
+@media (max-width: 1100px), (max-height: 700px) {
+  .hv-hud__banner,
+  .hv-hud__currency,
+  .hv-hud__log,
+  .hv-hud__bag,
+  .hv-hud__stance { display: none; }
+  .hv-hud__player { left: 12px; top: 12px; width: 340px; }
+  .hv-hud__auras { left: 12px; top: 132px; width: 340px; }
+  .hv-hud__minimap { right: 12px; top: 12px; width: 142px; height: 142px; }
+  .hv-hud__quests { right: 12px; top: 164px; width: 220px; height: 102px; }
+  .hv-hud__target { top: 12px; }
+  .hv-hud__xp { width: calc(100vw - 32px); min-width: 0; bottom: 74px; }
+  .hv-hud__hotbar { bottom: 12px; transform: translateX(-50%) scale(.82); }
+}
+
+@media (max-width: 620px) {
+  .hv-hud__player { width: calc(100vw - 24px); }
+  .hv-hud__player-title { display: none; }
+  .hv-hud__quests,
+  .hv-hud__auras { display: none; }
+  .hv-hud__minimap { width: 94px; height: 94px; }
+  .hv-hud--map-open .hv-hud__minimap {
+    width: calc(100vw - 24px);
+    height: min(70vh, calc(100vw - 24px));
+  }
+  .hv-hud__target { top: 136px; }
+  .hv-hud__xp-label { display: none; }
+  .hv-hud__hotbar { transform: translateX(-50%) scale(.62); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hv-hud *,
+  .hv-hud *::before,
+  .hv-hud *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

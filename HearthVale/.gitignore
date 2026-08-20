@@ -2,8 +2,7 @@ node_modules/
 client/node_modules/
 compass/node_modules/
 client/dist/
-client-phaser-archive/dist/
-client-phaser-next/dist/
+client/.derivedData/
 compass/dist/
 compass/release/
 server/dist/

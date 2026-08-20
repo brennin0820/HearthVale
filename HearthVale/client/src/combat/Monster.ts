@@ -55,6 +55,8 @@ export class Monster {
   private readonly tag: Phaser.GameObjects.Text;
   private readonly hpBarBg: Phaser.GameObjects.Rectangle;
   private readonly hpBarFill: Phaser.GameObjects.Rectangle;
+  private readonly telegraphRing: Phaser.GameObjects.Arc;
+  private readonly telegraphGlyph: Phaser.GameObjects.Text;
 
   /** Flee reduction from a `debuff`-kind skill (e.g. Shield Bash), and remaining ms. */
   private fleeDebuff = 0;
@@ -114,7 +116,24 @@ export class Monster {
     this.hpBarBg.setVisible(false);
     this.hpBarFill.setVisible(false);
 
-    layer.add([this.body, this.tag, this.hpBarBg, this.hpBarFill]);
+    this.telegraphRing = scene.add.circle(home.x, home.y, this.radius + 9, 0xff8a42, 0.08);
+    this.telegraphRing.setStrokeStyle(3, 0xffb04a, 0.95);
+    this.telegraphRing.setDepth(depths.monster);
+    this.telegraphRing.setVisible(false);
+    this.telegraphGlyph = scene.add
+      .text(home.x, home.y - this.radius - 25, '!', {
+        fontFamily: 'sans-serif',
+        fontSize: '18px',
+        fontStyle: 'bold',
+        color: '#fff0a8',
+        stroke: '#7a2418',
+        strokeThickness: 4,
+      })
+      .setOrigin(0.5, 1)
+      .setDepth(depths.label)
+      .setVisible(false);
+
+    layer.add([this.telegraphRing, this.body, this.tag, this.hpBarBg, this.hpBarFill, this.telegraphGlyph]);
   }
 
   get x(): number {
@@ -175,6 +194,22 @@ export class Monster {
     }
   }
 
+  /** Renderer feedback for a controller-owned attack wind-up (0..1). */
+  showAttackTelegraph(progress: number): void {
+    const clamped = Phaser.Math.Clamp(progress, 0, 1);
+    this.telegraphRing.setVisible(true);
+    this.telegraphGlyph.setVisible(true);
+    this.telegraphRing.setScale(0.88 + clamped * 0.22);
+    this.telegraphRing.setAlpha(0.48 + clamped * 0.5);
+    this.body.setStrokeStyle(3, 0xffb04a, 1);
+  }
+
+  hideAttackTelegraph(): void {
+    this.telegraphRing.setVisible(false);
+    this.telegraphGlyph.setVisible(false);
+    this.body.setStrokeStyle(2, 0xffd0b0, 0.9);
+  }
+
   /** Apply damage; returns true if this blow was fatal. */
   takeDamage(amount: number): boolean {
     if (this.state !== 'alive') return false;
@@ -230,12 +265,15 @@ export class Monster {
     this.tag.setPosition(x, y - this.radius - 12);
     this.hpBarBg.setPosition(x, y - this.radius - 4);
     this.hpBarFill.setPosition(x - HP_BAR_WIDTH / 2, y - this.radius - 4);
+    this.telegraphRing.setPosition(x, y);
+    this.telegraphGlyph.setPosition(x, y - this.radius - 25);
   }
 
   private setPartsVisible(visible: boolean): void {
     this.body.setVisible(visible);
     this.tag.setVisible(visible);
     if (!visible) {
+      this.hideAttackTelegraph();
       this.hpBarBg.setVisible(false);
       this.hpBarFill.setVisible(false);
     }
@@ -255,5 +293,7 @@ export class Monster {
     this.tag.destroy();
     this.hpBarBg.destroy();
     this.hpBarFill.destroy();
+    this.telegraphRing.destroy();
+    this.telegraphGlyph.destroy();
   }
 }

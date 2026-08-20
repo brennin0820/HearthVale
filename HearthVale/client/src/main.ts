@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import './hud/hud.css';
 import { hudOverlay } from './hud/HudOverlay.js';
+import { mountMobileControls } from './input/MobileControls.js';
 import { BootScene } from './scenes/BootScene.js';
 import { WorldScene } from './scenes/WorldScene.js';
 
@@ -18,6 +19,7 @@ const config: Phaser.Types.Core.GameConfig = {
 };
 
 hudOverlay.mount();
+mountMobileControls();
 new Phaser.Game(config);
 
 window.addEventListener('resize', () => {

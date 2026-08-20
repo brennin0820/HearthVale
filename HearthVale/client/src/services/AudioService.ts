@@ -25,11 +25,7 @@ export class AudioService {
   private muted = false;
 
   async load(): Promise<void> {
-    const response = await fetch('/audio/manifest.json');
-    if (!response.ok) {
-      throw new Error(`Failed to load audio manifest: ${response.status}`);
-    }
-    this.manifest = (await response.json()) as AudioManifest;
+    this.manifest = await loadJsonAsset<AudioManifest>('./audio/manifest.json');
   }
 
   playMapMusic(musicKey: string): void {
@@ -72,3 +68,4 @@ export class AudioService {
 }
 
 export const audioService = new AudioService();
+import { loadJsonAsset } from './jsonAssets.js';

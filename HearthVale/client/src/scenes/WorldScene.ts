@@ -2,12 +2,12 @@ import Phaser from 'phaser';
 import {
   DEFAULT_CURRENCY,
   DEFAULT_HOTBAR,
-  DEFAULT_INVENTORY,
   DEFAULT_PARTY,
   hudOverlay,
   type HudAura,
   type HudPlayerSnapshot,
   type HudTarget,
+  type SlotItem,
 } from '../hud/HudOverlay.js';
 import { audioService } from '../services/AudioService.js';
 import { DevOverlay } from '../services/DevOverlay.js';
@@ -15,8 +15,8 @@ import { loadCollisionMask, loadPropLayer } from '../services/mapArtData.js';
 import { loadNpcCatalog } from '../services/npcData.js';
 import type { NpcCatalogEntry, NpcRole } from '../types/npc.js';
 import { getMapById, loadMonsterCatalog, type MonsterCatalogEntry } from '../services/worldData.js';
-import { getJobSkills, getSkillById } from '../services/catalogData.js';
-import type { SkillEffectKind } from '../types/catalog.js';
+import { getDropsForMonster, getItemById, getJobSkills, getSkillById } from '../services/catalogData.js';
+import type { ItemDefinition, SkillEffectKind } from '../types/catalog.js';
 import { CombatController, type CombatBridge, type CombatTargetInfo } from '../combat/CombatController.js';
 import type { CombatStats } from '../combat/formulas.js';
 import {
@@ -101,6 +101,10 @@ const NPC_INTERACT_RADIUS = 62;
 const NPC_CLICK_TOLERANCE = 40;
 const NPC_BOB_AMPLITUDE = 3;
 const NPC_DIALOGUE_MS = 5200;
+/** DOM HUD updates do not need to run at the simulation's 60 FPS. */
+const HUD_SYNC_INTERVAL_MS = 100;
+const CHARACTER_ATLAS = 'atlas_hearthvale_characters';
+const WORLD_ATLAS = 'atlas_hearthvale_world';
 
 interface NpcRoleStyle {
   body: number;
@@ -136,6 +140,8 @@ export class WorldScene extends Phaser.Scene {
   private mapDef!: MapDefinition;
   private bounds!: MapBounds;
   private player!: Phaser.GameObjects.Container;
+  private playerSprite: Phaser.GameObjects.Sprite | null = null;
+  private playerFacing: 'up' | 'down' | 'left' | 'right' = 'down';
   private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
   private wasd!: {
     W: Phaser.Input.Keyboard.Key;
@@ -165,6 +171,7 @@ export class WorldScene extends Phaser.Scene {
   private monsterCatalog: Map<string, MonsterCatalogEntry> = new Map();
   private combat!: CombatController;
   private attackKey!: Phaser.Input.Keyboard.Key;
+  private guardKey!: Phaser.Input.Keyboard.Key;
   private skillKeys: Phaser.Input.Keyboard.Key[] = [];
   private skillLoadout: string[] = [];
   private playerBuffs: PlayerBuff[] = [];
@@ -172,6 +179,8 @@ export class WorldScene extends Phaser.Scene {
   private inCombat = false;
   private playerInvuln = 0;
   private liveCombatTarget: CombatTargetInfo | null = null;
+  private readonly inventory = new Map<string, number>();
+  private hudSyncElapsed = 0;
 
   constructor() {
     super({ key: 'WorldScene' });
@@ -194,7 +203,9 @@ export class WorldScene extends Phaser.Scene {
     this.inCombat = false;
     this.playerInvuln = 0;
     this.playerBuffs = [];
-    this.portalBlockHint = '';
+    this.playerSprite = null;
+    this.playerFacing = 'down';
+    this.hudSyncElapsed = 0;
   }
 
   async create(data: WorldSceneData): Promise<void> {
@@ -248,6 +259,7 @@ export class WorldScene extends Phaser.Scene {
       this.autoPathMarker.setDepth(WORLD_DEPTH.labels);
       this.autoPathMarker.setVisible(false);
       this.attackKey = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+      this.guardKey = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
       this.skillLoadout = getJobSkills(STARTING_JOB_ID);
       this.skillKeys = [
         Phaser.Input.Keyboard.KeyCodes.ONE,
@@ -263,7 +275,7 @@ export class WorldScene extends Phaser.Scene {
       this.input.mouse?.disableContextMenu();
 
       this.devOverlay = new DevOverlay(this);
-      this.devOverlay.mount(mapDef);
+      this.devOverlay.mount();
       audioService.playMapMusic(mapDef.musicKey);
       this.inSafeZone = this.isInSafeZone({ x: this.player.x, y: this.player.y });
     this.updatePlayerVitals(0, false);
@@ -294,6 +306,7 @@ export class WorldScene extends Phaser.Scene {
     this.inSafeZone = this.isInSafeZone({ x: this.player.x, y: this.player.y });
     this.updatePlayerVitals(delta, actuallyMoved);
     this.updatePlayerBuffs(delta);
+    this.combat.setGuarding(this.guardKey.isDown && this.inCombat);
     this.combat.update(delta);
     if (Phaser.Input.Keyboard.JustDown(this.attackKey) && !this.isDialogueOpen) {
       this.combat.playerAttack();
@@ -308,11 +321,17 @@ export class WorldScene extends Phaser.Scene {
     }
     if (this.playerInvuln > 0) {
       this.playerState.stance = 'Recovering';
+    } else if (this.combat.isGuarding) {
+      this.playerState.stance = 'Bracing';
     } else if (this.inCombat && !this.inSafeZone && this.playerState.hpCur > 0) {
       this.playerState.stance = 'Fighting';
     }
     this.checkPortals();
-    this.syncHud({ x: this.player.x, y: this.player.y });
+    this.hudSyncElapsed += delta;
+    if (this.hudSyncElapsed >= HUD_SYNC_INTERVAL_MS) {
+      this.hudSyncElapsed %= HUD_SYNC_INTERVAL_MS;
+      this.syncHud({ x: this.player.x, y: this.player.y });
+    }
     this.devOverlay.update(this.mapDef, { x: this.player.x, y: this.player.y });
   }
 
@@ -416,7 +435,19 @@ export class WorldScene extends Phaser.Scene {
       moved = true;
     }
 
+    if (moved) {
+      this.updatePlayerVisual(vx, vy);
+    }
+
     return moved;
+  }
+
+  private updatePlayerVisual(vx: number, vy: number): void {
+    if (!this.playerSprite) return;
+    this.playerFacing = Math.abs(vx) > Math.abs(vy)
+      ? (vx < 0 ? 'left' : 'right')
+      : (vy < 0 ? 'up' : 'down');
+    this.playerSprite.play(`player_walk_${this.playerFacing}`, true);
   }
 
   private queueAutoPath(worldX: number, worldY: number): void {
@@ -821,6 +852,22 @@ export class WorldScene extends Phaser.Scene {
     const accentColor = prop.accentColor ?? 0xe6d1a5;
     const alpha = prop.alpha ?? 1;
 
+    // Use the compact original world atlas wherever its silhouettes cover the
+    // authored prop. The procedural branches below remain a resilient fallback
+    // for offline load failures and for the deliberately larger town set pieces.
+    if (this.textures.exists(WORLD_ATLAS)) {
+      const atlasFrame = this.worldAtlasFrameFor(prop.kind);
+      if (atlasFrame) {
+        const art = this.add.sprite(prop.x, prop.y + prop.height * 0.24, WORLD_ATLAS, atlasFrame)
+          .setOrigin(0.5, 0.75)
+          .setDisplaySize(Math.max(34, prop.width), Math.max(34, prop.height));
+        art.setAlpha(alpha);
+        art.setDepth(this.getPropOrder(prop.kind) === 2 ? WORLD_DEPTH.props : WORLD_DEPTH.groundDetail);
+        this.worldLayer.add(art);
+        return;
+      }
+    }
+
     switch (prop.kind) {
       case 'path':
       case 'plaza': {
@@ -978,6 +1025,16 @@ export class WorldScene extends Phaser.Scene {
     }
   }
 
+  private worldAtlasFrameFor(kind: MapPropDefinition['kind']): string | null {
+    switch (kind) {
+      case 'tree': return 'prop_tree';
+      case 'crate': return 'prop_crystal';
+      case 'lantern': return 'prop_lantern';
+      case 'fountain': return 'prop_moonwell';
+      default: return null;
+    }
+  }
+
   private createShape(prop: MapPropDefinition, fillColor: number, alpha: number): Phaser.GameObjects.Shape {
     if (prop.shape === 'ellipse') {
       return this.add.ellipse(prop.x, prop.y, prop.width, prop.height, fillColor, alpha);
@@ -1053,6 +1110,22 @@ export class WorldScene extends Phaser.Scene {
       ring.setDepth(WORLD_DEPTH.portal);
       this.worldLayer.add(ring);
 
+      if (this.textures.exists(WORLD_ATLAS)) {
+        const glyph = this.add.sprite(portal.position.x, portal.position.y, WORLD_ATLAS, 'portal_0').setScale(0.92);
+        glyph.setDepth(WORLD_DEPTH.portal + 1);
+        this.worldLayer.add(glyph);
+        this.tweens.add({
+          targets: glyph,
+          scaleX: 1.05,
+          scaleY: 1.05,
+          alpha: 0.72,
+          duration: 1150,
+          yoyo: true,
+          repeat: -1,
+          ease: 'Sine.easeInOut',
+        });
+      }
+
       const label = this.add
         .text(portal.position.x, portal.position.y - 32, portal.label, {
           fontFamily: 'sans-serif',
@@ -1083,12 +1156,18 @@ export class WorldScene extends Phaser.Scene {
 
       const shadow = this.add.ellipse(0, 14, 22, 9, 0x000000, 0.25);
 
-      // The figure (body + face) bobs; the shadow and nameplate stay put.
+      // Original atlas portrait, with a procedural fallback for a failed asset load.
       const figure = this.add.container(0, 0);
-      const body = this.add.rectangle(0, 0, 20, 26, style.body, 1);
-      body.setStrokeStyle(2, style.accent, 0.9);
-      const face = this.add.circle(0, -10, 5, 0xf5d6a8, 1);
-      figure.add([body, face]);
+      const npcFrames: Record<NpcRole, string> = {
+        quest: 'npc_quest', merchant: 'npc_merchant', trainer: 'npc_trainer', warp: 'npc_warp', flavor: 'npc_flavor',
+      };
+      if (this.textures.exists(CHARACTER_ATLAS)) {
+        figure.add(this.add.sprite(0, 0, CHARACTER_ATLAS, npcFrames[role]).setOrigin(0.5, 0.78).setScale(0.78));
+      } else {
+        const body = this.add.rectangle(0, 0, 20, 26, style.body, 1);
+        body.setStrokeStyle(2, style.accent, 0.9);
+        figure.add([body, this.add.circle(0, -10, 5, 0xf5d6a8, 1)]);
+      }
 
       const name = this.add
         .text(0, -20, displayName, {
@@ -1158,11 +1237,15 @@ export class WorldScene extends Phaser.Scene {
     container.setDepth(WORLD_DEPTH.player);
 
     const shadow = this.add.ellipse(0, 14, 22, 10, 0x000000, 0.25);
-    const body = this.add.rectangle(0, 0, 18, 26, 0x5a8fd4, 1);
-    body.setStrokeStyle(2, 0xb8dcff);
-    const face = this.add.circle(0, -6, 4, 0xf5d6a8, 1);
-
-    container.add([shadow, body, face]);
+    if (this.textures.exists(CHARACTER_ATLAS)) {
+      this.playerSprite = this.add.sprite(0, 0, CHARACTER_ATLAS, 'player_down_0').setOrigin(0.5, 0.78).setScale(0.9);
+      container.add([shadow, this.playerSprite]);
+    } else {
+      const body = this.add.rectangle(0, 0, 18, 26, 0x5a8fd4, 1);
+      body.setStrokeStyle(2, 0xb8dcff);
+      const face = this.add.circle(0, -6, 4, 0xf5d6a8, 1);
+      container.add([shadow, body, face]);
+    }
     return container;
   }
 
@@ -1175,6 +1258,8 @@ export class WorldScene extends Phaser.Scene {
   private onShutdown(): void {
     this.closeDialogueBubble();
     this.input.off('pointerdown', this.handlePointerAttack, this);
+    this.input.off('pointerdown', this.handlePointerDown, this);
+    this.devOverlay?.destroy();
     this.combat?.destroy();
     this.inCombat = false;
     this.liveCombatTarget = null;
@@ -1190,6 +1275,7 @@ export class WorldScene extends Phaser.Scene {
       onMonsterDefeated: (monster) => this.awardMonsterKill(monster),
       onTargetChanged: (target) => this.onCombatTargetChanged(target),
       spendMp: (amount) => this.spendPlayerMp(amount),
+      spendSp: (amount) => this.spendPlayerSp(amount),
       healPlayer: (amount) => this.healPlayer(amount),
       applyPlayerBuff: (stat, amount, durationMs) => this.applyPlayerBuff(stat, amount, durationMs),
     };
@@ -1230,6 +1316,13 @@ export class WorldScene extends Phaser.Scene {
     if (amount <= 0) return true;
     if (this.playerState.mpCur < amount) return false;
     this.playerState.mpCur -= amount;
+    return true;
+  }
+
+  private spendPlayerSp(amount: number): boolean {
+    if (amount <= 0) return true;
+    if (this.playerState.spCur < amount) return false;
+    this.playerState.spCur -= amount;
     return true;
   }
 
@@ -1291,6 +1384,7 @@ export class WorldScene extends Phaser.Scene {
   }
 
   private awardMonsterKill(monster: MonsterCatalogEntry): void {
+    this.awardMonsterLoot(monster.id);
     if (this.playerState.level >= STARTER_REGION_LEVEL_CAP) {
       this.playerState.xpCur = this.playerState.xpNext;
       return;
@@ -1315,6 +1409,55 @@ export class WorldScene extends Phaser.Scene {
     if (this.playerState.level >= STARTER_REGION_LEVEL_CAP) {
       this.playerState.xpCur = this.playerState.xpNext;
     }
+  }
+
+  private awardMonsterLoot(monsterId: string): void {
+    const table = getDropsForMonster(monsterId);
+    if (!table) return;
+    for (const drop of table.entries) {
+      if (Math.random() * 100 >= drop.weight) continue;
+      const item = getItemById(drop.itemId);
+      if (!item) continue;
+      const count = Phaser.Math.Between(drop.minCount, drop.maxCount);
+      const current = this.inventory.get(item.id) ?? 0;
+      this.inventory.set(item.id, Math.min(item.stackMax, current + count));
+      hudOverlay.logNpcLine('Loot', `${item.displayName} ×${count}`);
+    }
+  }
+
+  private getInventorySnapshot(): SlotItem[] {
+    const slots: SlotItem[] = [];
+    for (const [itemId, qty] of this.inventory) {
+      const item = getItemById(itemId);
+      if (!item) continue;
+      slots.push(this.itemSlot(item, qty));
+    }
+    while (slots.length < 24) {
+      slots.push({ shape: 'empty', tint: '#888' });
+    }
+    return slots.slice(0, 24);
+  }
+
+  private itemSlot(item: ItemDefinition, qty: number): SlotItem {
+    const shape: SlotItem['shape'] =
+      item.kind === 'consumable' ? 'potion' :
+      item.kind === 'equipment' ? 'blade' :
+      item.kind === 'quest' ? 'scroll' : 'gem';
+    const rarityTint: Record<NonNullable<ItemDefinition['rarity']>, string> = {
+      common: '#9acb72',
+      uncommon: '#73b7d8',
+      rare: '#b98be0',
+      epic: '#e58ad2',
+      legendary: '#e3c77d',
+    };
+    const rarity = item.rarity ?? 'common';
+    return {
+      shape,
+      tint: rarityTint[rarity],
+      qty,
+      rare: rarity !== 'common',
+      label: `${item.displayName} ×${qty}`,
+    };
   }
 
   private spawnLevelUpText(): void {
@@ -1351,12 +1494,12 @@ export class WorldScene extends Phaser.Scene {
       buffs: auras.buffs,
       debuffs: auras.debuffs,
       target: this.getTargetSnapshot(),
-      // No party/economy/inventory systems yet — pass the design seed data through
+      // Party/economy remain design seeds; inventory is backed by live monster drops.
       // the snapshot so the scene stays the single owner of HUD state.
       party: DEFAULT_PARTY,
       currency: DEFAULT_CURRENCY,
       hotbar: DEFAULT_HOTBAR,
-      inventory: DEFAULT_INVENTORY,
+      inventory: this.getInventorySnapshot(),
     });
   }
 
@@ -1365,7 +1508,13 @@ export class WorldScene extends Phaser.Scene {
     const target = this.liveCombatTarget;
     if (!target) return null;
     const hpPct = target.hpMax > 0 ? Math.max(0, Math.min(100, (target.hpCur / target.hpMax) * 100)) : 0;
-    return { name: target.name, level: target.level, hpPct: `${hpPct}%` };
+    return {
+      name: target.name,
+      level: target.level,
+      hpPct: `${hpPct}%`,
+      cast: target.cast,
+      castPct: target.castPct,
+    };
   }
 
   /** Derives status auras from live player vitals and zone state. */
@@ -1376,6 +1525,9 @@ export class WorldScene extends Phaser.Scene {
 
     if (this.inSafeZone) {
       buffs.push({ letter: 'R', time: 'Rest' });
+    }
+    if (this.combat?.isGuarding) {
+      buffs.push({ letter: 'B', time: 'Shift' });
     }
     for (const buff of this.playerBuffs) {
       buffs.push({ letter: buff.stat.slice(0, 1).toUpperCase(), time: `${Math.ceil(buff.remainingMs / 1000)}s` });

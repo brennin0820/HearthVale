@@ -14,7 +14,10 @@ expansion for 33 maps total (towns, fields, dungeons, and instances).
 No third-party RO assets, packets, sprites, maps, monster names, or lore — original names only
 (`Gemhorn Sentinel`, `Vale Novice`, etc.).
 
-## Current stack (as of 2026-07-22)
++# **Project name:** HearthVale (IP: Hearthlight Vale)
++# **Genre:** Cozy RO-inspired solo MMO
++# **Phase:** B complete — Phaser starter client shipped; Phase C next
++# **Phase:** C in progress (2026-08-20) — combat/loot/HUD/iOS and all-10-map greybox already playable; remaining C is mine floors/boss, job selection UI, enforced portal level gates, courier warp UI
 
 | Layer | Technology | Location |
 |-------|------------|----------|
@@ -67,68 +70,9 @@ to Unity while preserving all data/design work — see `STRATEGY.md`
 
 ## Client facts an agent should know
 
-- **client-phaser-next/** — active playable client. Fresh Phaser 3 + TypeScript
-  + Vite architecture with simulation state separated from scenes, a DOM HUD,
-  procedural presentation, NPC dialogue, quest chains, inventory, independent
-  five-slot loadouts for all four party members, merchant/crafting economy,
-  six-path party advancement, elemental combat, portals, XP, leveling,
-  persisted discovery, a quest-aware world map, persistence, and a region
-  campaign ending, epilogue, and a connected postgame hunt. The responsive
-  Lantern Path journal groups current, available, locked, ready, and completed
-  quests; shows objective progress, rewards, and NPC handoffs; pauses the
-  world while open; and persists the pinned tracker quest through saves and
-  travel. Fresh parties begin as Vale Novices; Trainer Bram unlocks any of
-  six tier-1 paths at level 10, with catalog growth and all 38 skills active.
-  At level 18, each path exposes two mutually exclusive Lantern Masteries;
-  the first is free, mastery retraining costs 300 gold, path retraining clears
-  the old mastery, and bonuses affect resources, offense, defense, cadence,
-  movement, healing, evasion, drops, prices, or stack limits as authored.
-  The late starter campaign offers parallel Moonwell and Emberglass arcs, then
-  joins them at Lanternspire Summit for a final boss, saved completion state,
-  responsive epilogue, and the Afterlight Vigil beyond the Summit. Hearth
-  Couriers expose each region's waylines with data-driven fares and level/quest
-  unlocks. Persistent gathering nodes feed collect quests and recipes, while
-  the level-15–28 Dawnshore Reach route continues through Dawnshore Camp,
-  Glasswind Coast, Tidebreak Causeway, Stormglass Reliquary, Beaconfall Cliffs,
-  Sunspire Observatory, Aurora Highlands, Zenith Archive, Choirwood Canopy,
-  Crownroot Sanctum, Runeveil Gardens, Namesong Vault, Waystar Moor, and
-  Convergence Spire. Forty-two
-  data-authored monster abilities add
-  readable single-target and area telegraphs, movement dodges, and
-  poison/Gloom/Drenched/Sunblind/Fractured/Muted/Severed condition payloads. Quest contracts
-  support mutually exclusive branches and OR prerequisites; either highland
-  oath can unlock the shared archive finale while permanently closing the
-  alternative oath.
-  Completing Crownroot Concordance unlocks one level-24 technique for each
-  advanced path. The loadout screen equips any three of the path's four
-  skills, rebinds hotkeys immediately, informs auto-combat priorities, and
-  validates saved selections against path, level, and quest requirements.
-  Equipment ATK, DEF, HP, SPD, and CRIT stats are all active; one owned copy
-  supports one party assignment. Five reusable runes bind to compatible
-  equipped slots, stack with gear stats, release on replacement/unequip, block
-  sale while assigned, and survive validated saves. All 30 consumables are active, including
-  persisted sprint stamina, timed ATK/DEF/SPD effects, poison/Gloom/Drenched
-  cures, and Hearth Charm return travel. Narrow layouts expose the pack through a
-  touch-accessible system control. Run it from the repository root with
-  `npm run dev:phaser`.
-  Completing A Calling of Your Own unlocks two level-28 callings for every
-  advanced path. First selection is free, retraining costs 500 gold, each
-  calling grants permanent bonuses plus an exclusive technique, and Pathweaver
-  Ione exposes the saved choice in a responsive desktop/mobile panel.
-- **client-unity/** — Phase B-Unity scaffold. Scripts are written (DTOs,
-  data loader, player movement, camera follow, portal transitions, HP/EXP
-  HUD, NPC dialogue) but never opened in a Unity Editor in this environment.
-  Treat as unverified until a human opens it in Unity Hub and confirms it
-  compiles/runs — see `client-unity/README.md` for exact setup steps and
-  known gaps (no pathfinding, no combat yet — those are Phase C-Unity).
-- **client-phaser-archive/** — retired snapshot of the old client
-  (`WorldScene.ts`, `CombatController.ts`, `HudOverlay.ts`, `DialogueBox.ts`,
-  etc). Kept for historical reference; do not run `npm
-  install`/`npm run dev` in here as part of normal work.
-- **client/** (original location) — still physically present on disk in this
-  sandbox because the mount would not permit deleting already-written files;
-  functionally identical to `client-phaser-archive/`. Treat both as retired;
-  `client-phaser-archive/` is the canonical reference copy going forward.
++# Phase B complete (2026-06-11) — Phaser client under `client/`; 4-map portal loop; loads exported `data/maps.json`
++# Phase C next — dungeon depth, combat placeholders, level-gated portal UI; MMO tooling suite landed (five-lane parallel build).
++# Phase C remaining (2026-08-20) — Gemhorn Sentinel + mine floors, job selection UI, client-enforced `requiredLevel` on portals, Hearth Courier warp UI from existing `warpTable`. Phase D maps are already walkable greyboxes.
 
 ## Multiplayer facts an agent should know
 

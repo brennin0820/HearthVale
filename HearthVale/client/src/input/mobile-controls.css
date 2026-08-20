@@ -1,0 +1,115 @@
+.hv-touch {
+  display: none;
+}
+
+.hv-touch-enabled {
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.hv-touch-enabled body {
+  overscroll-behavior: none;
+}
+
+.hv-touch-enabled .hv-touch {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  display: block;
+  pointer-events: none;
+  font-family: ui-rounded, "SF Pro Rounded", system-ui, sans-serif;
+}
+
+.hv-touch__movement,
+.hv-touch__actions {
+  position: absolute;
+  bottom: max(18px, env(safe-area-inset-bottom));
+  pointer-events: none;
+}
+
+.hv-touch__movement {
+  left: max(18px, env(safe-area-inset-left));
+  width: 174px;
+  height: 174px;
+}
+
+.hv-touch__actions {
+  right: max(18px, env(safe-area-inset-right));
+  width: 286px;
+  height: 174px;
+}
+
+.hv-touch__button {
+  position: absolute;
+  width: 54px;
+  height: 54px;
+  border: 1px solid rgba(255, 226, 157, .55);
+  border-radius: 50%;
+  color: #fff4d3;
+  background: rgba(24, 18, 29, .7);
+  box-shadow:
+    inset 0 0 0 2px rgba(255, 255, 255, .05),
+    0 3px 14px rgba(0, 0, 0, .34);
+  backdrop-filter: blur(7px);
+  -webkit-backdrop-filter: blur(7px);
+  pointer-events: auto;
+  touch-action: none;
+  font: 700 15px/1 inherit;
+  text-shadow: 0 1px 2px #000;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.hv-touch__button.is-pressed {
+  color: #231b2a;
+  background: #f3cc76;
+  transform: scale(.93);
+}
+
+.hv-touch__movement .hv-touch__button--up { left: 60px; top: 0; }
+.hv-touch__movement .hv-touch__button--left { left: 0; top: 60px; }
+.hv-touch__movement .hv-touch__button--down { left: 60px; top: 120px; }
+.hv-touch__movement .hv-touch__button--right { left: 120px; top: 60px; }
+
+.hv-touch__actions .hv-touch__button:nth-child(1) { left: 0; top: 0; }
+.hv-touch__actions .hv-touch__button:nth-child(2) { left: 60px; top: 0; }
+.hv-touch__actions .hv-touch__button:nth-child(3) { left: 120px; top: 0; }
+.hv-touch__actions .hv-touch__button:nth-child(4) { left: 180px; top: 0; }
+.hv-touch__actions .hv-touch__button--map { left: 232px; top: 0; }
+.hv-touch__actions .hv-touch__button--interact { left: 0; top: 72px; }
+.hv-touch__actions .hv-touch__button--brace { left: 72px; top: 108px; }
+.hv-touch__actions .hv-touch__button--attack {
+  right: 0;
+  bottom: 0;
+  width: 84px;
+  height: 84px;
+  border-color: rgba(255, 177, 100, .72);
+  background: rgba(95, 42, 35, .75);
+}
+
+@media (max-height: 520px), (max-width: 760px) {
+  .hv-touch__movement,
+  .hv-touch__actions {
+    transform: scale(.84);
+  }
+  .hv-touch__movement {
+    transform-origin: bottom left;
+  }
+  .hv-touch__actions {
+    transform-origin: bottom right;
+  }
+}
+
+@media (orientation: portrait) {
+  .hv-touch__movement,
+  .hv-touch__actions {
+    bottom: max(12px, env(safe-area-inset-bottom));
+    transform: scale(.78);
+  }
+  .hv-touch__movement {
+    transform-origin: bottom left;
+  }
+  .hv-touch__actions {
+    transform-origin: bottom right;
+  }
+}

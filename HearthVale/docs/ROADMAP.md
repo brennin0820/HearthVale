@@ -9,21 +9,34 @@ Phased delivery plan for **HearthVale** (active Phaser Next browser client, shar
 ## Overview
 
 ```
-Phase A ──► Phaser archive ──► Unity experiment ──► Phaser Next ──► Expansion ──► Server
- data          historical         paused              current          planned       backlog
+Phase A ──► Phase B ──► Phase C ──► Phase D ──► Later (server)
+ data         4-map       dungeon      expansion      Colyseus, multiplayer
+ (done)       (done)      (current)    (started)       (backlog)
 ```
 
 | Phase | Name | Status | Outcome |
 |-------|------|--------|---------|
 | **A** | Data foundation | **Done** | TS world catalog, portal graph, export/verify tooling |
-| **B-Phaser** | Phaser starter 4-map loop | **Retired / superseded** | Reached 4-map loop + melee combat + job/skill catalogs before the client was retargeted to Unity; archived at `client-phaser-archive/` |
-| **B-Unity** | Unity starter loop | **Paused reference** | Incomplete Unity scaffold retained at `client-unity/`; not the default launch path |
-| **Phaser Next** | Lanternbound browser client | **Current / playable** | 33-map, two-region solo RPG through level 28 with saves, quests, combat, gathering, economy, mastery, runes, three-slot skill loadouts, and twelve callings |
-| **C-Unity** | Dungeon depth + boss | Planned | Mine floors, Whisperwood unlock, first boss, skills wired into combat — Unity equivalent of the old Phase C goals |
-| **D** | Early expansion + world map UI | Planned | Millwick, Moonwell chain, world map pins |
-| **Later** | Server-authoritative multiplayer | **MP-0/MP-1 done, in progress** | Node + Colyseus server (`server/`) alongside the solo client: shared-world movement/visibility, local accounts, room-per-map. Combat authority, persistence, chat, party, trading, guilds, and PvP remain (MP-2..MP-6) |
+| **B** | Phaser starter 4-map loop | **Done** | Walkable town → plains → hollow → mine, HUD, NPC dialogue, job/skill catalogs |
+| **C** | Dungeon depth + boss | **Current** | Combat loop shipped; mine floors, Gemhorn Sentinel, job UI, and *enforced* level gates still open |
+| **D** | Early expansion + world map UI | **Started** | All 10 maps already walkable as greybox; remaining work is region UI, economy, and the Lv 14 quest arc |
+| **Later** | Server + persistence | Backlog | Colyseus, save/load, vendor/gather skill kinds, production audio |
 
-**The data layer (`src/data/**`, `scripts/export-data.ts`, `scripts/verify-*.ts`, `tools/**`) remains the source of truth.** Phaser Next consumes the exported `data/*.json` and `data/catalog/*.json` directly.
+**How to read this file:** Phase boxes are *content goals*, not a strict shipping order. Several Phase D maps and the full combat loop landed while Phase C was still current. Checkboxes below are against the live client, not the original June plan.
+
+---
+
+## What is playable now (2026-08-20)
+
+A new character can:
+
+- Spawn in **Hearthvale Town**, talk to NPCs (**E**), and walk the **entire 10-map portal graph** (Whisperwood, Millwick, Moonwell included)
+- Fight with auto-attack, **skills 1–4** (Vale Novice loadout), **Brace** (Shift), and 700ms enemy telegraphs
+- Loot authored drops into a scene-owned bag that survives portal restarts
+- Use the **Hearthglass HUD** (vitals, target, auras, minimap, **M** local map, recent loot)
+- Run the same client on **iOS** (Capacitor landscape shell + touch overlay)
+
+What they **cannot** do yet: pick a tier-1 job, be stopped by portal level gates, warp at the Hearth Courier, fight a scripted mine boss, or persist progress across a refresh.
 
 ---
 
@@ -73,21 +86,18 @@ This phase **shipped and then was retired** — not abandoned mid-flight. Before
 | Hearthvale Town | Safe hub, Elder Gemhorn, Merchant Silas, Hearth Courier |
 | Cloverfield Plains | Lv 1–4 grind (Jellybud, Spriggle) |
 | Mushroom Hollow | Lv 3–6 grind (Puffshroom, Sporeling) |
-| Old Crystal Mine | Lv 8–15 first dungeon (entry/exit only in B) |
+| Old Crystal Mine | Lv 8–15 first dungeon (single-floor entry/exit in B) |
 
 ### What it reached before retirement
 
-- [x] Phaser 3 + TypeScript client scaffold
-- [x] Map loader: base + props + collision JSON per map
+- [x] Phaser 3 + TypeScript client scaffold (`client/`)
+- [x] Map loader: authored collision + props per map (`src/data/world/mapArt.ts`, `verify:map-art`)
 - [x] Player movement, camera, portal transitions
 - [x] NPC placeholder → live NPC dialogue system (title + paged dialogue, quest hints)
 - [x] Basic mob spawns from `spawnTables` (client-side for solo)
-- [x] Hearth Courier UI — free Cloverfield warp
-- [x] Greybox art pass for four maps (see art checklist in layout doc)
-- [x] Job class catalog (`src/data/catalog/jobs.ts`) — 1 base + 6 tier-1 paths, wired for selection
+- [x] Job class catalog (`src/data/catalog/jobs.ts`) — 1 base + 6 tier-1 paths
 - [x] Skill catalog (`src/data/catalog/skills.ts`) — every job `startingSkills` id resolves to a real effect
-- [x] Melee `CombatController` — aggro/leash, XP/levels, floating damage, target cycling
-- [x] Click-to-move A* pathfinding, safe zones, HP/MP/SP/XP HUD, audio service, dev overlay (F3)
+- [x] Snapshot-driven HUD (later restyled as Hearthglass)
 
 ### Disposition
 
@@ -97,165 +107,100 @@ This phase **shipped and then was retired** — not abandoned mid-flight. Before
 
 ## Phaser Next — Lanternbound browser client (current)
 
-**Goal:** Establish a clean, playable browser-first foundation without extending the retired client.
-
-### Delivered
-
-- [x] Fresh Phaser 3 + TypeScript + Vite project in `client-phaser-next/`
-- [x] Direct consumption of shared map, NPC, and monster JSON data
-- [x] Title/boot flow and responsive DOM HUD
-- [x] Top-down movement, sprint, camera follow, and map bounds
-- [x] NPC dialogue and data-driven portal travel
-- [x] Monster spawning, chase behavior, melee combo, damage, respawn, XP, and leveling
-- [x] Persistence/save slots and in-game system menu
-- [x] Quest and inventory HUD backed by catalog items, quests, and drops
-- [x] Responsive quest journal with current/available/completed views, lock guidance, objective and reward details, persistent pinning, and keyboard/touch access
-- [x] Consumable use and equipment actions with saved equipment state
-- [x] Complete consumable effects, persisted sprint stamina, poison/antidotes, timed buffs, return charm, and mobile pack access
-- [x] First content expansion beyond the existing route: Moonreed Fen
-- [x] Catalog-driven quest objectives, prerequisites, rewards, and quest-gated portals
-- [x] Elemental combat strengths/resistances with readable battle feedback
-- [x] Moonwell Heart capstone instance, boss encounter, and region-finale quest chain
-- [x] Data-driven vendors and crafting with a gather → trade/craft → upgrade economy loop
-- [x] Persisted discovery and quest-aware world map with route and gate states
-- [x] Verified campaign graph connecting the default opening to all 33 maps
-- [x] Full-party five-slot equipment, active ATK/DEF/HP/SPD/CRIT stats, and loot comparison armory
-- [x] Vale Novice starts, six-path level-10 party advancement, retraining, and utility job mechanics
-- [x] Twelve level-18 Lantern Masteries with save-compatible selection, paid retraining, active combat/economy bonuses, and responsive Trainer Bram UI
-- [x] Emberglass Shelf and Hollow Kiln side arc with authored terrain, fire combat, boss, quests, loot, recipes, and warp
-- [x] Lanternspire Summit joined finale with accepted-quest gate, final boss, Gloom counterplay, persisted epilogue, and completed-save title state
-- [x] Persistent gathering nodes with cooldown saves, level/range gates, Ore Sense bonuses, minimap markers, quest guidance, and resource verification
-- [x] Dawnshore Reach second-region foothold with Dawnshore Camp, Glasswind Coast, regional courier, quest, boss, materials, recipes, and upgrade rewards
-- [x] Tidebreak Causeway and Stormglass Reliquary with telegraphed monster abilities, nine gathering nodes, linked quests, a boss, and level 16–18 rewards
-- [x] Beaconfall Cliffs and Sunspire Observatory with Sunblind counterplay, a field merchant, nine gathering nodes, linked quests, Celestial Orrery boss, and level 18–20 rewards
-- [x] Aurora Highlands and Zenith Archive with mutually exclusive oath quests, OR-gated shared finale, Fractured counterplay, nine gathering nodes, Keeper of Zenith boss, and level 20–22 rewards
-- [x] Choirwood Canopy and Crownroot Sanctum with Muted counterplay, nine gathering nodes, linked quests, Crownroot Hierophant boss, level 22–24 rewards, and six quest-earned techniques
-- [x] Persistent three-slot skill loadouts with level/quest/path gates, keyboard rebinding, responsive armory controls, auto-combat priorities, and save validation
-- [x] Runeveil Gardens and Namesong Vault with nine gathering nodes, linked quests, Archivore boss, level 24–26 rewards, and reusable equipment runes
-- [x] Waystar Moor and Convergence Spire with nine gathering nodes, linked quests, Manyroad Crown boss, level 26–28 rewards, and Severed rune counterplay
-- [x] Twelve level-28 callings with free first choice, paid retraining, permanent bonuses, exclusive techniques, responsive Pathweaver UI, and save validation
-- [x] Production build and browser smoke test
-
-### Next
-
-- [x] Continue beyond the reopened Zenith Archive with another connected route, new monster families, items, maps, quest consequences, and encounter mechanics
-- [x] Continue beyond Namesong Vault with another reciprocal route, new monsters, items, maps, quests, and progression systems
-- [ ] Reuse branching quest choices and ability/status counterplay across later campaign arcs
-- [x] Progression depth beyond tier 1: later paths and additional quest-earned skill choices
-- [ ] Continue beyond Convergence Spire with new maps, monsters, items, quests, calling consequences, and encounter systems
-- [ ] Production art and audio pass
-
----
-
-## Phase B-Unity — Unity starter loop (paused reference)
-
-**Historical goal:** Reproduce Phase B-Phaser's core loop on Unity. This workstream is paused; the scaffold remains for reference and these unchecked items are not part of the active launch path.
-
-### Maps in scope (same four as the original Phaser loop)
-
-| Map | Role |
-|-----|------|
-| Hearthvale Town | Safe hub, Elder Gemhorn, Merchant Silas, Hearth Courier |
-| Cloverfield Plains | Lv 1–4 grind (Jellybud, Spriggle) |
-| Mushroom Hollow | Lv 3–6 grind (Puffshroom, Sporeling) |
-| Old Crystal Mine | Lv 8–15 first dungeon (entry/exit only) |
-
-### Deliverables
-
-- [ ] `client-unity/` project scaffold (Unity 6 / 6000.x; pinned to 6000.5.1f1) — owned by the Unity workstream
-- [ ] JSON parsing bridge that reads `data/maps.json` (and `data/regions.json`) at runtime — owned by the Unity workstream, consumed by this phase
-- [ ] Town spawn — new character starts in Hearthvale Town
-- [ ] WASD movement + camera follow
-- [ ] 4-map portal loop using existing `data/maps.json`: town ↔ plains ↔ hollow ↔ mine (entry/exit only), no dead portals
-- [ ] HP/EXP HUD (MP/SP can follow once combat lands in Phase C-Unity)
-- [ ] NPC dialogue (title + paged dialogue, quest hints) reading from existing NPC data
-
-### Exit criteria
-
-- New character spawns in Hearthvale Town in the Unity client
-- Full loop: town → plains → hollow → mine → return without dead portals, running on `data/maps.json` with no hand-edited duplicates
-- HP/EXP HUD reflects data-layer values
-- NPC dialogue renders from existing data
-
-### Explicitly NOT in scope for Phase B-Unity (stretch / deferred to Phase C-Unity)
-
-- Click-to-move A* pathfinding (existed in Phaser; not required for Unity parity)
-- Full melee `CombatController` (aggro/leash, XP/levels, floating damage, target cycling)
-- Job selection UI and skill-effect wiring
-- Audio service, dev overlay
-
-Do not claim these as done for Phase B-Unity — they are carried into Phase C-Unity below.
-
----
-
-## Phase C-Unity — Dungeon depth + boss (planned)
-
-**Goal:** Bring the Unity client to combat/content parity with what Phase C was scoped to deliver on Phaser, plus the depth work that phase targeted — vertical content in Old Crystal Mine, east-field expansion, and the job/skill catalogs wired into real combat.
+**Goal:** Vertical content in Old Crystal Mine, east-field expansion, and connecting catalogs to *gated* play — not just data.
 
 ### Maps added / deepened
 
-| Map | Role |
-|-----|------|
-| Old Crystal Mine (floors) | Multi-floor layout, boss chamber |
-| Whisperwood Meadows | Lv 5+ field (portal from Mushroom Hollow) |
-| Crystal Mine Approach | Optional quarry approach lane |
+| Map | Role | Client status |
+|-----|------|----------------|
+| Old Crystal Mine | Multi-floor layout, boss chamber | **One map**, two spawn tables (`mine_upper_gallery`, `mine_deep_vein`). No floor-down portal. No boss entity. |
+| Whisperwood Meadows | Lv 5+ field | **Walkable** with spawns/art. Hollow portal has `requiredLevel: 5` in data; `WorldScene.transitionToPortal` does **not** check it. |
+| Crystal Mine Approach | Optional quarry lane | **Walkable** and wired to plains + mine. Approach → mine has `requiredLevel: 8` in data; also unenforced. |
 
-### Deliverables
+### Deliverables — shipped during C
 
-- [ ] Unity combat controller — aggro/leash, XP, floating damage, target cycling (parity with the retired Phaser `CombatController`)
-- [ ] Click-to-move / pathfinding equivalent in Unity (stretch, carried from Phase B-Unity)
-- [ ] Wire `SkillDefinition.effect` into the Unity combat controller so each job's `startingSkills` actually fire (damage skills via the existing `skillMultiplier` param; buffs/debuffs/heals as new bridge hooks)
-- [ ] Job selection UI — let a level-10 character branch into one of the six tier-1 paths
-- [ ] Mine floor 2+ layouts and portal-down wiring
-- [ ] Boss encounter — **Gemhorn Sentinel** (original IP; not RO content)
-- [ ] Whisperwood portal gate (`requiredLevel: 5`)
-- [ ] Drop tables and quest hooks for mine completion
-- [ ] Paid Hearth Courier warps (Hollow, Whisperwood)
-- [ ] Audio stubs (`musicKey` per map) ported to Unity
+- [x] Merge melee `CombatController` — aggro/leash, XP, floating damage (this landed; it is not an open PR)
+- [x] Wire `SkillDefinition.effect` into combat — hotbar **1–4** casts the active job's `startingSkills` (`damage` / `heal` / `buff` / `debuff` / `mark`). Player is hardcoded Vale Novice (`STARTING_JOB_ID = 'novice'` in `WorldScene`) until job selection ships. `economy` / `gather` / `utility` kinds stay for vendor/gather systems.
+- [x] Reactive telegraphs — 700ms enemy wind-up, amber ring + `!`, **Brace** (Shift, 12 SP, 35% damage)
+- [x] Live loot — authored `DROP_TABLES` roll on defeat; scene-owned inventory stacks across map restarts
+- [x] Audio **stubs** — every map has `musicKey`; `AudioService` + `verify:audio` honor stub tracks (no production files yet, by design)
+- [x] Whisperwood + Crystal Mine Approach as playable field maps (greybox + collision + spawns)
+
+### Deliverables — still open
+
+- [ ] **Job selection UI** — at level 10, branch into one of six tier-1 paths and swap the hotbar. Combat already loads skills from whatever job id is set; only the chooser + persistence are missing.
+- [ ] **Enforce portal `requiredLevel`** — data exists on Hollow → Whisperwood (5), Approach → Mine (8), Moonwell Entrance → Ruins (11). Walking through currently ignores it.
+- [ ] **Mine floor 2+** — split or portal-down from `old_crystal_mine`; `tools/scaffold-dungeon-floor.ts` exists but is unused in the catalog.
+- [ ] **Boss encounter — Gemhorn Sentinel** (original IP; not RO content). Not in the monster catalog today.
+- [ ] **Mine completion quest** — drop tables exist (`crystal_shard` etc.); there is no quest state machine or mine-clear hook. Stub quests (`quest_first_hunt`, `quest_millwick_letter`, `quest_moonwell_sigil`) are catalog-only.
+- [ ] **Hearth Courier warp UI** — `REGIONS.warpTable` already has free Cloverfield + paid Hollow/Whisperwood/Millwick/Approach/Moonwell. The NPC talks; there is no destination picker and no currency spend.
 
 ### Exit criteria
 
-- Party-of-one can clear mine boss and return to town with loot
-- Whisperwood reachable from Hollow at level 5
-- Phase B-Unity maps retain regression-free portal behavior
+- Party-of-one can clear the mine **boss** and return to town with loot
+- Whisperwood is reachable from Hollow **only at level 5+** (client-enforced)
+- Phase B maps retain regression-free portal behavior
+- A level-10 character can leave Vale Novice for a tier-1 job
+
+### Next slice
+
+Remaining Phase C is several independent systems. Name **one** as the next build target before starting code (job UI, level gates, mine floors/boss, or courier warps). See the session note in `docs/14_SESSION_HANDOFF.md`.
 
 ---
 
-## Phase D — Early expansion + world map UI
+## Phase D — Early expansion + world map UI (started)
 
-**Goal:** Complete the Hearthlight Vale catalog on the Unity client; surface region on world map.
+**Goal:** Finish the Hearthlight Vale *experience* on the client — region map, economy, Lv 14 send-off. Map geometry shipped early.
 
 ### Maps in scope
 
-| Map | Role |
-|-----|------|
-| Old Mill Road | Lv 8–10 connector |
-| Millwick Crossing | Second town hub |
-| Moonwell Entrance | Lv 10–12 border field |
-| Moonwell Ruins | Lv 11–14 capstone dungeon |
+| Map | Role | Client status |
+|-----|------|----------------|
+| Old Mill Road | Lv 8–10 connector | Walkable; spawns Roadjack / Windmite / Barkling |
+| Millwick Crossing | Second town hub | Walkable safe zone; Mayor Holt, Merchant Elsie, Hearth Courier (dialogue only) |
+| Moonwell Entrance | Lv 10–12 border field | Walkable; ruins portal authored at `requiredLevel: 11` (unenforced) |
+| Moonwell Ruins | Lv 11–14 capstone | Walkable dungeon with `moonwell_guardian` in the inner sanctum — **not** a scripted finale |
 
 ### Deliverables
 
-- [x] Portal chain: Whisperwood → Old Mill Road → Millwick → Moonwell
-- [x] Moonwell Ruins dungeon (simpler than mine boss; region finale)
-- [x] World map UI with pins for all `showOnWorldMap: true` maps
-- [x] Millwick economy NPCs (trader and crafting stations; warp hub remains separate)
-- [x] Full Hearth Courier fee table and responsive travel UI (see layout doc)
-- [x] Region completion quest arc and saved epilogue (Lv 14)
-- [x] Connected Afterlight Expanse postgame hunt, boss, crafting, and rewards
+- [x] Portal chain walkable: Whisperwood → Old Mill Road → Millwick / Moonwell
+- [x] Authored collision + themed props on **all 10** maps (`verify:map-art`)
+- [x] Local map HUD (**M**) with player position, portal/NPC POIs — this is **not** the region world map
+- [ ] In-game **world map UI** with pins for every `showOnWorldMap: true` map (`worldMapPosition` is already on each `MapDefinition`; `tools/world-map-preview.html` is editor-only)
+- [ ] Millwick economy (buy/sell against the item catalog; Wayfarer `haggle` has nowhere to land yet)
+- [ ] Hearth Courier fee table **in play** (data is in `regions.ts`; UI is Phase C leftover)
+- [ ] Region completion quest arc (Lv 14 send-off to the next region — TBD)
+- [ ] Scripted Moonwell finale (today `moonwell_guardian` is a weighted spawn, not a boss encounter)
 
 ### Exit criteria
 
-- All 10 Phase A maps playable or reachable
+- All 10 Phase A maps playable **and** gated/quested to match `levelRange`
 - World map reflects `worldMapPosition` from data
-- Starter region arc completable solo to level 14
+- Starter region arc completable solo to level 14 with a job path and persistent loot
+
+---
+
+## Platform track — iOS (shipped v1, ongoing)
+
+Not a Path A phase box; it runs beside C/D.
+
+- [x] Capacitor 8 + Xcode landscape shell (`client/ios`, `npm run ios:sync` / `ios:open`)
+- [x] Offline production bundle (embedded JSON/CSS, classic script — no local `fetch` of modules)
+- [x] Multi-touch overlay: move, skills 1–4, Talk, Attack, Brace, Map
+- [ ] Device persistence, Game Center / accounts, and production audio (stay Later unless scoped)
 
 ---
 
 ## Later — Server-authoritative multiplayer (in progress)
 
-**Goal:** Evolve `client-phaser-next` from a solo client into a true MMORPG —
-a real Node + Colyseus server, alongside (not replacing) the solo campaign.
+**Goal:** Evolve from solo Phaser client to authoritative multiplayer MMO. Client-side combat, jobs/skills, loot, and the 10-map greybox landed in B/C/D — this section is server, persistence, and post-region content.
+
+### Pre-server client gaps (do not wait for Colyseus)
+
+- [ ] Save/load player state (job, level/XP, inventory, map/position)
+- [ ] Currency + vendor buy/sell (needed before paid warps feel real)
+- [ ] Quest log that can complete, not only hint in dialogue
+- [ ] Production music/SFX files behind existing stub keys
 
 ### MP-0 — Foundations (done, 2026-07-28)
 
@@ -333,16 +278,15 @@ server but not yet built for real network latency.
 
 ```mermaid
 flowchart LR
-  A[Phase A: Data] --> BP[Phase B-Phaser: 4-map loop, retired]
-  BP -.superseded by.-> BU[Phase B-Unity: parity loop]
-  A --> BU
-  BU --> CU[Phase C-Unity: Mine boss]
-  CU --> D[Phase D: World map + expansion]
-  A --> MP0[MP-0/MP-1: Colyseus server, done]
-  MP0 --> S[MP-2..MP-6: combat authority, persistence, chat, party, trading, guilds, PvP]
+  A[Phase A: Data] --> B[Phase B: 4-map Phaser]
+  B --> C[Phase C: Mine boss + job UI + gates]
+  C --> D[Phase D: World map + economy + Lv14 arc]
+  D --> S[Later: persistence then Colyseus]
 ```
 
-**Rule:** No phase skips portal verification. Each phase ends with `npm run verify` green — this applies regardless of which client engine consumes the data.
+Maps for C and D already exist in the client. Remaining edges are **systems** (gates, boss, jobs, UI, quests), not new map files.
+
+**Rule:** No phase skips portal verification. Each phase ends with `npm run verify` green.
 
 ---
 
@@ -351,10 +295,11 @@ flowchart LR
 | Risk | Mitigation |
 |------|------------|
 | Portal graph drift between docs and data | `verify:portals` CI; layout doc references map IDs |
-| Unity JSON bridge diverges from data-layer schema | Data layer stays the single source of truth; bridge owned by Unity workstream, validated against `data/maps.json` shape |
-| Phase B-Unity silently over-claims combat/pathfinding parity | Roadmap explicitly marks those items as Phase C-Unity stretch goals, not Phase B-Unity done |
-| Scope creep into multiplayer | Phased MP-0..MP-6 delivery; solo campaign stays untouched and playable throughout |
+| Roadmap drift vs opportunistic shipping | Refresh this file against `docs/14_SESSION_HANDOFF.md` when a loop closes (combat, loot, iOS, all-10-map art) |
+| Art bottleneck | Authored `mapArt.ts` + collision JSON first; production tileset still Later |
+| Scope creep into multiplayer | Colyseus explicitly deferred to Later |
 | RO IP contamination | Original names only; banked patterns are mechanics, not lore |
+| Unenforced `requiredLevel` | Treat as a Phase C bug, not a Phase D feature — data is already lying to the layout doc |
 
 ---
 
@@ -377,4 +322,4 @@ flowchart LR
 | 2026-07-22 | Delivered Phaser Next's solo economy loop with 4 shops, 13 recipes, material-source coverage, deterministic buy/sell/craft rules, a responsive merchant workshop, and economy verification/smoke coverage. |
 | 2026-06-11 | Initial roadmap — Phase A parallel bootstrap |
 | 2026-07-01 | Refreshed against actual state: Phase A/B marked done, Phase C marked current; added skill catalog (`src/data/catalog/skills.ts`) connecting job `startingSkills` to real effects; moved combat/jobs out of the server-only "Later" backlog since client-side versions already exist or are in-flight |
-| 2026-07-01 | Path A → Path B migration: renamed old Phase B to **Phase B-Phaser** and marked retired/superseded (archived at `client-phaser-archive/`); added **Phase B-Unity** as the current phase, scoped to parity with Phase B-Phaser's original goals only (town spawn, WASD movement + camera follow, 4-map portal loop, HP/EXP HUD, NPC dialogue) — pathfinding and full combat explicitly deferred to **Phase C-Unity**; renamed old Phase C to **Phase C-Unity** with the same goals (dungeon depth, Gemhorn Sentinel boss, skill-effect wiring) retargeted at the Unity client; data layer and Phase A/D/Later unaffected |
+| 2026-08-20 | Corrected drift through July–August: combat PR note removed (loop + skills + telegraphs + loot are on `main`); Whisperwood/Approach/Millwick/Moonwell marked walkable greybox; audio stubs, iOS v1, and all-10-map art recorded; Phase C remaining narrowed to job UI, enforced level gates, mine floors/boss, courier warp UI, mine quest; Phase D marked started |

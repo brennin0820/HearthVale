@@ -12,6 +12,8 @@ export interface CombatTargetInfo {
   hpCur: number;
   hpMax: number;
   element: string;
+  cast?: string;
+  castPct?: string;
 }
 
 /** Bridge back to WorldScene — the controller stays ignorant of HUD/vitals. */
@@ -28,6 +30,8 @@ export interface CombatBridge {
   onTargetChanged(target: CombatTargetInfo | null): void;
   /** Spend MP for a skill cast; returns false (no-op) if the player can't afford it. */
   spendMp(amount: number): boolean;
+  /** Spend stamina when an incoming hit is actively braced. */
+  spendSp(amount: number): boolean;
   /** A `heal`-kind skill restores player HP, clamped to max upstream. */
   healPlayer(amount: number): void;
   /** A `buff`-kind skill applies a timed stat bonus to the player. */
@@ -48,6 +52,10 @@ const TARGET_RADIUS = 220;
 const PLAYER_ATTACK_COOLDOWN = 550;
 const MONSTER_ATTACK_COOLDOWN = 1200;
 const MONSTER_SPEED = 72;
+const GUARD_SP_COST = 12;
+const GUARD_DAMAGE_MULTIPLIER = 0.35;
+const MONSTER_ATTACK_WINDUP_MS = 700;
+const MONSTER_ATTACK_CANCEL_COOLDOWN = 300;
 
 export class CombatController {
   private readonly monsters: Monster[] = [];
@@ -55,6 +63,8 @@ export class CombatController {
   private target: Monster | null = null;
   private lastTargetKey = '';
   private readonly skillCooldowns: Map<string, number> = new Map();
+  private readonly attackWindups: Map<Monster, number> = new Map();
+  private guarding = false;
 
   constructor(
     private readonly scene: Phaser.Scene,
@@ -91,6 +101,15 @@ export class CombatController {
     return this.monsters.length > 0;
   }
 
+  get isGuarding(): boolean {
+    return this.guarding;
+  }
+
+  /** Input intent only; mitigation and stamina cost are resolved on impact. */
+  setGuarding(active: boolean): void {
+    this.guarding = active && this.bridge.isPlayerAlive();
+  }
+
   update(delta: number): void {
     if (this.playerAttackCooldown > 0) {
       this.playerAttackCooldown = Math.max(0, this.playerAttackCooldown - delta);
@@ -111,7 +130,10 @@ export class CombatController {
 
     for (const monster of this.monsters) {
       if (monster.tickRespawn(delta)) continue;
-      if (!monster.isAlive) continue;
+      if (!monster.isAlive) {
+        this.cancelMonsterWindup(monster, false);
+        continue;
+      }
       monster.tickEffects(delta);
 
       if (monster.attackCooldown > 0) {
@@ -121,11 +143,29 @@ export class CombatController {
       const distToPlayer = Phaser.Math.Distance.Between(monster.x, monster.y, playerPos.x, playerPos.y);
       const distToHome = Phaser.Math.Distance.Between(monster.x, monster.y, monster.home.x, monster.home.y);
 
+      const windupRemaining = this.attackWindups.get(monster);
+      if (windupRemaining !== undefined) {
+        if (!playerAlive || distToPlayer > MONSTER_MELEE_RANGE + 8 || distToHome > LEASH_RADIUS) {
+          this.cancelMonsterWindup(monster, true);
+        } else {
+          const next = Math.max(0, windupRemaining - delta);
+          monster.showAttackTelegraph(1 - next / MONSTER_ATTACK_WINDUP_MS);
+          if (next <= 0) {
+            this.attackWindups.delete(monster);
+            monster.hideAttackTelegraph();
+            this.monsterAttack(monster);
+          } else {
+            this.attackWindups.set(monster, next);
+          }
+        }
+        continue;
+      }
+
       if (playerAlive && distToPlayer <= AGGRO_RADIUS && distToHome <= LEASH_RADIUS) {
         if (distToPlayer > MONSTER_MELEE_RANGE) {
           monster.moveToward(playerPos.x, playerPos.y, step, (x, y) => this.bridge.clampToBounds(x, y));
         } else if (monster.attackCooldown <= 0) {
-          this.monsterAttack(monster);
+          this.beginMonsterWindup(monster);
         }
       } else if (distToHome > MONSTER_MELEE_RANGE) {
         monster.moveToward(monster.home.x, monster.home.y, step, (x, y) => this.bridge.clampToBounds(x, y));
@@ -309,7 +349,10 @@ export class CombatController {
       monster.destroy();
     }
     this.monsters.length = 0;
-    this.setTarget(null);
+    this.attackWindups.clear();
+    this.target = null;
+    this.guarding = false;
+    this.bridge.onTargetChanged(null);
   }
 
   private monsterAttack(monster: Monster): void {
@@ -321,11 +364,30 @@ export class CombatController {
       this.floatingText(pos.x, pos.y - 20, 'miss', '#cfd0d8');
       return;
     }
-    const damage = calcPhysicalDamage(attackerStats, playerStats);
+    const incoming = calcPhysicalDamage(attackerStats, playerStats);
+    const braced = this.guarding && this.bridge.spendSp(GUARD_SP_COST);
+    const damage = braced ? Math.max(1, Math.round(incoming * GUARD_DAMAGE_MULTIPLIER)) : incoming;
     this.bridge.onPlayerDamaged(damage, monster.def.displayName);
     audioService.playSfx('sfx_combat_hit');
     const pos = this.bridge.getPlayerPosition();
-    this.floatingText(pos.x, pos.y - 20, String(damage), '#ff7a6a');
+    if (braced) {
+      this.floatingText(pos.x, pos.y - 20, `BRACE ${damage}`, '#8ed5ff');
+    } else {
+      this.floatingText(pos.x, pos.y - 20, String(damage), '#ff7a6a');
+    }
+  }
+
+  private beginMonsterWindup(monster: Monster): void {
+    this.attackWindups.set(monster, MONSTER_ATTACK_WINDUP_MS);
+    monster.showAttackTelegraph(0);
+  }
+
+  private cancelMonsterWindup(monster: Monster, applyCooldown: boolean): void {
+    if (!this.attackWindups.delete(monster)) return;
+    monster.hideAttackTelegraph();
+    if (applyCooldown) {
+      monster.attackCooldown = Math.max(monster.attackCooldown, MONSTER_ATTACK_CANCEL_COOLDOWN);
+    }
   }
 
   private refreshTarget(playerPos: Vec2): void {
@@ -336,17 +398,10 @@ export class CombatController {
     this.publishTarget();
   }
 
-  private setTarget(target: Monster | null): void {
-    if (this.target === target) {
-      return;
-    }
-    this.target = target;
-    this.publishTarget();
-  }
-
-  private publishTarget(): void {
+    const windup = this.target ? this.attackWindups.get(this.target) : undefined;
+    const windupStep = windup === undefined ? -1 : Math.round((1 - windup / MONSTER_ATTACK_WINDUP_MS) * 10);
     const key = this.target
-      ? `${this.target.def.id}:${Math.round(this.target.x)}:${Math.round(this.target.y)}:${this.target.hpCur}`
+      ? `${this.target.def.id}:${Math.round(this.target.x)}:${Math.round(this.target.y)}:${this.target.hpCur}:${windupStep}`
       : '';
     if (key === this.lastTargetKey) return;
     this.lastTargetKey = key;
@@ -361,6 +416,8 @@ export class CombatController {
       hpCur: this.target.hpCur,
       hpMax: this.target.hpMax,
       element: this.target.def.element,
+      cast: windup === undefined ? undefined : 'Heavy strike',
+      castPct: windup === undefined ? undefined : `${windupStep * 10}%`,
     });
   }
 

@@ -1,4 +1,114 @@
 {
   "mapId": "old_crystal_mine",
-  "props": []
+  "props": [
+    {
+      "id": "old_crystal_mine_ground",
+      "kind": "plaza",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1536,
+      "fillColor": 3425119,
+      "alpha": 0.32
+    },
+    {
+      "id": "mine_gallery",
+      "kind": "path",
+      "x": 0,
+      "y": 80,
+      "width": 1280,
+      "height": 96,
+      "fillColor": 11705200,
+      "accentColor": 14138762,
+      "alpha": 0.68
+    },
+    {
+      "id": "mine_deep_vein",
+      "kind": "path",
+      "x": 240,
+      "y": 320,
+      "width": 96,
+      "height": 448,
+      "fillColor": 11705200,
+      "accentColor": 14138762,
+      "alpha": 0.68
+    },
+    {
+      "id": "mine_wall_nw",
+      "kind": "crate",
+      "x": -544,
+      "y": -608,
+      "width": 256,
+      "height": 128,
+      "fillColor": 6449272,
+      "accentColor": 10134452,
+      "alpha": 1
+    },
+    {
+      "id": "mine_wall_north",
+      "kind": "crate",
+      "x": -80,
+      "y": -592,
+      "width": 224,
+      "height": 96,
+      "fillColor": 6449272,
+      "accentColor": 10134452,
+      "alpha": 1
+    },
+    {
+      "id": "mine_wall_ne",
+      "kind": "crate",
+      "x": 496,
+      "y": -544,
+      "width": 224,
+      "height": 128,
+      "fillColor": 6449272,
+      "accentColor": 10134452,
+      "alpha": 1
+    },
+    {
+      "id": "mine_pillar_a",
+      "kind": "crate",
+      "x": -208,
+      "y": -96,
+      "width": 96,
+      "height": 128,
+      "fillColor": 6449272,
+      "accentColor": 10134452,
+      "alpha": 1
+    },
+    {
+      "id": "mine_pillar_b",
+      "kind": "crate",
+      "x": 208,
+      "y": 160,
+      "width": 96,
+      "height": 128,
+      "fillColor": 6449272,
+      "accentColor": 10134452,
+      "alpha": 1
+    },
+    {
+      "id": "mine_vein_south",
+      "kind": "crate",
+      "x": 496,
+      "y": 528,
+      "width": 160,
+      "height": 96,
+      "fillColor": 6449272,
+      "accentColor": 10134452,
+      "alpha": 1
+    },
+    {
+      "id": "mine_rail",
+      "kind": "fence",
+      "x": -352,
+      "y": 272,
+      "width": 320,
+      "height": 32,
+      "fillColor": 9333832,
+      "accentColor": 13806968,
+      "alpha": 1
+    }
+  ]
 }

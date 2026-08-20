@@ -1068,8 +1068,8 @@
     "biome": "riverside_town",
     "musicKey": "music_millwick_crossing",
     "gridSize": {
-      "width": 60,
-      "height": 48
+      "width": 44,
+      "height": 32
     },
     "spawnTables": [],
     "npcs": [

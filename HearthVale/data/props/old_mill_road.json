@@ -1,4 +1,117 @@
 {
   "mapId": "old_mill_road",
-  "props": []
+  "props": [
+    {
+      "id": "old_mill_road_ground",
+      "kind": "plaza",
+      "x": 0,
+      "y": 0,
+      "width": 2304,
+      "height": 1152,
+      "fillColor": 7701571,
+      "alpha": 0.32
+    },
+    {
+      "id": "mill_road",
+      "kind": "path",
+      "x": 0,
+      "y": 48,
+      "width": 2240,
+      "height": 96,
+      "fillColor": 11705200,
+      "accentColor": 14138762,
+      "alpha": 0.68
+    },
+    {
+      "id": "millwick_lane",
+      "kind": "path",
+      "x": 16,
+      "y": -96,
+      "width": 96,
+      "height": 320,
+      "fillColor": 11705200,
+      "accentColor": 14138762,
+      "alpha": 0.68
+    },
+    {
+      "id": "moonwell_turn",
+      "kind": "path",
+      "x": 688,
+      "y": 224,
+      "width": 96,
+      "height": 320,
+      "fillColor": 11705200,
+      "accentColor": 14138762,
+      "alpha": 0.68
+    },
+    {
+      "id": "mill_oak_west",
+      "kind": "tree",
+      "x": -928,
+      "y": -352,
+      "width": 128,
+      "height": 128,
+      "shape": "ellipse",
+      "fillColor": 3562810,
+      "accentColor": 7491640,
+      "alpha": 1
+    },
+    {
+      "id": "mill_oak_east",
+      "kind": "tree",
+      "x": 896,
+      "y": -352,
+      "width": 128,
+      "height": 128,
+      "shape": "ellipse",
+      "fillColor": 3562810,
+      "accentColor": 7491640,
+      "alpha": 1
+    },
+    {
+      "id": "mill_willow_south",
+      "kind": "tree",
+      "x": 640,
+      "y": 368,
+      "width": 128,
+      "height": 96,
+      "shape": "ellipse",
+      "fillColor": 3562810,
+      "accentColor": 7491640,
+      "alpha": 1
+    },
+    {
+      "id": "mill_fence_north",
+      "kind": "fence",
+      "x": -320,
+      "y": -304,
+      "width": 384,
+      "height": 32,
+      "fillColor": 9333832,
+      "accentColor": 13806968,
+      "alpha": 1
+    },
+    {
+      "id": "mill_fence_south",
+      "kind": "fence",
+      "x": -192,
+      "y": 304,
+      "width": 320,
+      "height": 32,
+      "fillColor": 9333832,
+      "accentColor": 13806968,
+      "alpha": 1
+    },
+    {
+      "id": "mill_milestone",
+      "kind": "crate",
+      "x": 224,
+      "y": -32,
+      "width": 64,
+      "height": 64,
+      "fillColor": 6449272,
+      "accentColor": 10134452,
+      "alpha": 1
+    }
+  ]
 }

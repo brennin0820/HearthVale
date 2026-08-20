@@ -28,7 +28,8 @@ Canonical layout reference for the **Hearthlight Vale** starter region (levels *
 | **Capital** | Hearthvale Town (`hearthvale_town_ro`) |
 | **Map count** | 19 live exports (10-map original Phase A target) |
 | **Playable loop (Phase B)** | Town → Cloverfield Plains → Mushroom Hollow → Old Crystal Mine |
-| **Expansion arcs (Phase C–D+)** | Millwick → Moonwell chain; Crystal Approach → Emberglass Shelf → Hollow Kiln; both capstones → Lanternspire Summit → Afterlight Expanse |
+| **Greybox walkable (2026-08)** | All 10 maps — expansion chain is reachable; level gates are data-only until Phase C enforces them |
+| **Expansion arc (Phase C–D)** | Whisperwood Meadows → Old Mill Road → Millwick Crossing → Moonwell chain |
 
 ### Narrative spine
 
@@ -255,31 +256,30 @@ Hearth Courier NPCs (`hearth_courier`) provide active fast travel within **Heart
 
 ## Art pipeline checklist (per map)
 
-Each map ships three asset layers plus metadata. Asset keys follow `{assetKey}_*` convention.
+Each map ships authored collision + prop layers plus metadata. Greybox art lives in `src/data/world/mapArt.ts` (exported with `data/collision/*.json` and `data/props/*.json`); a production PNG tileset pass is still Later. Canonical `musicKey` values are the stub ids on each `MapDefinition` (e.g. `music_hearthvale_town`).
 
 | Layer | File pattern | Contents | Phase |
 |-------|--------------|----------|-------|
-| **Base** | `assets/maps/{assetKey}/base.png` | Ground tiles, static terrain | B+ |
-| **Props** | `assets/maps/{assetKey}/props.png` | Trees, buildings, overlays (depth-sorted) | B+ |
-| **Collision** | `assets/maps/{assetKey}/collision.json` | Blocking polygons / tile flags for Phaser | B+ |
+| **Art** | `src/data/world/mapArt.ts` | Ground tint, obstacles, paths (Phaser draw + SVG atlas) | B+ (all 10) |
+| **Collision** | `data/collision/{mapId}.json` | Blocking rects; `verify:map-art` keeps spawns/portals walkable | B+ (all 10) |
 | **Metadata** | `src/data/world/maps.ts` | Spawns, portals, NPCs, grid size | A |
 
 ### Per-map checklist
 
-| Map ID | assetKey | Base | Props | Collision | Music | Status |
-|--------|----------|------|-------|-----------|-------|--------|
-| `hearthvale_town` | `hearthvale_town` | ☐ | ☐ | ☐ | `bgm_hearth_hamlet` | Phase B |
-| `cloverfield_plains` | `cloverfield_plains` | ☐ | ☐ | ☐ | `bgm_clover_wind` | Phase B |
-| `mushroom_hollow` | `mushroom_hollow` | ☐ | ☐ | ☐ | `bgm_hollow_hush` | Phase B |
-| `old_crystal_mine` | `old_crystal_mine` | ☐ | ☐ | ☐ | `bgm_crystal_deep` | Phase B/C |
-| `whisperwood_meadows` | `whisperwood_meadows` | ☐ | ☐ | ☐ | `bgm_whisper_leaves` | Phase C |
-| `old_mill_road` | `old_mill_road` | ☐ | ☐ | ☐ | `bgm_mill_road` | Phase D |
-| `millwick_crossing` | `millwick_crossing` | ☐ | ☐ | ☐ | `bgm_wayfarer` | Phase D |
-| `crystal_mine_approach` | `crystal_mine_approach` | ☐ | ☐ | ☐ | `bgm_quarry` | Phase C |
-| `moonwell_entrance` | `moonwell_entrance` | ☐ | ☐ | ☐ | `bgm_moonwell` | Phase D |
-| `moonwell_ruins` | `moonwell_ruins` | ☐ | ☐ | ☐ | `bgm_ruins` | Phase D |
+| Map ID | assetKey | Art | Collision | Music stub | Status |
+|--------|----------|-----|-----------|------------|--------|
+| `hearthvale_town` | `map_hearthvale_town` | ☑ | ☑ | `music_hearthvale_town` | Playable hub |
+| `cloverfield_plains` | `map_cloverfield_plains` | ☑ | ☑ | `music_cloverfield` | Playable field |
+| `mushroom_hollow` | `map_mushroom_hollow` | ☑ | ☑ | `music_mushroom_hollow` | Playable field |
+| `old_crystal_mine` | `map_old_crystal_mine` | ☑ | ☑ | `music_crystal_mine` | Playable single floor — boss/floors still C |
+| `whisperwood_meadows` | `map_whisperwood_meadows` | ☑ | ☑ | `music_whisperwood` | Playable; Lv 5 gate unenforced |
+| `old_mill_road` | `map_old_mill_road` | ☑ | ☑ | `music_old_mill_road` | Playable greybox |
+| `millwick_crossing` | `map_millwick_crossing` | ☑ | ☑ | `music_millwick_crossing` | Playable hub (no shop) |
+| `crystal_mine_approach` | `map_crystal_mine_approach` | ☑ | ☑ | `music_crystal_approach` | Playable; Lv 8 mine gate unenforced |
+| `moonwell_entrance` | `map_moonwell_entrance` | ☑ | ☑ | `music_moonwell_entrance` | Playable greybox |
+| `moonwell_ruins` | `map_moonwell_ruins` | ☑ | ☑ | `music_moonwell_ruins` | Playable dungeon — no scripted finale |
 
-**Pipeline order:** metadata (A) → greybox collision (B) → base pass → props pass → polish + lighting.
+**Pipeline order:** metadata (A) → collision + `mapArt` greybox (B, now all 10) → production tileset/lighting (Later).
 
 ---
 
@@ -289,28 +289,28 @@ Each map ships three asset layers plus metadata. Asset keys follow `{assetKey}_*
 |-------|--------------|------|-------------|
 | **A** — Data foundation | Catalog + portal graph + warp table in TS | All 10 defined | `verify:portals` clean; JSON export |
 | **B** — Starter 4-map loop | Playable Phaser loop | Town, Plains, Hollow, Mine | Walk town → field → field → dungeon → return |
-| **C** — Dungeon depth + boss | Mine floors, Whisperwood, Approach | + Whisperwood, Crystal Mine Approach, mine boss chamber | Boss encounter, deeper mine layout |
-| **D** — Early expansion + world map | Border towns, Moonwell chain, UI | + Old Mill Road, Millwick, Moonwell Entrance/Ruins | World map pins, Millwick economy |
+| **C** — Dungeon depth + boss | Mine floors, Whisperwood, Approach | Whisperwood + Approach **walkable**; mine still one floor | Remaining: boss, floors, **enforced** Lv 5 gate, job UI |
+| **D** — Early expansion + world map | Border towns, Moonwell chain, UI | Old Mill Road, Millwick, Moonwell **walkable greybox** | Remaining: world map pins, Millwick economy, Lv 14 arc |
 
 ### Phase B acceptance (starter loop)
 
-- [ ] Player spawns in Hearthvale Town at `playerSpawn`
-- [ ] East gate → Cloverfield; grind Jellybud / Spriggle
-- [ ] Hollow trail → Mushroom Hollow; Puffshroom / Sporeling
-- [ ] Mine mouth → Old Crystal Mine; exit returns to plains
-- [ ] Hearth Courier free warp to Cloverfield from town
-- [ ] All four maps have base + props + collision loaded in Phaser
+- [x] Player spawns in Hearthvale Town at `playerSpawn`
+- [x] East gate → Cloverfield; grind Jellybud / Spriggle
+- [x] Hollow trail → Mushroom Hollow; Puffshroom / Sporeling
+- [x] Mine mouth → Old Crystal Mine; exit returns to plains
+- [ ] Hearth Courier free warp to Cloverfield from town (NPC dialogue only; `warpTable` unused by client)
+- [x] Starter maps have authored art + collision loaded in Phaser
 
 ### Phase C acceptance (depth)
 
 - [ ] Old Crystal Mine multi-floor layout and boss chamber
-- [ ] Whisperwood reachable at Lv 5 via southeast portal
-- [ ] Crystal Mine Approach optional lane wired
+- [ ] Whisperwood reachable **only** at Lv 5 via southeast portal (portal exists; `requiredLevel` not enforced)
+- [x] Crystal Mine Approach optional lane wired
 
 ### Phase D acceptance (expansion)
 
-- [ ] Old Mill Road ↔ Millwick ↔ Moonwell portal chain
-- [ ] World map UI shows all `showOnWorldMap: true` pins
+- [x] Old Mill Road ↔ Millwick ↔ Moonwell portal chain (walkable, ungated)
+- [ ] World map UI shows all `showOnWorldMap: true` pins (local **M** map is current-map only)
 - [ ] Paid warp services through Millwick and Moonwell Entrance
 
 ---
@@ -349,3 +349,4 @@ Normalized coordinates for Phase D world-map UI (`worldMapPosition`):
 | 2026-07-22 | Documented the verified cross-region exit to Dawnshore Reach and the shared resource-node map contract |
 | 2026-07-22 | Updated live route to 17 maps and documented Emberglass Shelf, Hollow Kiln, their portals, warp, and parallel finale role |
 | 2026-06-11 | Initial layout reference — Phase A parallel bootstrap |
+| 2026-08-20 | Synced with `docs/ROADMAP.md`: all 10 maps marked walkable greybox (`mapArt.ts` + collision JSON); Phase B acceptance mostly checked; C/D remaining work is systems (boss, gates, world map, warps) not new map files |

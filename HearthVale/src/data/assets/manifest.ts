@@ -3,6 +3,10 @@ export interface AssetManifestEntry {
   type: 'map' | 'sprite' | 'icon' | 'atlas' | 'tile' | 'portrait';
   placeholder: boolean;
   path?: string;
+  frameWidth?: number;
+  frameHeight?: number;
+  frames?: Record<string, number>;
+  license?: 'HearthVale-original';
 }
 
 const ITEM_ICON_KEYS = ['clover_herb', 'spore_cap', 'crystal_shard', 'gale_feather', 'moon_flake'];
@@ -18,50 +22,35 @@ export function buildAssetManifest(mapAssetKeys: string[]): AssetManifestEntry[]
     placeholder: true,
   }));
 
-  for (const frame of ['player_down_0', 'player_down_1', 'portal_0', 'portal_1']) {
-    entries.push({
-      key: frame,
-      type: 'sprite',
+  entries.push(
+    {
+      key: 'atlas_hearthvale_characters',
+      type: 'atlas',
       placeholder: false,
-      path: `assets/sprites/${frame}.png`,
-    });
-  }
-
-  for (const key of ITEM_ICON_KEYS) {
-    entries.push({
-      key,
-      type: 'icon',
+      path: '/assets/hearthvale-characters.svg',
+      frameWidth: 48,
+      frameHeight: 48,
+      frames: {
+        player_down_0: 0, player_down_1: 1, player_up_0: 2, player_up_1: 3,
+        player_left_0: 4, player_left_1: 5, player_right_0: 6, player_right_1: 7,
+        npc_quest: 8, npc_merchant: 9, npc_trainer: 10, npc_warp: 11, npc_flavor: 12,
+      },
+      license: 'HearthVale-original',
+    },
+    {
+      key: 'atlas_hearthvale_world',
+      type: 'atlas',
       placeholder: false,
-      path: `assets/sprites/items/${key}.png`,
-    });
-  }
-
-  for (const key of MONSTER_SPRITE_KEYS) {
-    entries.push({
-      key,
-      type: 'sprite',
-      placeholder: false,
-      path: `assets/sprites/monsters/${key}.png`,
-    });
-  }
-
-  for (const key of TERRAIN_TILE_KEYS) {
-    entries.push({
-      key,
-      type: 'tile',
-      placeholder: false,
-      path: `assets/sprites/tiles/${key}.png`,
-    });
-  }
-
-  for (const key of NPC_PORTRAIT_KEYS) {
-    entries.push({
-      key,
-      type: 'portrait',
-      placeholder: false,
-      path: `assets/sprites/portraits/${key}.png`,
-    });
-  }
+      path: '/assets/hearthvale-world.svg',
+      frameWidth: 48,
+      frameHeight: 48,
+      frames: {
+        prop_tree: 0, prop_cottage: 1, prop_crystal: 2, prop_fence: 3,
+        prop_crate: 4, prop_lantern: 5, prop_moonwell: 6, portal_0: 7,
+      },
+      license: 'HearthVale-original',
+    },
+  );
 
   return entries;
 }

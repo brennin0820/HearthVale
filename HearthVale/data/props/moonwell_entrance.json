@@ -1,4 +1,96 @@
 {
   "mapId": "moonwell_entrance",
-  "props": []
+  "props": [
+    {
+      "id": "moonwell_entrance_ground",
+      "kind": "plaza",
+      "x": 0,
+      "y": 0,
+      "width": 1408,
+      "height": 1280,
+      "fillColor": 4543603,
+      "alpha": 0.32
+    },
+    {
+      "id": "moonwell_north_trail",
+      "kind": "path",
+      "x": -240,
+      "y": 112,
+      "width": 864,
+      "height": 96,
+      "fillColor": 11705200,
+      "accentColor": 14138762,
+      "alpha": 0.68
+    },
+    {
+      "id": "moonwell_ruins_path",
+      "kind": "path",
+      "x": 144,
+      "y": 320,
+      "width": 96,
+      "height": 384,
+      "fillColor": 11705200,
+      "accentColor": 14138762,
+      "alpha": 0.68
+    },
+    {
+      "id": "moonwell_grove_nw",
+      "kind": "tree",
+      "x": -528,
+      "y": -448,
+      "width": 160,
+      "height": 128,
+      "shape": "ellipse",
+      "fillColor": 3562810,
+      "accentColor": 7491640,
+      "alpha": 1
+    },
+    {
+      "id": "moonwell_grove_ne",
+      "kind": "tree",
+      "x": 464,
+      "y": -448,
+      "width": 160,
+      "height": 128,
+      "shape": "ellipse",
+      "fillColor": 3562810,
+      "accentColor": 7491640,
+      "alpha": 1
+    },
+    {
+      "id": "moonwell_grove_sw",
+      "kind": "tree",
+      "x": -432,
+      "y": 432,
+      "width": 160,
+      "height": 96,
+      "shape": "ellipse",
+      "fillColor": 3562810,
+      "accentColor": 7491640,
+      "alpha": 1
+    },
+    {
+      "id": "moonwell_shoreline",
+      "kind": "crate",
+      "x": 128,
+      "y": 96,
+      "width": 128,
+      "height": 64,
+      "fillColor": 6449272,
+      "accentColor": 10134452,
+      "alpha": 1
+    },
+    {
+      "id": "moonwell_pool",
+      "kind": "fountain",
+      "x": -16,
+      "y": -176,
+      "width": 160,
+      "height": 160,
+      "shape": "ellipse",
+      "fillColor": 5536944,
+      "accentColor": 13035263,
+      "alpha": 0.9
+    }
+  ]
 }

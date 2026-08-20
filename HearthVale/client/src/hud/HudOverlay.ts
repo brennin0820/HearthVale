@@ -106,6 +106,7 @@ interface ThemeTokens {
 export interface SlotItem {
   shape: ItemShape;
   tint: string;
+  label?: string;
   qty?: number;
   rare?: boolean;
   cdPct?: number;
@@ -297,7 +298,7 @@ export const DEFAULT_HOTBAR: SlotItem[] = [
   { shape: 'blade', tint: '#a9762a', cdPct: 0.7, cdLabel: '9s', keybind: '7' },
   { shape: 'guard', tint: '#7fae6a', keybind: '8' },
   { shape: 'empty', tint: '#888', keybind: '9' },
-  { shape: 'empty', tint: '#888', keybind: '0' },
+  { shape: 'guard', tint: '#8ed5ff', keybind: '⇧', label: 'Brace — hold Shift' },
 ];
 export const DEFAULT_INVENTORY: SlotItem[] = [
   { shape: 'blade', tint: '#c9a227', rare: true }, { shape: 'guard', tint: '#8fa3c9' },
@@ -311,11 +312,6 @@ export const DEFAULT_INVENTORY: SlotItem[] = [
   { shape: 'empty', tint: '#888' }, { shape: 'empty', tint: '#888' }, { shape: 'empty', tint: '#888' },
   { shape: 'empty', tint: '#888' }, { shape: 'empty', tint: '#888' }, { shape: 'empty', tint: '#888' },
 ];
-const BAG_TABS = ['Char', 'Bag', 'Skill', 'Quest', 'Map', 'Menu'];
-
-const HUD_BASE_WIDTH = 3440;
-const HUD_BASE_HEIGHT = 1440;
-
 interface HudRefs {
   playerTitle: HTMLElement;
   playerName: HTMLElement;
@@ -331,11 +327,15 @@ interface HudRefs {
   bannerTitle: HTMLElement;
   bannerSubtitle: HTMLElement;
   minimapCoords: HTMLElement;
+  minimap: HTMLElement;
   minimapGrid: HTMLElement;
+  minimapPlayer: HTMLElement;
+  minimapTitle: HTMLElement;
   questList: HTMLElement;
   chatLog: HTMLElement;
   auras: HTMLElement;
   target: HTMLElement;
+  inventory: HTMLElement;
 }
 
 function esc(value: string): string {
@@ -444,7 +444,8 @@ function itemSlotHtml(theme: SlotTheme, item: SlotItem, size: number): string {
     ? `<div class="hv-slot__cd" style="height:${Math.round(cdPct * 100)}%"><span>${esc(item.cdLabel ?? '')}</span></div>`
     : '';
   const kbHtml = keybind ? `<div class="hv-slot__kb">${esc(keybind)}</div>` : '';
-  return `<div class="hv-slot" style="width:${size}px;height:${size}px;background:${bg};box-shadow:${ring};border-radius:${radius};backdrop-filter:${blur};color:${glow}">${shapeHtml}${qtyHtml}${cdHtml}${kbHtml}</div>`;
+  const label = item.label ? ` title="${esc(item.label)}" aria-label="${esc(item.label)}"` : '';
+  return `<div class="hv-slot"${label} style="width:${size}px;height:${size}px;background:${bg};box-shadow:${ring};border-radius:${radius};backdrop-filter:${blur};color:${glow}">${shapeHtml}${qtyHtml}${cdHtml}${kbHtml}</div>`;
 }
 
 function cornerAccents(tk: ThemeTokens): string {
@@ -506,6 +507,8 @@ export class HudOverlay {
   private npcLog: { speaker: string; text: string }[] = [];
   private lastAurasKey = '';
   private lastTargetKey = '';
+  private lastInventoryKey = '';
+  private mapExpanded = false;
 
   mount(): void {
     if (this.root) return;
@@ -571,6 +574,12 @@ export class HudOverlay {
       this.lastTargetKey = key;
       this.renderTarget(snapshot.target);
     }
+    const inventoryKey = JSON.stringify(snapshot.inventory);
+    if (inventoryKey !== this.lastInventoryKey) {
+      this.lastInventoryKey = inventoryKey;
+      const tk = THEME_TOKENS[this.theme];
+      this.refs.inventory.innerHTML = snapshot.inventory.slice(0, 6).map((item) => itemSlotHtml(tk.slotTheme, item, 44)).join('');
+    }
   }
 
   private renderAuras(buffs: HudAura[], debuffs: HudAura[]): void {
@@ -630,6 +639,14 @@ export class HudOverlay {
     const tileX = Math.round(snapshot.position.x / TILE_SIZE);
     const tileY = Math.round(snapshot.position.y / TILE_SIZE);
     this.refs.minimapCoords.textContent = `${tileX}, ${tileY}`;
+    const mapped = this.toPercent(snapshot.map, snapshot.position);
+    this.refs.minimapPlayer.style.left = mapped.left;
+    this.refs.minimapPlayer.style.top = mapped.top;
+    const portalNearby = snapshot.nearestPortal !== null;
+    this.refs.minimap.classList.toggle('hv-hud__minimap--portal-near', portalNearby);
+    this.refs.minimapTitle.textContent = portalNearby
+      ? `Portal · ${snapshot.nearestPortal!.label}`
+      : 'Local Map · M';
     this.refs.bannerSubtitle.textContent = this.buildSubtitle(snapshot);
   }
 
@@ -745,6 +762,10 @@ export class HudOverlay {
       if (event.code === 'F4') {
         event.preventDefault();
         this.cycleTheme();
+      } else if (event.code === 'KeyM') {
+        event.preventDefault();
+        this.mapExpanded = !this.mapExpanded;
+        this.root?.classList.toggle('hv-hud--map-open', this.mapExpanded);
       }
     });
   }
@@ -776,19 +797,11 @@ export class HudOverlay {
 
   private syncScale = (): void => {
     if (!this.root) return;
-    const widthScale = window.innerWidth / HUD_BASE_WIDTH;
-    const heightScale = window.innerHeight / HUD_BASE_HEIGHT;
-    // Fit to the smaller axis with no lower floor: a floor above the fit scale
-    // would leave the HUD wider/taller than the viewport and push the
-    // right/bottom panels (minimap, coords, POI markers) off-screen.
-    const scale = Math.min(1, widthScale, heightScale);
-    const scaledWidth = HUD_BASE_WIDTH * scale;
-    const scaledHeight = HUD_BASE_HEIGHT * scale;
-    const offsetX = Math.max(0, Math.floor((window.innerWidth - scaledWidth) / 2));
-    const offsetY = Math.max(0, Math.floor((window.innerHeight - scaledHeight) / 2));
-    this.root.parentElement?.style.setProperty('--hv-hud-scale', scale.toFixed(4));
-    this.root.parentElement?.style.setProperty('--hv-hud-offset-x', `${offsetX}px`);
-    this.root.parentElement?.style.setProperty('--hv-hud-offset-y', `${offsetY}px`);
+    // The field HUD uses viewport-relative edge anchors and responsive CSS
+    // instead of scaling a desktop artboard down to illegible mobile text.
+    this.root.parentElement?.style.setProperty('--hv-hud-scale', '1');
+    this.root.parentElement?.style.setProperty('--hv-hud-offset-x', '0px');
+    this.root.parentElement?.style.setProperty('--hv-hud-offset-y', '0px');
   };
 
   /** Rebuilds the full skeleton (theme + all static/mock panels) and re-binds
@@ -806,6 +819,7 @@ export class HudOverlay {
       }
     }
     this.root.classList.toggle('hv-hud--portrait-glow', !!tk.portraitAnim);
+    this.root.classList.toggle('hv-hud--map-open', this.mapExpanded);
 
     this.root.innerHTML = this.template(tk, player);
     this.refs = {
@@ -823,16 +837,21 @@ export class HudOverlay {
       bannerTitle: this.getRef('banner-title'),
       bannerSubtitle: this.getRef('banner-subtitle'),
       minimapCoords: this.getRef('minimap-coords'),
+      minimap: this.getRef('minimap'),
       minimapGrid: this.getRef('minimap-grid'),
+      minimapPlayer: this.getRef('minimap-player'),
+      minimapTitle: this.getRef('minimap-title'),
       questList: this.getRef('quest-list'),
       chatLog: this.getRef('chat-log'),
       auras: this.getRef('auras'),
       target: this.getRef('target'),
+      inventory: this.getRef('inventory'),
     };
 
     // DOM was recreated — force live panels to re-render on the next sync.
     this.lastAurasKey = '';
     this.lastTargetKey = '';
+    this.lastInventoryKey = '';
 
     if (this.lastSnapshot) {
       this.renderBanner(this.lastSnapshot);
@@ -869,11 +888,8 @@ export class HudOverlay {
         <span>${esc(c.value)}</span>
       </div>`).join('');
 
-    const bagTabsHtml = BAG_TABS.map((tab) => `
-      <span class="hv-hud__bag-tab${tab === 'Bag' ? ' hv-hud__bag-tab--active' : ''}">${tab}</span>`).join('');
-
-    const inventoryHtml = panels.inventory.map((item) => itemSlotHtml(tk.slotTheme, item, 58)).join('');
-    const hotbarHtml = panels.hotbar.map((item) => itemSlotHtml(tk.slotTheme, item, 64)).join('');
+    const inventoryHtml = panels.inventory.slice(0, 6).map((item) => itemSlotHtml(tk.slotTheme, item, 44)).join('');
+    const hotbarHtml = panels.hotbar.map((item) => itemSlotHtml(tk.slotTheme, item, 52)).join('');
 
     return `
       <section class="hv-hud__player">
@@ -913,12 +929,12 @@ export class HudOverlay {
 
       <section class="hv-hud__target" data-hud="target" style="display:none"></section>
 
-      <section class="hv-hud__minimap">
+      <section class="hv-hud__minimap" data-hud="minimap">
         <div class="hv-hud__minimap-dots"></div>
         <div class="hv-hud__minimap-grid" data-hud="minimap-grid">
-          <div class="hv-hud__minimap-compass"></div>
+          <div class="hv-hud__minimap-compass" data-hud="minimap-player"></div>
         </div>
-        <div class="hv-hud__minimap-title">Region</div>
+        <div class="hv-hud__minimap-title" data-hud="minimap-title">Local Map · M</div>
         <div class="hv-hud__minimap-coords" data-hud="minimap-coords">0, 0</div>
       </section>
 
@@ -930,8 +946,8 @@ export class HudOverlay {
       </section>
 
       <section class="hv-hud__bag">
-        <div class="hv-hud__bag-tabs">${bagTabsHtml}</div>
-        <div class="hv-hud__bag-grid">${inventoryHtml}</div>
+        <div class="hv-hud__bag-tabs"><span class="hv-hud__bag-tab hv-hud__bag-tab--active">Recent loot</span></div>
+        <div class="hv-hud__bag-grid" data-hud="inventory">${inventoryHtml}</div>
       </section>
 
       <div class="hv-hud__xp">
@@ -944,6 +960,7 @@ export class HudOverlay {
       <div class="hv-hud__stance" data-hud="player-stance">Stance: ${esc(player.stance)}</div>
     `;
   }
+
 }
 
 export const hudOverlay = new HudOverlay();

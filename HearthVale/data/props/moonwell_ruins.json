@@ -1,4 +1,103 @@
 {
   "mapId": "moonwell_ruins",
-  "props": []
+  "props": [
+    {
+      "id": "moonwell_ruins_ground",
+      "kind": "plaza",
+      "x": 0,
+      "y": 0,
+      "width": 1600,
+      "height": 1472,
+      "fillColor": 5325919,
+      "alpha": 0.32
+    },
+    {
+      "id": "ruins_ascent_path",
+      "kind": "path",
+      "x": -144,
+      "y": 80,
+      "width": 1184,
+      "height": 96,
+      "fillColor": 11705200,
+      "accentColor": 14138762,
+      "alpha": 0.68
+    },
+    {
+      "id": "ruins_inner_ring",
+      "kind": "path",
+      "x": 336,
+      "y": 240,
+      "width": 96,
+      "height": 352,
+      "fillColor": 11705200,
+      "accentColor": 14138762,
+      "alpha": 0.68
+    },
+    {
+      "id": "ruins_wall_nw",
+      "kind": "crate",
+      "x": -576,
+      "y": -560,
+      "width": 256,
+      "height": 96,
+      "fillColor": 6449272,
+      "accentColor": 10134452,
+      "alpha": 1
+    },
+    {
+      "id": "ruins_wall_ne",
+      "kind": "crate",
+      "x": 544,
+      "y": -560,
+      "width": 256,
+      "height": 96,
+      "fillColor": 6449272,
+      "accentColor": 10134452,
+      "alpha": 1
+    },
+    {
+      "id": "ruins_column_a",
+      "kind": "crate",
+      "x": -288,
+      "y": -128,
+      "width": 64,
+      "height": 128,
+      "fillColor": 6449272,
+      "accentColor": 10134452,
+      "alpha": 1
+    },
+    {
+      "id": "ruins_column_b",
+      "kind": "crate",
+      "x": 224,
+      "y": -96,
+      "width": 64,
+      "height": 128,
+      "fillColor": 6449272,
+      "accentColor": 10134452,
+      "alpha": 1
+    },
+    {
+      "id": "ruins_sanctum",
+      "kind": "crate",
+      "x": 400,
+      "y": 400,
+      "width": 224,
+      "height": 160,
+      "fillColor": 6449272,
+      "accentColor": 10134452,
+      "alpha": 1
+    },
+    {
+      "id": "ruins_broken_wall",
+      "kind": "fence",
+      "x": -432,
+      "y": 304,
+      "width": 288,
+      "height": 32,
+      "fillColor": 9333832,
+      "accentColor": 13806968,
+      "alpha": 1
+    }
+  ]
 }

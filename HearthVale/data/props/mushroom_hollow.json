@@ -1,4 +1,107 @@
 {
   "mapId": "mushroom_hollow",
-  "props": []
+  "props": [
+    {
+      "id": "mushroom_hollow_ground",
+      "kind": "plaza",
+      "x": 0,
+      "y": 0,
+      "width": 1792,
+      "height": 1408,
+      "fillColor": 6441080,
+      "alpha": 0.32
+    },
+    {
+      "id": "hollow_west_trail",
+      "kind": "path",
+      "x": -416,
+      "y": 80,
+      "width": 896,
+      "height": 96,
+      "fillColor": 11705200,
+      "accentColor": 14138762,
+      "alpha": 0.68
+    },
+    {
+      "id": "hollow_southeast_trail",
+      "kind": "path",
+      "x": 16,
+      "y": 336,
+      "width": 96,
+      "height": 480,
+      "fillColor": 11705200,
+      "accentColor": 14138762,
+      "alpha": 0.68
+    },
+    {
+      "id": "hollow_root_nw",
+      "kind": "tree",
+      "x": -704,
+      "y": -528,
+      "width": 128,
+      "height": 96,
+      "shape": "ellipse",
+      "fillColor": 3562810,
+      "accentColor": 7491640,
+      "alpha": 1
+    },
+    {
+      "id": "hollow_root_north",
+      "kind": "tree",
+      "x": -96,
+      "y": -560,
+      "width": 128,
+      "height": 96,
+      "shape": "ellipse",
+      "fillColor": 3562810,
+      "accentColor": 7491640,
+      "alpha": 1
+    },
+    {
+      "id": "hollow_root_east",
+      "kind": "tree",
+      "x": 688,
+      "y": -352,
+      "width": 96,
+      "height": 128,
+      "shape": "ellipse",
+      "fillColor": 3562810,
+      "accentColor": 7491640,
+      "alpha": 1
+    },
+    {
+      "id": "hollow_root_se",
+      "kind": "tree",
+      "x": 544,
+      "y": 480,
+      "width": 128,
+      "height": 128,
+      "shape": "ellipse",
+      "fillColor": 3562810,
+      "accentColor": 7491640,
+      "alpha": 1
+    },
+    {
+      "id": "hollow_spore_rocks",
+      "kind": "crate",
+      "x": 16,
+      "y": 96,
+      "width": 96,
+      "height": 64,
+      "fillColor": 6449272,
+      "accentColor": 10134452,
+      "alpha": 1
+    },
+    {
+      "id": "hollow_fallen_log",
+      "kind": "fence",
+      "x": -400,
+      "y": 272,
+      "width": 224,
+      "height": 32,
+      "fillColor": 9333832,
+      "accentColor": 13806968,
+      "alpha": 1
+    }
+  ]
 }

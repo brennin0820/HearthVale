@@ -1,4 +1,108 @@
 {
   "mapId": "whisperwood_meadows",
-  "props": []
+  "props": [
+    {
+      "id": "whisperwood_meadows_ground",
+      "kind": "plaza",
+      "x": 0,
+      "y": 0,
+      "width": 1920,
+      "height": 1344,
+      "fillColor": 3563336,
+      "alpha": 0.32
+    },
+    {
+      "id": "wood_west_road",
+      "kind": "path",
+      "x": -16,
+      "y": 80,
+      "width": 1824,
+      "height": 96,
+      "fillColor": 11705200,
+      "accentColor": 14138762,
+      "alpha": 0.68
+    },
+    {
+      "id": "wood_hollow_path",
+      "kind": "path",
+      "x": -752,
+      "y": 288,
+      "width": 96,
+      "height": 320,
+      "fillColor": 11705200,
+      "accentColor": 14138762,
+      "alpha": 0.68
+    },
+    {
+      "id": "wood_grove_nw",
+      "kind": "tree",
+      "x": -752,
+      "y": -480,
+      "width": 160,
+      "height": 128,
+      "shape": "ellipse",
+      "fillColor": 3562810,
+      "accentColor": 7491640,
+      "alpha": 1
+    },
+    {
+      "id": "wood_grove_north",
+      "kind": "tree",
+      "x": -176,
+      "y": -528,
+      "width": 160,
+      "height": 96,
+      "shape": "ellipse",
+      "fillColor": 3562810,
+      "accentColor": 7491640,
+      "alpha": 1
+    },
+    {
+      "id": "wood_grove_ne",
+      "kind": "tree",
+      "x": 688,
+      "y": -448,
+      "width": 160,
+      "height": 128,
+      "shape": "ellipse",
+      "fillColor": 3562810,
+      "accentColor": 7491640,
+      "alpha": 1
+    },
+    {
+      "id": "wood_grove_sw",
+      "kind": "tree",
+      "x": -704,
+      "y": 448,
+      "width": 128,
+      "height": 128,
+      "shape": "ellipse",
+      "fillColor": 3562810,
+      "accentColor": 7491640,
+      "alpha": 1
+    },
+    {
+      "id": "wood_grove_se",
+      "kind": "tree",
+      "x": 656,
+      "y": 416,
+      "width": 160,
+      "height": 128,
+      "shape": "ellipse",
+      "fillColor": 3562810,
+      "accentColor": 7491640,
+      "alpha": 1
+    },
+    {
+      "id": "wood_mossy_stones",
+      "kind": "crate",
+      "x": 208,
+      "y": 160,
+      "width": 96,
+      "height": 64,
+      "fillColor": 6449272,
+      "accentColor": 10134452,
+      "alpha": 1
+    }
+  ]
 }
