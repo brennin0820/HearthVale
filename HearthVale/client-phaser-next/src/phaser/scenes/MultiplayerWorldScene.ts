@@ -111,21 +111,44 @@ export class MultiplayerWorldScene extends Phaser.Scene {
     this.leaving = true;
     this.cameras.main.fadeOut(280, 10, 23, 19);
     this.time.delayedCall(300, () => {
-      void this.room?.leave(true);
-      this.scene.start('MultiplayerWorld', {
-        ...this.start,
-        mapId: targetMapId,
-        spawnX: targetSpawn.x,
-        spawnY: targetSpawn.y,
-      } satisfies MultiplayerStart);
+      void this.completeTravel(targetMapId, targetSpawn);
     });
+  }
+
+  /**
+   * Await consented leave so WorldRoom.onLeave can persist before the next
+   * joinOrCreate loads the character. Fire-and-forget leave raced the new
+   * room's load and let a later autosave overwrite fresher progress.
+   */
+  private async completeTravel(targetMapId: string, targetSpawn: { x: number; y: number }): Promise<void> {
+    await this.leaveRoom();
+    if (!this.sys.isActive()) return;
+    this.scene.start('MultiplayerWorld', {
+      ...this.start,
+      mapId: targetMapId,
+      spawnX: targetSpawn.x,
+      spawnY: targetSpawn.y,
+    } satisfies MultiplayerStart);
   }
 
   private leaveToTitle(): void {
     if (this.leaving) return;
     this.leaving = true;
-    void this.room?.leave(true);
-    this.scene.start('Title');
+    void this.leaveRoom().then(() => {
+      if (!this.sys.isActive()) return;
+      this.scene.start('Title');
+    });
+  }
+
+  private async leaveRoom(): Promise<void> {
+    const room = this.room;
+    this.room = undefined;
+    if (!room) return;
+    try {
+      await room.leave(true);
+    } catch {
+      // Room may already be closed; continue so travel/disconnect isn't stuck.
+    }
   }
 
   private teardown(): void {
