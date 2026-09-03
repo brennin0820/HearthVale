@@ -1582,6 +1582,250 @@ export const HEARTHVALE_TOWN_POINTS = {
 export const HEARTHVALE_TOWN_SAFE_ZONE = worldRectFromTiles(HEARTHVALE_TOWN_GRID, 2, 2, 44, 32);
 
 /**
+ * Gameplay anchor points (spawns, portal gates, quest/resource nodes) for each
+ * adventure map. These are pure coordinate data consumed by maps.ts and
+ * regions.ts — independent of the ADVENTURE_ART set-dressing generator below,
+ * which only produces visuals. Restored after the map-art rewrite dropped
+ * them while leaving these imports in place elsewhere.
+ */
+export const EMBERGLASS_SHELF_POINTS = {
+  playerSpawn: worldPointFromTile(EMBERGLASS_SHELF_GRID, 7, 20),
+  approachPass: worldPointFromTile(EMBERGLASS_SHELF_GRID, 2, 20),
+  approachArrival: worldPointFromTile(EMBERGLASS_SHELF_GRID, 7, 20),
+  glasswrightOrla: worldPointFromTile(EMBERGLASS_SHELF_GRID, 10, 16),
+  kilnGate: worldPointFromTile(EMBERGLASS_SHELF_GRID, 53, 20),
+  kilnArrival: worldPointFromTile(EMBERGLASS_SHELF_GRID, 50, 20),
+  emberglassSeam1: worldPointFromTile(EMBERGLASS_SHELF_GRID, 21, 20),
+  emberglassSeam2: worldPointFromTile(EMBERGLASS_SHELF_GRID, 31, 20),
+  emberglassSeam3: worldPointFromTile(EMBERGLASS_SHELF_GRID, 40, 20),
+} as const satisfies Record<string, Vec2>;
+
+export const HOLLOW_KILN_POINTS = {
+  playerSpawn: worldPointFromTile(HOLLOW_KILN_GRID, 7, 21),
+  shelfGate: worldPointFromTile(HOLLOW_KILN_GRID, 2, 21),
+  shelfArrival: worldPointFromTile(HOLLOW_KILN_GRID, 7, 21),
+  kilnheartDais: worldPointFromTile(HOLLOW_KILN_GRID, 41, 21),
+} as const satisfies Record<string, Vec2>;
+
+export const LANTERNSPIRE_SUMMIT_POINTS = {
+  playerSpawn: worldPointFromTile(LANTERNSPIRE_SUMMIT_GRID, 6, 19),
+  townGate: worldPointFromTile(LANTERNSPIRE_SUMMIT_GRID, 2, 19),
+  townArrival: worldPointFromTile(LANTERNSPIRE_SUMMIT_GRID, 6, 19),
+  afterlightGate: worldPointFromTile(LANTERNSPIRE_SUMMIT_GRID, 50, 19),
+  afterlightArrival: worldPointFromTile(LANTERNSPIRE_SUMMIT_GRID, 46, 19),
+  starvedCrown: worldPointFromTile(LANTERNSPIRE_SUMMIT_GRID, 43, 19),
+} as const satisfies Record<string, Vec2>;
+
+export const AFTERLIGHT_EXPANSE_POINTS = {
+  playerSpawn: worldPointFromTile(AFTERLIGHT_EXPANSE_GRID, 7, 21),
+  summitGate: worldPointFromTile(AFTERLIGHT_EXPANSE_GRID, 2, 21),
+  summitArrival: worldPointFromTile(AFTERLIGHT_EXPANSE_GRID, 7, 21),
+  dawnshoreGate: worldPointFromTile(AFTERLIGHT_EXPANSE_GRID, 56, 21),
+  dawnshoreArrival: worldPointFromTile(AFTERLIGHT_EXPANSE_GRID, 52, 21),
+  eclipseHerald: worldPointFromTile(AFTERLIGHT_EXPANSE_GRID, 50, 15),
+  sunshardBloom1: worldPointFromTile(AFTERLIGHT_EXPANSE_GRID, 18, 20),
+  sunshardBloom2: worldPointFromTile(AFTERLIGHT_EXPANSE_GRID, 28, 18),
+  voidglassSeam1: worldPointFromTile(AFTERLIGHT_EXPANSE_GRID, 34, 21),
+  voidglassSeam2: worldPointFromTile(AFTERLIGHT_EXPANSE_GRID, 41, 23),
+} as const satisfies Record<string, Vec2>;
+
+export const DAWNSHORE_CAMP_POINTS = {
+  playerSpawn: worldPointFromTile(DAWNSHORE_CAMP_GRID, 7, 16),
+  afterlightGate: worldPointFromTile(DAWNSHORE_CAMP_GRID, 2, 16),
+  afterlightArrival: worldPointFromTile(DAWNSHORE_CAMP_GRID, 7, 16),
+  glasswindGate: worldPointFromTile(DAWNSHORE_CAMP_GRID, 44, 16),
+  glasswindArrival: worldPointFromTile(DAWNSHORE_CAMP_GRID, 39, 16),
+  trailwardenNia: worldPointFromTile(DAWNSHORE_CAMP_GRID, 18, 12),
+  quartermasterVesa: worldPointFromTile(DAWNSHORE_CAMP_GRID, 30, 16),
+  hearthCourier: worldPointFromTile(DAWNSHORE_CAMP_GRID, 36, 16),
+} as const satisfies Record<string, Vec2>;
+
+export const GLASSWIND_COAST_POINTS = {
+  playerSpawn: worldPointFromTile(GLASSWIND_COAST_GRID, 7, 21),
+  campGate: worldPointFromTile(GLASSWIND_COAST_GRID, 2, 21),
+  campArrival: worldPointFromTile(GLASSWIND_COAST_GRID, 7, 21),
+  tidebreakGate: worldPointFromTile(GLASSWIND_COAST_GRID, 57, 21),
+  tidebreakArrival: worldPointFromTile(GLASSWIND_COAST_GRID, 55, 21),
+  drownedMeridian: worldPointFromTile(GLASSWIND_COAST_GRID, 50, 15),
+  sunwakeKelp1: worldPointFromTile(GLASSWIND_COAST_GRID, 12, 11),
+  sunwakeKelp2: worldPointFromTile(GLASSWIND_COAST_GRID, 19, 27),
+  sunwakeKelp3: worldPointFromTile(GLASSWIND_COAST_GRID, 29, 10),
+  saltglassSeam1: worldPointFromTile(GLASSWIND_COAST_GRID, 26, 21),
+  saltglassSeam2: worldPointFromTile(GLASSWIND_COAST_GRID, 38, 27),
+  saltglassSeam3: worldPointFromTile(GLASSWIND_COAST_GRID, 42, 17),
+} as const satisfies Record<string, Vec2>;
+
+export const TIDEBREAK_CAUSEWAY_POINTS = {
+  playerSpawn: worldPointFromTile(TIDEBREAK_CAUSEWAY_GRID, 7, 20),
+  coastGate: worldPointFromTile(TIDEBREAK_CAUSEWAY_GRID, 2, 20),
+  coastArrival: worldPointFromTile(TIDEBREAK_CAUSEWAY_GRID, 7, 20),
+  reliquaryGate: worldPointFromTile(TIDEBREAK_CAUSEWAY_GRID, 59, 20),
+  reliquaryArrival: worldPointFromTile(TIDEBREAK_CAUSEWAY_GRID, 54, 20),
+  beaconwrightOrrin: worldPointFromTile(TIDEBREAK_CAUSEWAY_GRID, 49, 15),
+  stormreed1: worldPointFromTile(TIDEBREAK_CAUSEWAY_GRID, 12, 11),
+  stormreed2: worldPointFromTile(TIDEBREAK_CAUSEWAY_GRID, 23, 28),
+  stormreed3: worldPointFromTile(TIDEBREAK_CAUSEWAY_GRID, 36, 15),
+  tideiron1: worldPointFromTile(TIDEBREAK_CAUSEWAY_GRID, 29, 20),
+  tideiron2: worldPointFromTile(TIDEBREAK_CAUSEWAY_GRID, 40, 15),
+  tideiron3: worldPointFromTile(TIDEBREAK_CAUSEWAY_GRID, 47, 27),
+} as const satisfies Record<string, Vec2>;
+
+export const STORMGLASS_RELIQUARY_POINTS = {
+  playerSpawn: worldPointFromTile(STORMGLASS_RELIQUARY_GRID, 7, 19),
+  causewayGate: worldPointFromTile(STORMGLASS_RELIQUARY_GRID, 2, 19),
+  causewayArrival: worldPointFromTile(STORMGLASS_RELIQUARY_GRID, 7, 19),
+  tempestRemnant: worldPointFromTile(STORMGLASS_RELIQUARY_GRID, 44, 19),
+  stormglassRelic1: worldPointFromTile(STORMGLASS_RELIQUARY_GRID, 16, 10),
+  stormglassRelic2: worldPointFromTile(STORMGLASS_RELIQUARY_GRID, 25, 27),
+  stormglassRelic3: worldPointFromTile(STORMGLASS_RELIQUARY_GRID, 34, 15),
+  beaconfallGate: worldPointFromTile(STORMGLASS_RELIQUARY_GRID, 51, 19),
+  beaconfallArrival: worldPointFromTile(STORMGLASS_RELIQUARY_GRID, 47, 19),
+} as const satisfies Record<string, Vec2>;
+
+export const BEACONFALL_CLIFFS_POINTS = {
+  playerSpawn: worldPointFromTile(BEACONFALL_CLIFFS_GRID, 7, 21),
+  stormglassGate: worldPointFromTile(BEACONFALL_CLIFFS_GRID, 2, 21),
+  stormglassArrival: worldPointFromTile(BEACONFALL_CLIFFS_GRID, 7, 21),
+  sunspireGate: worldPointFromTile(BEACONFALL_CLIFFS_GRID, 59, 21),
+  sunspireArrival: worldPointFromTile(BEACONFALL_CLIFFS_GRID, 55, 21),
+  astronomerSela: worldPointFromTile(BEACONFALL_CLIFFS_GRID, 14, 17),
+  cliffsmithRoan: worldPointFromTile(BEACONFALL_CLIFFS_GRID, 23, 24),
+  sunveilBloom1: worldPointFromTile(BEACONFALL_CLIFFS_GRID, 12, 28),
+  sunveilBloom2: worldPointFromTile(BEACONFALL_CLIFFS_GRID, 27, 13),
+  sunveilBloom3: worldPointFromTile(BEACONFALL_CLIFFS_GRID, 39, 26),
+  skyglassSeam1: worldPointFromTile(BEACONFALL_CLIFFS_GRID, 30, 21),
+  skyglassSeam2: worldPointFromTile(BEACONFALL_CLIFFS_GRID, 43, 14),
+  skyglassSeam3: worldPointFromTile(BEACONFALL_CLIFFS_GRID, 51, 28),
+} as const satisfies Record<string, Vec2>;
+
+export const SUNSPIRE_OBSERVATORY_POINTS = {
+  playerSpawn: worldPointFromTile(SUNSPIRE_OBSERVATORY_GRID, 7, 20),
+  beaconfallGate: worldPointFromTile(SUNSPIRE_OBSERVATORY_GRID, 2, 20),
+  beaconfallArrival: worldPointFromTile(SUNSPIRE_OBSERVATORY_GRID, 7, 20),
+  celestialOrrery: worldPointFromTile(SUNSPIRE_OBSERVATORY_GRID, 46, 20),
+  starfallRelic1: worldPointFromTile(SUNSPIRE_OBSERVATORY_GRID, 16, 10),
+  starfallRelic2: worldPointFromTile(SUNSPIRE_OBSERVATORY_GRID, 25, 29),
+  starfallRelic3: worldPointFromTile(SUNSPIRE_OBSERVATORY_GRID, 34, 15),
+  highlandsGate: worldPointFromTile(SUNSPIRE_OBSERVATORY_GRID, 53, 20),
+  highlandsArrival: worldPointFromTile(SUNSPIRE_OBSERVATORY_GRID, 49, 20),
+} as const satisfies Record<string, Vec2>;
+
+export const AURORA_HIGHLANDS_POINTS = {
+  playerSpawn: worldPointFromTile(AURORA_HIGHLANDS_GRID, 7, 22),
+  sunspireGate: worldPointFromTile(AURORA_HIGHLANDS_GRID, 2, 22),
+  sunspireArrival: worldPointFromTile(AURORA_HIGHLANDS_GRID, 7, 22),
+  zenithGate: worldPointFromTile(AURORA_HIGHLANDS_GRID, 59, 22),
+  zenithArrival: worldPointFromTile(AURORA_HIGHLANDS_GRID, 55, 22),
+  keeperAurell: worldPointFromTile(AURORA_HIGHLANDS_GRID, 12, 17),
+  wardenMaelis: worldPointFromTile(AURORA_HIGHLANDS_GRID, 18, 27),
+  archivistNerys: worldPointFromTile(AURORA_HIGHLANDS_GRID, 27, 18),
+  traderVesper: worldPointFromTile(AURORA_HIGHLANDS_GRID, 35, 28),
+  dawnsage1: worldPointFromTile(AURORA_HIGHLANDS_GRID, 11, 30),
+  dawnsage2: worldPointFromTile(AURORA_HIGHLANDS_GRID, 28, 13),
+  dawnsage3: worldPointFromTile(AURORA_HIGHLANDS_GRID, 39, 28),
+  sunmetal1: worldPointFromTile(AURORA_HIGHLANDS_GRID, 31, 22),
+  sunmetal2: worldPointFromTile(AURORA_HIGHLANDS_GRID, 44, 14),
+  sunmetal3: worldPointFromTile(AURORA_HIGHLANDS_GRID, 51, 30),
+} as const satisfies Record<string, Vec2>;
+
+export const ZENITH_ARCHIVE_POINTS = {
+  playerSpawn: worldPointFromTile(ZENITH_ARCHIVE_GRID, 7, 21),
+  auroraGate: worldPointFromTile(ZENITH_ARCHIVE_GRID, 2, 21),
+  auroraArrival: worldPointFromTile(ZENITH_ARCHIVE_GRID, 7, 21),
+  keeperOfZenith: worldPointFromTile(ZENITH_ARCHIVE_GRID, 46, 21),
+  memoryLeaf1: worldPointFromTile(ZENITH_ARCHIVE_GRID, 16, 11),
+  memoryLeaf2: worldPointFromTile(ZENITH_ARCHIVE_GRID, 25, 30),
+  memoryLeaf3: worldPointFromTile(ZENITH_ARCHIVE_GRID, 34, 16),
+  choirwoodGate: worldPointFromTile(ZENITH_ARCHIVE_GRID, 53, 21),
+  choirwoodArrival: worldPointFromTile(ZENITH_ARCHIVE_GRID, 49, 21),
+} as const satisfies Record<string, Vec2>;
+
+export const CHOIRWOOD_CANOPY_POINTS = {
+  playerSpawn: worldPointFromTile(CHOIRWOOD_CANOPY_GRID, 7, 22),
+  zenithGate: worldPointFromTile(CHOIRWOOD_CANOPY_GRID, 2, 22),
+  zenithArrival: worldPointFromTile(CHOIRWOOD_CANOPY_GRID, 7, 22),
+  crownrootGate: worldPointFromTile(CHOIRWOOD_CANOPY_GRID, 59, 22),
+  crownrootArrival: worldPointFromTile(CHOIRWOOD_CANOPY_GRID, 55, 22),
+  runesingerLyra: worldPointFromTile(CHOIRWOOD_CANOPY_GRID, 12, 17),
+  cantorEira: worldPointFromTile(CHOIRWOOD_CANOPY_GRID, 19, 28),
+  keeperOrem: worldPointFromTile(CHOIRWOOD_CANOPY_GRID, 28, 17),
+  echoMoss1: worldPointFromTile(CHOIRWOOD_CANOPY_GRID, 11, 31),
+  echoMoss2: worldPointFromTile(CHOIRWOOD_CANOPY_GRID, 31, 13),
+  echoMoss3: worldPointFromTile(CHOIRWOOD_CANOPY_GRID, 41, 27),
+  resonantBark1: worldPointFromTile(CHOIRWOOD_CANOPY_GRID, 30, 22),
+  resonantBark2: worldPointFromTile(CHOIRWOOD_CANOPY_GRID, 45, 14),
+  resonantBark3: worldPointFromTile(CHOIRWOOD_CANOPY_GRID, 51, 29),
+} as const satisfies Record<string, Vec2>;
+
+export const CROWNROOT_SANCTUM_POINTS = {
+  playerSpawn: worldPointFromTile(CROWNROOT_SANCTUM_GRID, 7, 21),
+  choirwoodGate: worldPointFromTile(CROWNROOT_SANCTUM_GRID, 2, 21),
+  choirwoodArrival: worldPointFromTile(CROWNROOT_SANCTUM_GRID, 7, 21),
+  runeveilGate: worldPointFromTile(CROWNROOT_SANCTUM_GRID, 53, 21),
+  runeveilArrival: worldPointFromTile(CROWNROOT_SANCTUM_GRID, 49, 21),
+  crownrootHierophant: worldPointFromTile(CROWNROOT_SANCTUM_GRID, 46, 21),
+  hymnLeaf1: worldPointFromTile(CROWNROOT_SANCTUM_GRID, 16, 10),
+  hymnLeaf2: worldPointFromTile(CROWNROOT_SANCTUM_GRID, 25, 29),
+  hymnLeaf3: worldPointFromTile(CROWNROOT_SANCTUM_GRID, 34, 15),
+} as const satisfies Record<string, Vec2>;
+
+export const RUNEVEIL_GARDENS_POINTS = {
+  playerSpawn: worldPointFromTile(RUNEVEIL_GARDENS_GRID, 7, 22),
+  crownrootGate: worldPointFromTile(RUNEVEIL_GARDENS_GRID, 2, 22),
+  crownrootArrival: worldPointFromTile(RUNEVEIL_GARDENS_GRID, 7, 22),
+  namesongGate: worldPointFromTile(RUNEVEIL_GARDENS_GRID, 59, 22),
+  namesongArrival: worldPointFromTile(RUNEVEIL_GARDENS_GRID, 55, 22),
+  waykeeperTalin: worldPointFromTile(RUNEVEIL_GARDENS_GRID, 12, 17),
+  runesmithSera: worldPointFromTile(RUNEVEIL_GARDENS_GRID, 19, 28),
+  archivistPell: worldPointFromTile(RUNEVEIL_GARDENS_GRID, 28, 17),
+  runebloom1: worldPointFromTile(RUNEVEIL_GARDENS_GRID, 11, 31),
+  runebloom2: worldPointFromTile(RUNEVEIL_GARDENS_GRID, 31, 13),
+  runebloom3: worldPointFromTile(RUNEVEIL_GARDENS_GRID, 41, 27),
+  wayglass1: worldPointFromTile(RUNEVEIL_GARDENS_GRID, 30, 22),
+  wayglass2: worldPointFromTile(RUNEVEIL_GARDENS_GRID, 45, 14),
+  wayglass3: worldPointFromTile(RUNEVEIL_GARDENS_GRID, 51, 29),
+} as const satisfies Record<string, Vec2>;
+
+export const NAMESONG_VAULT_POINTS = {
+  playerSpawn: worldPointFromTile(NAMESONG_VAULT_GRID, 7, 21),
+  runeveilGate: worldPointFromTile(NAMESONG_VAULT_GRID, 2, 21),
+  runeveilArrival: worldPointFromTile(NAMESONG_VAULT_GRID, 7, 21),
+  waystarGate: worldPointFromTile(NAMESONG_VAULT_GRID, 53, 21),
+  waystarArrival: worldPointFromTile(NAMESONG_VAULT_GRID, 49, 21),
+  archivore: worldPointFromTile(NAMESONG_VAULT_GRID, 46, 21),
+  hollowstar1: worldPointFromTile(NAMESONG_VAULT_GRID, 16, 10),
+  hollowstar2: worldPointFromTile(NAMESONG_VAULT_GRID, 25, 29),
+  hollowstar3: worldPointFromTile(NAMESONG_VAULT_GRID, 34, 15),
+} as const satisfies Record<string, Vec2>;
+
+export const WAYSTAR_MOOR_POINTS = {
+  playerSpawn: worldPointFromTile(WAYSTAR_MOOR_GRID, 7, 22),
+  namesongGate: worldPointFromTile(WAYSTAR_MOOR_GRID, 2, 22),
+  namesongArrival: worldPointFromTile(WAYSTAR_MOOR_GRID, 7, 22),
+  convergenceGate: worldPointFromTile(WAYSTAR_MOOR_GRID, 59, 22),
+  convergenceArrival: worldPointFromTile(WAYSTAR_MOOR_GRID, 55, 22),
+  moorwardenCalix: worldPointFromTile(WAYSTAR_MOOR_GRID, 12, 17),
+  quartermasterFenn: worldPointFromTile(WAYSTAR_MOOR_GRID, 19, 28),
+  pathweaverIone: worldPointFromTile(WAYSTAR_MOOR_GRID, 28, 17),
+  waystarPollen1: worldPointFromTile(WAYSTAR_MOOR_GRID, 11, 31),
+  waystarPollen2: worldPointFromTile(WAYSTAR_MOOR_GRID, 31, 13),
+  waystarPollen3: worldPointFromTile(WAYSTAR_MOOR_GRID, 41, 27),
+  convergentGlass1: worldPointFromTile(WAYSTAR_MOOR_GRID, 30, 22),
+  convergentGlass2: worldPointFromTile(WAYSTAR_MOOR_GRID, 47, 14),
+  convergentGlass3: worldPointFromTile(WAYSTAR_MOOR_GRID, 51, 29),
+} as const satisfies Record<string, Vec2>;
+
+export const CONVERGENCE_SPIRE_POINTS = {
+  playerSpawn: worldPointFromTile(CONVERGENCE_SPIRE_GRID, 7, 21),
+  waystarGate: worldPointFromTile(CONVERGENCE_SPIRE_GRID, 2, 21),
+  waystarArrival: worldPointFromTile(CONVERGENCE_SPIRE_GRID, 7, 21),
+  manyroadCrown: worldPointFromTile(CONVERGENCE_SPIRE_GRID, 46, 21),
+  vowsteel1: worldPointFromTile(CONVERGENCE_SPIRE_GRID, 16, 10),
+  vowsteel2: worldPointFromTile(CONVERGENCE_SPIRE_GRID, 25, 29),
+  vowsteel3: worldPointFromTile(CONVERGENCE_SPIRE_GRID, 34, 15),
+} as const satisfies Record<string, Vec2>;
+
+/**
  * Compact authored set dressing for the adventure maps.  Each layout keeps its
  * travel entrances and local points of interest clear; the corresponding
  * verifier checks those anchors against the exported collision mask.
